@@ -55,6 +55,13 @@ here's what we know, here's what changed since" — so both sides start from the
 digest is compact, organized by what matters (not by file), and honest about what's evidence vs.
 inference.
 
+**Domain awareness is part of orientation.** A greenfield product and a brownfield feature need
+different digests: when a codebase exists, the digest must cover what's already implemented —
+the subsystems the idea touches, the current architecture and conventions, what adjacent
+capability already exists — and a first read on how the new thing fits the greater scheme
+(extends X, replaces Y, sits alongside Z). Misjudging the starting state is how a brainstorm
+lands decisions the codebase already made differently.
+
 Resist the urge to ask questions during orientation. Questions before shared context produce
 answers that get re-litigated later. The digest *ends* by naming the first real fork.
 
@@ -94,6 +101,9 @@ creating the space. Skeleton:
 **Next phase:** better-planning-prd
 
 ## Problem
+## Current state
+<brownfield: what exists today that this touches, and how the idea fits the greater scheme;
+greenfield: say so>
 ## Decided directions
 - <decision> — *why:* <rationale> (<date>)
 ## Open questions

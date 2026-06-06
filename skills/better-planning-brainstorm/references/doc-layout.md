@@ -79,9 +79,11 @@ family skill reads it on open to know whether to proceed or hand off to a siblin
 ## Per-layer content guides
 
 **Brief** (`<x>-brief.md`) — phase ①'s output, the alignment record. Contents: problem
-statement; decided directions, each with its rationale (the *why* travels downstream, not just
-the *what*); the open-question queue, split into fork-level vs detail; scope instincts (in/out,
-with why); glossary seeds; links to evidence. Hard boundary: **no document sections, no
+statement; **current state** (brownfield: what's already implemented that this touches, and how
+the idea fits the greater scheme; greenfield: say so); decided directions, each with its
+rationale (the *why* travels downstream, not just the *what*); the open-question queue, split
+into fork-level vs detail; scope instincts (in/out, with why); glossary seeds; links to
+evidence. Hard boundary: **no document sections, no
 schemas, no acceptance criteria** — the moment structure is needed to express something,
 brainstorming is over and the PRD phase takes it from there. Written append-as-you-go: each
 landed decision is recorded in the same exchange, so a dead session loses nothing. Settled when
@@ -98,9 +100,15 @@ feature PRDs, and a **resolved-decisions table** tracing every open item from re
 brief to its resolution. Stays high-level: any topic needing schemas or contracts defers to a
 feature PRD by name.
 
-**Feature PRD** (`features/<feature>/<feature>-prd.md`): the what and why in depth. A feature
-PRD is complete only when it has ALL of these sections — check before calling a draft done:
+**Feature PRD** (`features/<feature>/<feature>-prd.md`): the what and why in depth. The
+better-planning-prd skill ships templates (`assets/feature-prd-template.md`,
+`assets/product-prd-template.md`) — start drafts from them and stick to the shape; that's what
+keeps PRDs comparable across features. A feature PRD is complete only when it has ALL of these
+sections — check before calling a draft done:
 
+- [ ] **user stories** — a LONG, numbered list, each as "As a <user>, I want <capability>,
+      so that <benefit>". Extremely extensive, covering all aspects of the feature — including
+      non-obvious actors (admins, API consumers, agents, operators).
 - [ ] requirements / behavior, in depth
 - [ ] the contracts/schemas other features consume (flagged at the top if others depend on them)
 - [ ] acceptance criteria — testable, numbered

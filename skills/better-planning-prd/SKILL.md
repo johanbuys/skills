@@ -47,10 +47,17 @@ the first draft.
 
 When drafting was the stated goal, draft — don't ask permission to start.
 
+- **Start from the templates**: `assets/feature-prd-template.md` and
+  `assets/product-prd-template.md` carry the standard section set — sticking to the shape is
+  what keeps PRDs comparable across features and reviewable by anyone who learned it once.
+- The **user stories** section is load-bearing: a LONG, numbered list, each "As a <user>, I
+  want <capability>, so that <benefit>" — extremely extensive, covering all aspects of the
+  feature including non-obvious actors (admins, API consumers, agents). If a requirement has
+  no story, add the story or question the requirement.
 - Layout, naming, per-layer content guides, and the **feature-PRD completeness checklist**
-  (requirements, contracts, acceptance criteria, edge cases, deferrals, decisions table):
-  `references/doc-layout.md`. Check the checklist before calling a draft done — edge cases are
-  where ambiguity hides.
+  (user stories, requirements, contracts, acceptance criteria, edge cases, deferrals, decisions
+  table): `references/doc-layout.md`. Check the checklist before calling a draft done — edge
+  cases are where ambiguity hides.
 - Each layer stays at its own altitude: the high-level PRD defers schemas and contracts to
   feature PRDs by name; feature PRDs defer build mechanics to plans.
 - Every PRD gets a companion `<stem>-overview.html` **in the same commit** — a self-contained

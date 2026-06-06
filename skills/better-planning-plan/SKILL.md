@@ -72,6 +72,23 @@ gantt bars), dependencies as lanes, the v0 cut visible. Review rounds work exact
 ②: poke-at items, review capture for async, one item at a time, batch edits, commit with
 rationale.
 
+## Adversarial review — the cold-reader stress test
+
+The plan's real consumer is an agent (or human) with none of this session's context — so before
+the plan settles, test it against exactly that reader. Offer it: "let me have the plan reviewed
+cold and fix any issues." Spawn an independent agent with **no session context** — give it only
+the repo and the artifact paths (plan, PRD, brief) — instructed to try to *break* the plan:
+
+- steps a cold builder couldn't execute without coming back to ask what was meant,
+- milestones whose outcome can't actually be verified as written,
+- contradictions with the PRD, or scope the milestones miss,
+- dependencies and sequencing that don't hold against the real codebase.
+
+Triage what comes back: fix clear defects directly, bring judgment calls to the user one at a
+time, and record material changes in the decisions table. A warm review can't catch
+context-dependence — the author's session fills gaps invisibly; the cold reader is the test the
+plan must pass, because it's the condition the plan will actually be used under.
+
 ## Handoff
 
 When the plan settles: flip its status header, update the README index row, commit, and offer
