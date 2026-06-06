@@ -132,6 +132,11 @@ Build from `assets/overview-template.html`; rules in `references/html-artifacts.
 visuals. Offer one proactively when an exchange goes back and forth twice without landing —
 that's the signal that prose isn't carrying the picture. Never commit these.
 
+If **better-planning-canvas** is installed, prefer it as the surface: it serves the page (so
+remote/SSH users can open it), puts the comment box for the decision *on* the page, and wakes
+you when the user answers — the whole brainstorm can run as its live loop, with the brief
+staying canonical.
+
 ## Vocabulary discipline
 
 Start `docs/better-planning/GLOSSARY.md` with the first brief entry: every term used with a

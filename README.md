@@ -30,6 +30,7 @@ wrong phase) and closes by offering the next one.
 | ② | [`better-planning-prd`](skills/better-planning-prd/SKILL.md) | settled brief → settled `<x>-prd.md` + self-contained HTML companion. Review rounds with built-in review capture, full decision traceability. |
 | ③ | [`better-planning-plan`](skills/better-planning-plan/SKILL.md) | settled PRD → `<feature>-plan.md` + companion. Milestones that each end in a verifiable "run X, see Y" outcome; reality-disagrees protocol for the builder; adversarial cold-reader review before settling. |
 | ④ | [`better-planning-tasks`](skills/better-planning-tasks/SKILL.md) | settled plan → `<feature>-tasks.md` — agent-executable tasks, each with links to the exact spec sections, files touched, and its own acceptance check. Optional GitHub-issues export under a user-chosen label. |
+| ⊕ | [`better-planning-canvas`](skills/better-planning-canvas/SKILL.md) | the family's interactive surface (not a phase): serve any explanation, review, or brainstorm as an HTML page with comment boxes; submissions wake the agent, the page reloads after each round. Works over SSH/tailnet where `file://` can't. |
 
 > Maintainer note: `references/doc-layout.md`, `references/html-artifacts.md`, and
 > `assets/overview-template.html` are intentionally duplicated across the family so each skill

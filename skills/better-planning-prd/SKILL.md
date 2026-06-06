@@ -79,7 +79,10 @@ user's ideas to their strongest form, nothing resolves silently.
 
 For asynchronous review, the companion doubles as the feedback instrument: its poke-at items
 carry comment boxes and an "Export review" button that downloads `<stem>-feedback.json`, which
-you then walk through item by item (see `references/html-artifacts.md` → Review capture).
+you then walk through item by item (see `references/html-artifacts.md` → Review capture). If
+**better-planning-canvas** is installed, serve the companion through it instead — comments post
+straight back, you wake on submit, and the page reloads after each resolved round; no
+export-download dance, and it works over SSH.
 
 After a round resolves: batch-apply the edits to the markdown *and* regenerate the affected
 companion sections, update the decisions table, commit with the rationale in the message. Then

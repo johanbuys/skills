@@ -70,7 +70,8 @@ The plan gets a companion `<feature>-plan-overview.html` in the same commit (tem
 `assets/`, guide in `references/html-artifacts.md`) — milestones as a timeline (the template's
 gantt bars), dependencies as lanes, the v0 cut visible. Review rounds work exactly as in phase
 ②: poke-at items, review capture for async, one item at a time, batch edits, commit with
-rationale.
+rationale — served through **better-planning-canvas** when it's installed (live loop, works
+over SSH).
 
 ## Adversarial review — the cold-reader stress test
 
