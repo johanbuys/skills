@@ -93,10 +93,26 @@
              border-radius: 50%; animation: spin .8s linear infinite; flex: 0 0 auto; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .foot { margin-top: 28px; font-size: 12px; color: var(--muted); }
+
+  /* full-page waiting overlay: the page is non-interactive until the next round renders */
+  #overlay { position: fixed; inset: 0; z-index: 100; display: none;
+             align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+             background: rgba(247, 248, 251, .88); backdrop-filter: blur(2px);
+             -webkit-backdrop-filter: blur(2px); }
+  #overlay.show { display: flex; }
+  #overlay .spinner { width: 44px; height: 44px; border-width: 5px; }
+  #overlay .msg { font-size: 15px; font-weight: 600; color: var(--ink); }
+  #overlay .submsg { font-size: 12.5px; color: var(--muted); margin-top: -8px; }
 </style>
 </head>
 <body>
 <div class="wrap" id="app"><p style="color:var(--muted)">Loading…</p></div>
+
+<div id="overlay">
+  <div class="spinner"></div>
+  <div class="msg">Recorded — the agent is working</div>
+  <div class="submsg">This page will redraw itself when the next step is ready.</div>
+</div>
 
 <div class="submit-bar">
   <div class="submit-inner">
@@ -139,6 +155,7 @@
   var app = document.getElementById("app");
   var btn = document.getElementById("submit");
   var status = document.getElementById("status");
+  var overlay = document.getElementById("overlay");
   var currentVersion = null;
   var waiting = false;
 
@@ -222,8 +239,9 @@
       el.appendChild(ta);
     });
 
-    // Render fix: new round, read from the top.
+    // Render fix: new round, read from the top; lift the waiting overlay.
     window.scrollTo(0, 0);
+    overlay.classList.remove("show");
     waiting = false;
     btn.disabled = false;
     status.className = "";
@@ -252,13 +270,14 @@
       body: JSON.stringify(payload)
     }).then(function (r) {
       if (!r.ok) throw new Error(r.status);
-      // Render fix: a visible waiting state until the next round arrives.
+      // Render fix: a full-page waiting overlay — clearly non-interactive until the next round.
       waiting = true;
       btn.disabled = true;
       try { localStorage.removeItem(KEY); } catch (e) {}
       saved = {};
+      overlay.classList.add("show");
       status.className = "";
-      status.innerHTML = "<span class=\"spinner\"></span> Recorded — the agent is working; this page will update itself.";
+      status.textContent = "Recorded.";
     }).catch(function (e) {
       status.className = "err";
       status.textContent = "Submit failed (" + e.message + ") — your text is still saved locally.";
@@ -274,7 +293,11 @@
         else if (j.v !== currentVersion) { currentVersion = j.v; loadState(); }
       })
       .catch(function () {
-        if (waiting) { status.className = "err"; status.textContent = "Lost the canvas server — ask the agent."; waiting = false; btn.disabled = false; }
+        if (waiting) {
+          overlay.classList.remove("show");
+          status.className = "err"; status.textContent = "Lost the canvas server — ask the agent.";
+          waiting = false; btn.disabled = false;
+        }
       });
   }, 3000);
 

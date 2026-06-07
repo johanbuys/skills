@@ -125,9 +125,11 @@ The template also bakes in the round-trip UX rules (below), so you get them for 
 
 Learned from the first dogfood session — both were user-reported friction:
 
-- **Visible waiting state.** After a successful submit, the user must see that the loop is
-  running: disable the submit button and show a spinner + "Recorded — the agent is working;
-  this page will update itself." A static page after submit reads as "nothing happened."
+- **Visible waiting state — a full-page overlay.** After a successful submit, show a
+  full-page overlay (dimmed background, centered spinner, "Recorded — the agent is working")
+  so it's unambiguous the page is non-interactive until the next round renders. A status-bar
+  spinner alone is missable; a static page after submit reads as "nothing happened." Lift the
+  overlay when the new state renders (and on server-lost errors).
 - **Scroll reset on redraw.** Browsers restore the last scroll position, so a redrawn page
   opens at the bottom where the user last was. Set `history.scrollRestoration = "manual"` and
   `window.scrollTo(0, 0)` after every render — each round reads top-down.
