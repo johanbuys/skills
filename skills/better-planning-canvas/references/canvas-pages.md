@@ -108,6 +108,30 @@ page; the open browser reloads within ~3s. Include once before `</body>`:
 Because comments autosave to localStorage keyed by `DOC`, a reload mid-typing loses nothing —
 the capture block restores them.
 
+## The brainstorm template — write state, not markup
+
+For any page that will be redrawn across rounds (brainstorm loops above all), do **not**
+regenerate HTML each round — that re-emits ~300 lines of unchanged CSS/JS per redraw (~10k
+output tokens a round; measured ~80% waste). Use `assets/brainstorm-template.html` instead:
+
+1. Copy the template **once** into the workspace as `<topic>.html`. Never edit it again.
+2. Each round, write only `state.json` (the data: chips, decided log, current decision,
+   queue — schema documented at the top of the template's script) and bump `version.json`.
+3. The page re-renders **in place** from the new state — no full reload.
+
+The template also bakes in the round-trip UX rules (below), so you get them for free.
+
+## Round-trip UX rules (any live canvas page)
+
+Learned from the first dogfood session — both were user-reported friction:
+
+- **Visible waiting state.** After a successful submit, the user must see that the loop is
+  running: disable the submit button and show a spinner + "Recorded — the agent is working;
+  this page will update itself." A static page after submit reads as "nothing happened."
+- **Scroll reset on redraw.** Browsers restore the last scroll position, so a redrawn page
+  opens at the bottom where the user last was. Set `history.scrollRestoration = "manual"` and
+  `window.scrollTo(0, 0)` after every render — each round reads top-down.
+
 ## Page shapes
 
 **Review page** — sections mirroring the thing under review (use the template's diagrams,

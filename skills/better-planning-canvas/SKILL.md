@@ -24,7 +24,10 @@ One server script, one workspace dir, two JS blocks. Copy-paste canonical patter
 1. **Workspace**: `/tmp/better-planning/canvas/<topic>/` — the page (`<topic>.html`),
    `version.json` (`{"v": 1}`), and a `feedback/` dir the server creates. Ephemeral: canvas
    pages are never committed; durable content gets folded into the real artifacts (brief,
-   companion) when the session ends.
+   companion) when the session ends. **For multi-round pages, the page is a one-time copy of
+   `assets/brainstorm-template.html` and each round you write only `state.json`** — never
+   regenerate the markup per round (token waste, measured ~80%); see
+   `references/canvas-pages.md` → The brainstorm template.
 2. **Serve**: `python3 <skill-dir>/scripts/canvas_server.py --dir <workspace> --port 3119 &`
    (check the port is free first; any port works). It serves the dir on `0.0.0.0` and accepts
    `POST /feedback`, writing `feedback/<doc>-feedback.json` + a timestamped archive + a wake
