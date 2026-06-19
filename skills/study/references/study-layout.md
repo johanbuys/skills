@@ -11,7 +11,7 @@ other skills and the user write to it by following the format, nothing imports `
   topics.md                 ← the dumb backlog: one topic per line, no state
   <slug>/                   ← a topic that's been picked up (existence = "started")
     TOPIC.md                ← the seed: topic, why, source/context, started date
-    lessons/                ← canvas HTML lessons (served, interactive)
+    lessons/                ← HTML lessons, ordered NN-<name>.html (canvas-served, or file://)
     resources.md            ← cited sources backing the lessons
     learning-record.md      ← what stuck, what's fuzzy, the done marker
     sandbox/                ← optional toy/example repo, when hands-on helps
@@ -42,7 +42,7 @@ solving a rubik's cube
 |---|---|
 | Not started yet? | A line in `topics.md` with **no** matching `~/.study/<slug>/` dir. |
 | Started / in progress? | `~/.study/<slug>/` exists; its `learning-record.md` is not marked done. |
-| Done? | `~/.study/<slug>/learning-record.md` carries a **Done** marker (date). |
+| Done? | `~/.study/<slug>/learning-record.md` carries a canonical `**Done:** <date>` line. |
 
 To list everything: `topics.md` = not-yet-started, `ls ~/.study/*/` = started-or-done, each dir's
 record says which. Never duplicate that state back into the queue.
