@@ -126,23 +126,59 @@ alternative was rejected as incoherent.
 
 ## Scope of changes (files touched)
 
-New:
+**Key structural fact:** every skill in this family is *fully self-contained* — each `SKILL.md`
+embeds the entire family table, and `references/doc-layout.md` + `references/html-artifacts.md` +
+`assets/overview-template.html` are duplicated per skill (the maintainer note: "edit all copies
+together"). So inserting a phase is a **cross-cutting** change touching every existing skill, not an
+additive one. The full list below reflects that; an earlier draft under-counted it.
+
+### New skill directories
+
 - `skills/better-planning-design/` — `SKILL.md`, `references/doc-layout.md`,
-  `references/html-artifacts.md`, `assets/tdd-template.md`
+  `references/html-artifacts.md`, `assets/tdd-template.md`, `assets/overview-template.html`
+  (TDD companion), `evals/evals.json`
 - `skills/better-planning-comprehend/` — `SKILL.md`, `references/doc-layout.md`,
-  `references/html-artifacts.md`, `assets/drift-ledger-template.md`
+  `references/html-artifacts.md`, `assets/drift-ledger-template.md`,
+  `assets/overview-template.html` (sync/drift view), `evals/evals.json`
 
-Modified:
-- `skills/better-planning-plan/SKILL.md` — input contract requires + cites the TDD; renumber ③→④
-- `skills/better-planning-tasks/SKILL.md` — renumber ④→⑤; next-phase pointer → comprehend
-- `skills/better-planning-prd/SKILL.md` — closing "offer next phase" → ③ design
-- `skills/better-planning-brainstorm/SKILL.md` — family-table reference only (own number unchanged)
-- `skills/better-planning-canvas/SKILL.md` — add design + comprehend as canvas consumers
-- `README.md` — family table: two new rows + renumber
-- the shared status-index convention (each `doc-layout.md` copy) — add `design` and `comprehend`
-  phase states
+### The embedded family table — update in ALL SKILL.md (4 existing + 2 new)
 
-This pays the maintainer-note "edit all copies together" duplication tax deliberately.
+Every `SKILL.md` carries the full family table (currently 4 rows at lines ~19–25). All must gain the
+two new rows and the renumber (`design` ③, `plan` ④, `tasks` ⑤, `comprehend` ⊕). Same for the
+README table. This is the single most repetitive edit — do not miss a copy.
+
+### The duplicated `references/doc-layout.md` — 6 copies (4 existing + 2 new)
+
+Each copy needs three edits:
+- **Artifact directory tree** — add `<feature>-tdd.md`, `<feature>-tdd-overview.html`, and
+  `<feature>-drift.md`.
+- **Phase-number annotations** — `<feature>-tasks.md` ④→⑤; add the ③ tdd output line.
+- **Status index** — phase vocabulary + example rows gain `design` (states: draft/in-review/settled)
+  and `comprehend` (sync checkpoints, not a settle-able phase).
+
+### Concrete handoff / entry-guard strings (not just "pointers")
+
+- `skills/better-planning-prd/SKILL.md` — the closing handoff (≈ line 118) literally offers
+  "the implementation plan next (better-planning-plan)"; change to offer ③ `design`.
+- `skills/better-planning-plan/SKILL.md` — input framing "consumes the PRD" → "consumes the TDD";
+  add a "No TDD → phase-③ gap, offer the sibling" entry guard alongside the existing PRD guard
+  (≈ lines 35–38); renumber its own header/table ③→④.
+- `skills/better-planning-tasks/SKILL.md` — renumber ④→⑤; forward/next handoff now offers the
+  `comprehend` companion as the build-time next step (its backward "offer plan" guard is unchanged).
+- `skills/better-planning-brainstorm/SKILL.md` — embedded family table only; its own ① and its
+  `Next phase: better-planning-prd` handoff are unchanged.
+
+### Canvas
+
+- `skills/better-planning-canvas/SKILL.md` — add `design` + `comprehend` as canvas consumers.
+- New canvas page templates: the **layered-zoom area walk** (design) and the **delta walk**
+  (comprehend), alongside the existing `brainstorm-template.html` / `docview-template.html`.
+- `assets/brainstorm-template.html:133` example chip ("phase ① brainstorm") — cosmetic, optional.
+
+### README
+
+- Family table: two new rows + renumber. Keep the maintainer duplication note accurate (it now
+  spans 6 skills).
 
 ## Open items for the implementation plan
 
