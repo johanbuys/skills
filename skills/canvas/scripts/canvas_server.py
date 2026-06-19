@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""better-planning-canvas server.
+"""canvas server.
 
 Serves a canvas directory over HTTP and accepts feedback POSTs from the page.
 

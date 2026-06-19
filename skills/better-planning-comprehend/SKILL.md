@@ -47,7 +47,7 @@ in the drift ledger, so it knows the exact window).
 
 ## The loop — teach + reconcile
 
-When it runs (run the canvas for the walk — see **better-planning-canvas** for the serving
+When it runs (run the canvas for the walk — see **canvas** for the serving
 mechanics; this skill provides the content):
 
 1. **Compute the deltas, filtered to the consequential.** From the diff, keep only changes that

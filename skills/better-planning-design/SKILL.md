@@ -24,7 +24,7 @@ fuzzy idea to buildable work with no ambiguity between human and agent.
 | ④ plan | better-planning-plan | `<feature>-plan.md` — milestones with verifiable outcomes |
 | ⑤ tasks | better-planning-tasks | `<feature>-tasks.md` — agent-executable units |
 
-Two companions cut across the phases: **better-planning-canvas** (the interactive surface) and
+Two companions cut across the phases: **canvas** (the interactive surface) and
 **better-planning-comprehend** (the during-build loop that reconciles landed code against this TDD
 and keeps it living). Every family skill opens by reading `docs/better-planning/README.md`'s status
 index; if the work belongs to a different phase, say so and offer the right sibling. Every skill
@@ -79,7 +79,7 @@ The TDD gets a companion `<feature>-tdd-overview.html` in the same commit (templ
 guide in `references/html-artifacts.md`) — the system map and boundaries as CSS-only diagrams, each
 major decision as a card with its alternatives visible and the recommendation marked. Review rounds
 work exactly as in phase ②: walk items one at a time, batch edits, commit with rationale — served
-through **better-planning-canvas** when it's installed (the layered-zoom walk runs live, works over
+through **canvas** when it's installed (the layered-zoom walk runs live, works over
 SSH).
 
 ## Handoff
