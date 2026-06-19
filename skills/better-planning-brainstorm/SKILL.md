@@ -14,17 +14,20 @@ the next session, human or agent, can find it.
 
 ## The family
 
-Four complementary skills, one artifact space (`docs/better-planning/`), one objective: take a
+Five complementary skills, one artifact space (`docs/better-planning/`), one objective: take a
 fuzzy idea to buildable work with no ambiguity between human and agent.
 
 | Phase | Skill | Output (= the resume point) |
 |---|---|---|
 | ① brainstorm | **better-planning-brainstorm** (this one) | `<x>-brief.md` — the alignment record |
 | ② prd | better-planning-prd | settled `<x>-prd.md` + HTML companion |
-| ③ plan | better-planning-plan | `<feature>-plan.md` — milestones with verifiable outcomes |
-| ④ tasks | better-planning-tasks | `<feature>-tasks.md` — agent-executable units |
+| ③ design | better-planning-design | `<feature>-tdd.md` — technical design + HTML companion |
+| ④ plan | better-planning-plan | `<feature>-plan.md` — milestones with verifiable outcomes |
+| ⑤ tasks | better-planning-tasks | `<feature>-tasks.md` — agent-executable units |
 
-Every family skill opens the same way: read `docs/better-planning/README.md`'s status index to
+Two companions cut across the phases: **better-planning-canvas** (the interactive surface) and
+**better-planning-comprehend** (the during-build loop that keeps the technical design true to the
+landed code). Every family skill opens the same way: read `docs/better-planning/README.md`'s status index to
 see where things stand. If the work belongs to a different phase, say so and offer the right
 sibling — wrong entry door, right room. Every skill closes with a handoff: flip the artifact's
 status, update the index, offer the next phase. The artifact, not the conversation, carries the

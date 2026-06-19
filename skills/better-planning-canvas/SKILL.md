@@ -12,9 +12,11 @@ submit wakes the agent, the agent acts, the page redraws. It turns "read my summ
 your reactions back" into "look at it, comment where it's wrong, watch it update."
 
 This is the family's surface, not a phase: brainstorm runs its one-decision-at-a-time loop on
-it, prd and plan serve their companions through it for review rounds, and it's just as useful
-standalone — explaining an architecture, walking a diff, comparing options — anywhere "let me
-show you" beats "let me tell you."
+it, prd and plan serve their companions through it for review rounds, **design** walks the TDD
+layered-zoom (system shape → boundaries → decision) on it, **comprehend** walks the
+code-vs-TDD deltas on it during the build, and it's just as useful standalone — explaining an
+architecture, walking a diff, comparing options — anywhere "let me show you" beats "let me tell
+you."
 
 ## The mechanics
 
