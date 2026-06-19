@@ -71,6 +71,16 @@ mechanics; this skill provides the content):
 The output of a sync: the human's mental model refreshed, the TDD still matching reality, and the
 drift ledger carrying a running record of every architectural divergence and its disposition.
 
+### Parking what you don't grok
+
+Teaching a delta sometimes exposes a gap the human wants to close properly but *not now* — chasing
+"how does RRULE expansion actually work?" mid-sync is the rabbit hole that derails the whole review.
+When that happens, offer to park it: append one line to `~/.study/topics.md` (the **study** skill's
+queue) with the topic and free-form context — the repo + the file the delta touched, so the eventual
+deep dive is grounded in the real code. This is a graceful, optional integration: if `study` isn't
+installed, just note the gap in the drift ledger entry instead. Never derail the sync to teach the
+concept now; capture it and keep reconciling.
+
 ## Drift handling — log + surface, the human decides
 
 When the loop finds real drift, the default is fixed and deliberate: **always log it to the ledger
