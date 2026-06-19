@@ -47,6 +47,15 @@ page live — so it works over SSH/tailnet where `file://` can't reach. Other sk
 > The original monolithic `better-planning` skill was retired in favor of this family
 > (see git history).
 
+## Standalone skills
+
+Not part of the better-planning family — usable on their own.
+
+| Skill | What |
+|---|---|
+| [`canvas`](skills/canvas/SKILL.md) | A served-HTML interactive surface for agents: present anything as a page with per-section comment boxes, and run a live loop where a browser submit wakes the agent and reloads the page. Works over SSH/tailnet where `file://` can't. Several skills sit on it (see above); also useful on its own. |
+| [`study`](skills/study/SKILL.md) | A personal, cross-project learning queue + tutor. Capture topics worth understanding into a dumb home-dir backlog (`~/.study/topics.md`) from anywhere, then run a guided, canvas-driven, recall-checked deep dive on any one — grounded in your real code, a scaffolded sandbox, or purely conceptual. `better-planning-comprehend` feeds it the rabbit holes it surfaces mid-build; works fully standalone. |
+
 ## License
 
 [MIT](LICENSE)
