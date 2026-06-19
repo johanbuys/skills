@@ -22,7 +22,7 @@ fuzzy idea to buildable work with no ambiguity between human and agent.
 | ④ plan | better-planning-plan | `<feature>-plan.md` — milestones with verifiable outcomes |
 | ⑤ tasks | **better-planning-tasks** (this one) | `<feature>-tasks.md` — agent-executable units |
 
-Two companions cut across the phases: **better-planning-canvas** (the interactive surface) and
+Two companions cut across the phases: **canvas** (the interactive surface) and
 **better-planning-comprehend** (the during-build loop that keeps the technical design true to the
 landed code as these tasks are executed). Every family skill opens by reading
 `docs/better-planning/README.md`'s status index; if the work belongs to a different phase, say so

@@ -23,7 +23,7 @@ fuzzy idea to buildable work with no ambiguity between human and agent.
 | ④ plan | better-planning-plan | `<feature>-plan.md` — milestones with verifiable outcomes |
 | ⑤ tasks | better-planning-tasks | `<feature>-tasks.md` — agent-executable units |
 
-Two companions cut across the phases: **better-planning-canvas** (the interactive surface) and
+Two companions cut across the phases: **canvas** (the interactive surface) and
 **better-planning-comprehend** (the during-build loop that keeps the technical design true to the
 landed code). Every family skill opens by reading `docs/better-planning/README.md`'s status index; if the work
 belongs to a different phase, say so and offer the right sibling. Every skill closes with a
@@ -83,7 +83,7 @@ user's ideas to their strongest form, nothing resolves silently.
 For asynchronous review, the companion doubles as the feedback instrument: its poke-at items
 carry comment boxes and an "Export review" button that downloads `<stem>-feedback.json`, which
 you then walk through item by item (see `references/html-artifacts.md` → Review capture). If
-**better-planning-canvas** is installed, serve the companion through it instead — comments post
+**canvas** is installed, serve the companion through it instead — comments post
 straight back, you wake on submit, and the page reloads after each resolved round; no
 export-download dance, and it works over SSH.
 

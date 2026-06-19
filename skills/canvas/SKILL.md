@@ -1,9 +1,9 @@
 ---
-name: better-planning-canvas
-description: The better-planning family's interactive surface — present any explanation, design, decision, or review as a served HTML page with comment boxes on every section, and run a live loop where the user submits feedback in the browser, the agent wakes automatically, responds or regenerates, and the page reloads itself. Use this whenever the user wants to review or brainstorm visually — "put this on a canvas", "make a review page", "let me comment on each part", "host the html" — whenever an HTML artifact must be viewed from another machine (SSH/remote sessions where file:// is unreachable), and as the preferred surface for better-planning review rounds, walkthroughs, and one-decision-at-a-time brainstorming when it's installed.
+name: canvas
+description: An interactive surface for agents — present any explanation, design, decision, lesson, or review as a served HTML page with comment boxes on every section, and run a live loop where the user submits feedback in the browser, the agent wakes automatically, responds or regenerates, and the page reloads itself. Use this whenever the user wants to review, learn, or brainstorm visually — "put this on a canvas", "make a review page", "let me comment on each part", "host the html", "quiz me", "show me" — whenever an HTML artifact must be viewed from another machine (SSH/remote sessions where file:// is unreachable), and as the preferred surface for the better-planning family's review rounds and walkthroughs and for study's interactive lessons when it's installed.
 ---
 
-# Better Planning · Canvas
+# Canvas
 
 A wall of terminal text is a bad review surface, and over SSH even a beautiful HTML file is
 unreachable. The canvas fixes both: the page is *served* (any machine on the network can open
@@ -11,12 +11,13 @@ it), the input lives *on the page* next to the thing being discussed, and the lo
 submit wakes the agent, the agent acts, the page redraws. It turns "read my summary, then type
 your reactions back" into "look at it, comment where it's wrong, watch it update."
 
-This is the family's surface, not a phase: brainstorm runs its one-decision-at-a-time loop on
-it, prd and plan serve their companions through it for review rounds, **design** walks the TDD
-layered-zoom (system shape → boundaries → decision) on it, **comprehend** walks the
-code-vs-TDD deltas on it during the build, and it's just as useful standalone — explaining an
-architecture, walking a diff, comparing options — anywhere "let me show you" beats "let me tell
-you."
+This is shared infrastructure, not a phase — a surface several skills sit on. In the
+**better-planning** family: brainstorm runs its one-decision-at-a-time loop on it, prd and plan
+serve their companions through it for review rounds, **design** walks the TDD layered-zoom
+(system shape → boundaries → decision) on it, and **comprehend** walks the code-vs-TDD deltas on
+it during the build. **study** serves its interactive, recall-checked lessons on it. And it's
+just as useful standalone — explaining an architecture, walking a diff, comparing options,
+running a quiz — anywhere "let me show you" beats "let me tell you."
 
 ## The mechanics
 
@@ -46,7 +47,7 @@ One server script, one workspace dir, two JS blocks. Copy-paste canonical patter
 
 If backgrounding isn't available in the environment, degrade gracefully: same page, same
 server, and the user says "done" when they've submitted. If no server can run at all, fall back
-to the family's `file://` review capture (export-download), described in `html-artifacts.md`.
+to the better-planning family's `file://` review capture (export-download), described in `html-artifacts.md`.
 
 ## The live brainstorm loop
 
@@ -91,7 +92,7 @@ user asks to "see the full document", "read the source", or comment while readin
 
 ## Page quality bar
 
-Canvas pages follow the family's design language (`assets/overview-template.html`, component
+Canvas pages follow the better-planning family's design language (`assets/overview-template.html`, component
 table in `html-artifacts.md`): self-contained except for the two canvas JS blocks, CSS-only
 diagrams, options compared *on the page* with trade-offs visible, recommendations marked.
 Stable, meaningful `data-review-id`s (`decision-3-storage`, `sec-milestones`) — they appear in

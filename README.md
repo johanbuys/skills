@@ -17,8 +17,8 @@ npx skills add johanbuys/skills --skill better-planning-brainstorm
 
 ## The better-planning family
 
-Five phase skills — brainstorm → prd → design → plan → tasks — plus two cross-cutting companions
-(canvas, comprehend), one shared artifact space (`docs/better-planning/`), one objective: take a
+Five phase skills — brainstorm → prd → design → plan → tasks — plus a during-build companion
+(comprehend), one shared artifact space (`docs/better-planning/`), one objective: take a
 fuzzy idea to buildable work with no ambiguity between human and agent. Each phase ends
 in a durable artifact that is the next phase's input **and** the resume point for a fresh
 session — the artifact, not the conversation, carries the state. Each skill opens by reading
@@ -32,8 +32,13 @@ wrong phase) and closes by offering the next one.
 | ③ | [`better-planning-design`](skills/better-planning-design/SKILL.md) | settled PRD → `<feature>-tdd.md` + companion. System map, data model, interfaces, major decisions with alternatives, risks, NFRs, stack — walked layered-zoom one decision at a time, so the human stays the architect instead of rubber-stamping. The plan consumes it. |
 | ④ | [`better-planning-plan`](skills/better-planning-plan/SKILL.md) | settled TDD → `<feature>-plan.md` + companion. Milestones that each end in a verifiable "run X, see Y" outcome; cites the TDD's architecture instead of re-deciding it; reality-disagrees protocol for the builder; adversarial cold-reader review before settling. |
 | ⑤ | [`better-planning-tasks`](skills/better-planning-tasks/SKILL.md) | settled plan → `<feature>-tasks.md` — agent-executable tasks, each with links to the exact spec sections, files touched, and its own acceptance check. Optional GitHub-issues export under a user-chosen label. |
-| ⊕ | [`better-planning-canvas`](skills/better-planning-canvas/SKILL.md) | the family's interactive surface (not a phase): serve any explanation, review, or brainstorm as an HTML page with comment boxes; submissions wake the agent, the page reloads after each round. Works over SSH/tailnet where `file://` can't. |
 | ⊕ | [`better-planning-comprehend`](skills/better-planning-comprehend/SKILL.md) | the during-build companion (not a phase): at each milestone or on demand, reconcile landed code against the TDD — teach the consequential deltas layered-zoom, update the living TDD, log drift to `<feature>-drift.md` — so the human's comprehension doesn't erode as agents build. |
+
+The family's review rounds, walkthroughs, and one-decision-at-a-time loops all render through
+[`canvas`](skills/canvas/SKILL.md) when it's installed — a **standalone**, served-HTML interactive
+surface (not part of any family). The page is served so any machine on the network can open it, the
+comment boxes live next to the thing being discussed, and submissions wake the agent and reload the
+page live — so it works over SSH/tailnet where `file://` can't reach. Other skills sit on it too.
 
 > Maintainer note: `references/doc-layout.md`, `references/html-artifacts.md`, and
 > `assets/overview-template.html` are intentionally duplicated across the family (now six skills) so
