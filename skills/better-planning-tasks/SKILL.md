@@ -1,6 +1,6 @@
 ---
 name: better-planning-tasks
-description: Phase ⑤ of the better-planning family — break a settled implementation plan into agent-executable tasks, each self-contained with links back to the exact PRD/plan sections it implements, files likely touched, and its own acceptance check, as <feature>-tasks.md (canonical), optionally exported to GitHub issues (one batch label) + native GitHub Milestones (one per plan milestone, one PR per milestone). Use this whenever the user wants work broken down into executable units — "break this into tasks", "create the tickets", "make GitHub issues for this", "split this up so agents can build it" — and whenever docs/better-planning/ shows a settled plan without a task breakdown.
+description: "Phase ⑤ of the better-planning family — break a settled implementation plan into agent-executable tasks, each self-contained with links back to the exact PRD/plan sections it implements, files likely touched, and its own acceptance check, as <feature>-tasks.md (canonical), optionally exported to GitHub issues (one batch label) + native GitHub Milestones (one per plan milestone, one PR per milestone). Use this whenever the user wants work broken down into executable units — \"break this into tasks\", \"create the tickets\", \"make GitHub issues for this\", \"split this up so agents can build it\" — and whenever docs/better-planning/ shows a settled plan without a task breakdown."
 ---
 
 # Better Planning · ⑤ Task breakdown

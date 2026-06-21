@@ -1,6 +1,6 @@
 ---
 name: better-planning-prd
-description: Phase ② of the better-planning family — write and settle PRDs (high-level product PRDs and per-feature PRDs) from a settled brainstorm brief, each with a self-contained HTML visual companion, review rounds with built-in review capture, and full decision traceability under docs/better-planning/. Use this whenever the user wants to write, draft, review, or revise a PRD, spec, or design doc — "write the PRD", "draft the spec", "let's review the draft", "formalize what we discussed" — and whenever docs/better-planning/ contains a settled brief awaiting its PRD or a PRD in draft/in-review.
+description: "Phase ② of the better-planning family — write and settle PRDs (high-level product PRDs and per-feature PRDs) from a settled brainstorm brief, each with a self-contained HTML visual companion, review rounds with built-in review capture, and full decision traceability under docs/better-planning/. Use this whenever the user wants to write, draft, review, or revise a PRD, spec, or design doc — \"write the PRD\", \"draft the spec\", \"let's review the draft\", \"formalize what we discussed\" — and whenever docs/better-planning/ contains a settled brief awaiting its PRD or a PRD in draft/in-review."
 ---
 
 # Better Planning · ② PRD
