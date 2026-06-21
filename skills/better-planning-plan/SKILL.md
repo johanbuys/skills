@@ -1,6 +1,6 @@
 ---
 name: better-planning-plan
-description: Phase ④ of the better-planning family — turn a settled technical design (TDD) and its PRD into an implementation plan with a reasoned build order, milestones that each end in a verifiable "run X, see Y" outcome, test-first test plans, and a reality-disagrees protocol, as <feature>-plan.md plus an HTML companion under docs/better-planning/. The plan cites the TDD's architecture decisions instead of re-making them. Use this whenever the user asks how to build something already specced and designed — "write the implementation plan", "how do we build this", "plan the build", "what's the build order", "what are the milestones" — and whenever docs/better-planning/ shows a settled TDD without a plan.
+description: "Phase ④ of the better-planning family — turn a settled technical design (TDD) and its PRD into an implementation plan with a reasoned build order, milestones that each end in a verifiable \"run X, see Y\" outcome, test-first test plans, and a reality-disagrees protocol, as <feature>-plan.md plus an HTML companion under docs/better-planning/. The plan cites the TDD's architecture decisions instead of re-making them. Use this whenever the user asks how to build something already specced and designed — \"write the implementation plan\", \"how do we build this\", \"plan the build\", \"what's the build order\", \"what are the milestones\" — and whenever docs/better-planning/ shows a settled TDD without a plan."
 ---
 
 # Better Planning · ④ Implementation plan

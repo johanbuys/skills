@@ -1,6 +1,6 @@
 ---
 name: better-planning-brainstorm
-description: Phase ① of the better-planning family — collaborative brainstorming that turns a fuzzy product or feature idea into a settled alignment brief (<x>-brief.md under docs/better-planning/), one decision at a time, with ephemeral HTML visuals for decisions that are easier seen than read. Use this whenever the user wants to start planning, scoping, or rethinking a product or feature — "let's plan X", "think through this feature", "what should we build", "I have an idea for…", "spec this out" — even if they never say "brainstorm". Also use it when a repo's docs/better-planning/ index shows work still at brainstorm phase, or when no planning space exists yet.
+description: "Phase ① of the better-planning family — collaborative brainstorming that turns a fuzzy product or feature idea into a settled alignment brief (<x>-brief.md under docs/better-planning/), one decision at a time, with ephemeral HTML visuals for decisions that are easier seen than read. Use this whenever the user wants to start planning, scoping, or rethinking a product or feature — \"let's plan X\", \"think through this feature\", \"what should we build\", \"I have an idea for…\", \"spec this out\" — even if they never say \"brainstorm\". Also use it when a repo's docs/better-planning/ index shows work still at brainstorm phase, or when no planning space exists yet."
 ---
 
 # Better Planning · ① Brainstorm
