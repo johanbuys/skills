@@ -59,8 +59,8 @@ understanding current; build keeps authorship current. They pair: `build` execut
 
 ## The loop (one slice)
 
-1. **Classify the slice: spine or fill.** Spine = core types, interfaces, the walking skeleton,
-   anything load-bearing. Fill = bounded work against frozen interfaces.
+1. **Classify the slice: structural or routine.** Structural = core types, interfaces, the walking
+   skeleton, anything other code depends on. Routine = bounded work inside an already-decided shape.
 2. **Skeptic pass** (when reviewing existing or loop-produced code): fan out independent finders;
    the Lead verifies the load-bearing finding itself; dedupe to the few that matter.
 3. **Report to the Architect** in the fixed shape (below): what landed → why → the decision(s) →
@@ -72,20 +72,23 @@ understanding current; build keeps authorship current. They pair: `build` execut
    Surfaces any Driver deviation.
 7. **Commit / merge** with a review trail (a plain-language summary comment), and only on the
    Architect's explicit go for irreversible steps.
+8. **Offer `comprehend`.** When the slice or milestone lands, offer to run `comprehend` to
+   reconcile what landed against the design of record — the family handoff that closes the loop
+   (build does the work, comprehend keeps the Architect's understanding of it current).
 
-## The master dial: spine vs fill governs everything
+## The master dial: structural vs routine governs everything
 
-The spine/fill line is the single control. It sets both **what reaches the Architect** and
+The structural/routine line is the single control. It sets both **what reaches the Architect** and
 **whether a brief is pre-approved**:
 
-| | Spine work | Fill work |
+| | Structural work | Routine work |
 |---|---|---|
 | Who decides | Architect | Lead (mechanism) |
 | Brief cadence | approve-first | show-and-run (interruptible) |
 | Automation | low — Architect watches each move | high — Lead runs several, checks in at the boundary |
 
-A fill task that turns out to touch the spine **stops and escalates**. "Automation = leash length"
-is just how many fill steps the Lead runs between check-ins.
+A routine task that turns out to be structural **stops and escalates**. "Automation = leash length"
+is just how many routine steps the Lead runs between check-ins.
 
 ## Decision routing (derived from the dial)
 
@@ -97,7 +100,7 @@ materially different consequences. Everything else the Lead decides and reports.
   Example from #88: provisional confidence = `"low"` — the Lead picks it and notes it in passing;
   it is not a fork.
 - **Architect decides** — only genuine forks: a real choice between options with different
-  consequences, or anything that touches the spine. Examples from #88: A-vs-B on the protected
+  consequences, or anything structural. Examples from #88: A-vs-B on the protected
   tests; skip-coordinator vs hold-the-floor on degraded verify.
 - The Lead does **not** escalate small defaults. If it is genuinely unclear whether something is a
   fork, the Lead picks the conservative option and flags it rather than blocking on a question.
@@ -105,8 +108,8 @@ materially different consequences. Everything else the Lead decides and reports.
 ## Brief cadence (derived from the dial)
 
 Default: **show-and-run.** The Lead posts the Driver brief and dispatches in the same turn; the
-Architect can interrupt. **Exception:** spine work, or any brief that embeds a flagged decision,
-waits for an explicit go.
+Architect can interrupt. **Exception:** structural work, or any brief that embeds a flagged
+decision, waits for an explicit go.
 
 ## Report shape (locked)
 
@@ -132,12 +135,12 @@ fixture). stet PR #88 is a ready-made fixture: a loop-produced PR with a hollow 
 latent bug.
 
 - Prompt: *"Here's a loop-produced PR — review it and drive the fixes the paired way."*
-- Expected: classify spine/fill; run a skeptic pass; the Lead verifies the load-bearing finding
+- Expected: classify structural/routine; run a skeptic pass; the Lead verifies the load-bearing finding
   itself; reports in the fixed shape; briefs the Driver test-first; verifies the diff itself;
   never rubber-stamps; commits with a review trail.
 - Assertions: `surfaces-decisions-at-intent-altitude`; `lead-verifies-not-driver`;
   `escalates-what-not-how`; `report-shape-what-why-decisions-options`; `review-trail-on-merge`;
-  `spine-touch-escalates`.
+  `structural-touch-escalates`.
 
 ## Decisions (settled 2026-06-23)
 
@@ -145,8 +148,8 @@ latent bug.
    `better-planning-build`.
 2. **Decision routing** — only genuine forks (≥2 viable options, materially different consequences)
    reach the Architect. The Lead decides mechanism *and* small behavior-defaults, and reports them.
-3. **Brief cadence** — the spine/fill split: approve-first for spine, show-and-run for fill. No
-   trust-ramp — the split applies from the start.
+3. **Brief cadence** — the structural/routine split: approve-first for structural, show-and-run for
+   routine. No trust-ramp — the split applies from the start.
 4. **Report shape** — what landed → why → the decision(s) → plain options. Plain language; name the
    file / behavior / cost; lead with the overview.
 
