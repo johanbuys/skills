@@ -102,6 +102,16 @@ protocol.
 The drift ledger format (`assets/drift-ledger-template.md`) and layout conventions live in
 `references/doc-layout.md` → Drift ledger.
 
+## The glossary — curate the living vocabulary
+
+A sync is also where the project's shared vocabulary stays honest. Read `GLOSSARY.md` (repo root;
+create it if absent) and use its terms when you describe the shape and the moves — don't improvise a
+name for something it already names. When a sync surfaces a term the build coined, or one that isn't
+in the glossary yet, flag it like a move: "new term `X` — add it, rename it, or map it to one we
+already have?" Append the ones the human accepts, each with a one-line meaning and a `→` to where
+it's specced. The glossary is a living doc like the TDD — keep it current in the same commit as the
+sync. Format: `better-planning-design/assets/glossary-template.md`.
+
 ## Handoff
 
 A sync ends by recording the checkpoint in the drift ledger ("M2 synced — <date>"), updating the
