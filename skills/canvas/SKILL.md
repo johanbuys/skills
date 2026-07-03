@@ -14,8 +14,9 @@ your reactions back" into "look at it, comment where it's wrong, watch it update
 This is shared infrastructure, not a phase — a surface several skills sit on. In the
 **better-planning** family: brainstorm runs its one-decision-at-a-time loop on it, prd and plan
 serve their companions through it for review rounds, **design** walks the TDD layered-zoom
-(system shape → boundaries → decision) on it, and **comprehend** walks the code-vs-TDD deltas on
-it during the build. **study** serves its interactive, recall-checked lessons on it. And it's
+(system shape → boundaries → decision) on it, **sync** serves its boundary digest (shape moves +
+forks) on it during the build, and **comprehend** draws the system's shape on it for on-demand
+catch-ups. **study** serves its interactive, recall-checked lessons on it. And it's
 just as useful standalone — explaining an architecture, walking a diff, comparing options,
 running a quiz — anywhere "let me show you" beats "let me tell you."
 

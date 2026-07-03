@@ -110,7 +110,7 @@ Label the chips with `legend`:
 
 - omitted → chips read the generic state names (`base`, `highlight`, …).
 - `legend: { base: "unchanged", emphasis: "grew", alert: "drift" }` → chips read the consumer's
-  words. This is where the family's mapping shows up: comprehend passes
+  words. This is where the family's mapping shows up: sync passes
   `{ base:"unchanged", highlight:"moved", emphasis:"ballooned", alert:"drift", new:"new" }`.
 - `legend: false` → no legend (e.g. a single-state diagram where it adds nothing).
 

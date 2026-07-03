@@ -2,7 +2,7 @@
 
 **Status:** living document — update it in the **same PR** as the doc or code that introduces,
 renames, or sharpens a term. Born in `better-planning-design` as the TDD names the system's
-concepts; curated during the build by `better-planning-comprehend`; used by every family skill.
+concepts; curated during the build by `better-planning-sync`; used by every family skill.
 
 **Purpose:** one shared vocabulary for the humans and agents working on this project. Each entry is
 the term, its precise meaning, the thing it must **not** be confused with (⚠), and where it's

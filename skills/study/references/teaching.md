@@ -11,7 +11,7 @@ already knows.
 Modes are mixable.
 
 1. **Existing code** — the topic carries a repo/file pointer (common when it came from
-   better-planning-comprehend, or when the user names a system). Teach the concept *through the real
+   better-planning-sync or -comprehend, or when the user names a system). Teach the concept *through the real
    implementation*: open the actual files, trace the actual call, and explain the general principle
    where it lives in their code. This is the anti-de-skilling case — "understand the thing you've
    been relying on."

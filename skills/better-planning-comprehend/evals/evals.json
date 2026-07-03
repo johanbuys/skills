@@ -3,34 +3,36 @@
   "evals": [
     {
       "id": 0,
-      "name": "milestone-sync-teach-and-reconcile",
-      "prompt": "M2 of recurring-tasks just merged. Catch me up — am I still across this architecture, and did the build drift from the design?",
-      "expected_output": "Reads the recurring-tasks TDD (anchor), the plan's milestone definitions, and the git diff for the M2 window (from the last checkpoint recorded in the drift ledger). Filters to consequential deltas — changes touching a boundary, contract, data model, or a TDD decision — and explicitly does NOT walk routine within-spec implementation churn. Teaches each consequential delta layered-zoom (system shape → boundary → the decision the agent actually made, inferred from code). Reconciles each against the TDD one at a time: intentional evolution updates the living TDD in place (rationale appended to its decisions table); real drift is logged to recurring-tasks-drift.md and flagged for fix; an undecided fork becomes a new TDD decision made now. Never auto-fixes code and never auto-accepts drift — the human decides each item. Records the sync checkpoint in the drift ledger and updates the README `comprehend` status-index row.",
+      "name": "away-catchup-shape-first-no-quiz",
+      "prompt": "I've been away from this project for two weeks while the agents kept building. Catch me up — get me back across it.",
+      "expected_output": "Rebuilds the picture shape-first: opens with the system as its handful of concepts and connections (diagram-kit canvas if canvas is installed, clean text sketch otherwise), THEN what moved in the two-week window, framed as moves on the map — using the TDD and drift ledger as sources since they exist, plus git history. Plain concrete language: real file names, commands to run, observable behaviors. Calls out complexity growth plainly. Does not quiz the human, does not ask them to recall or explain back, writes no ledger entries or commits, and updates no status rows. Ends when the human says they've got it; offers to go a layer deeper where they point.",
       "files": [
-        "fixtures/taskpilot — with a settled recurring-tasks-tdd.md, a recurring-tasks-plan.md, and code landed for M1–M2 that diverges from one TDD decision"
+        "fixtures/taskpilot — with a settled recurring-tasks-tdd.md, a drift ledger, and two weeks of agent-landed commits since the last human session"
       ],
       "assertions": [
-        "reads-tdd-and-diff: reconciliation is anchored on the TDD and the M2 code diff window, not a from-scratch read",
-        "filters-to-consequential: routine within-spec churn is summarized/ignored; only architecture-moving deltas are walked",
-        "teaches-layered-zoom: each surfaced delta is explained system-shape → boundary → decision, not just listed",
-        "reconciles-three-ways: deltas are dispositioned as intentional (TDD updated in place), drift (logged + flagged), or undecided (new TDD decision)",
-        "drift-ledger-written: recurring-tasks-drift.md exists/updates with the delta entries, dispositions, and a sync checkpoint",
-        "never-auto-fixes-or-accepts: no code fix is written and no drift is silently accepted; the human decides each item",
-        "index-comprehend-row: docs/better-planning/README.md status index reflects the comprehend sync checkpoint"
+        "shape-before-detail: the walk opens with the whole system's concept map before any individual change or file",
+        "changes-as-moves: recent changes are framed as moves on the shape, not a flat diff or commit list",
+        "uses-existing-artifacts: the TDD and drift ledger are read and used as sources rather than re-deriving everything",
+        "plain-and-concrete: explanations name actual files/commands/behaviors the human could run or observe",
+        "no-quiz-by-default: the human is never asked to recall or explain back unless they request it",
+        "no-bookkeeping: no drift ledger writes, no TDD edits, no status-row updates, no commits",
+        "drift-routed-to-sync: any code-vs-TDD discrepancy noticed is named and routed to better-planning-sync, not reconciled inline"
       ]
     },
     {
       "id": 1,
-      "name": "no-tdd-offers-to-anchor-first",
-      "prompt": "I've been letting an agent build the billing feature for a while and I've lost the thread. Help me get back across it.",
-      "expected_output": "Finds no TDD for billing — so there is no design of record to reconcile against. Explains that drift is invisible without an anchor, and offers to either create one via better-planning-design or reconstruct a baseline TDD from the existing code, then sync forward from that baseline. Does not fabricate a reconciliation against a design that doesn't exist.",
+      "name": "no-docs-explain-from-code",
+      "prompt": "Explain how the billing flow actually works in this repo — plainly, so I can feel it. I want to be able to poke at it myself after.",
+      "expected_output": "Finds no TDD or planning space for billing and proceeds anyway — reads the code and git history and explains from those. Never refuses, never demands a TDD be created first, never turns the ask into a design-reconstruction detour (it may offer better-planning-design once, as a follow-up, not a precondition). Walks the flow shape-first then concretely: entry point, the handful of moving parts, what talks to what, with real file paths and a way for the human to trigger/observe the flow themselves (a command, a test, a log to watch). Plain language throughout. Offers to park any deep rabbit hole to ~/.study/topics.md rather than teaching it inline.",
       "files": [
-        "fixtures/taskpilot — billing feature with landed code but no docs/better-planning/.../billing-tdd.md"
+        "fixtures/taskpilot — billing feature with landed code but no docs/better-planning/ planning space at all"
       ],
       "assertions": [
-        "detects-missing-anchor: recognizes there is no TDD to reconcile against",
-        "offers-to-anchor: offers better-planning-design or a code-reconstructed baseline TDD before syncing",
-        "no-fabricated-reconciliation: does not invent drift findings against a nonexistent design of record"
+        "no-prerequisite-refusal: proceeds to explain from code + git history; missing docs never block or delay the catch-up",
+        "no-forced-detour: does not require creating/reconstructing a TDD before explaining (offering design as an optional follow-up is fine)",
+        "runnable-grounding: gives the human a concrete way to trigger and observe the flow themselves",
+        "shape-then-zoom: presents the flow's overall shape before file-level detail",
+        "study-parking-offered: a deep tangent is offered as a ~/.study/topics.md parking line, not taught inline"
       ]
     }
   ]

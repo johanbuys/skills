@@ -72,7 +72,7 @@ two spaces is encouraged when it helps grounding (a repo name + path, a URL, a o
 contract stays open. Example a contributor might write:
 
 ```
-token refresh race in our auth client — taskpilot src/auth/refresh.ts (comprehend, M2 delta)
+token refresh race in our auth client — taskpilot src/auth/refresh.ts (sync, M2 delta)
 ```
 
 That parenthetical is just human context; `study` reads it as prose when grounding the dive, not as

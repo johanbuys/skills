@@ -4,7 +4,7 @@
 **Anchor:** <feature>-tdd.md (the design of record this ledger reconciles against)
 **Tracks:** <feature>-plan.md milestones as they land
 
-<!-- Build-time record maintained by better-planning-comprehend. NOT a planning artifact: it tracks
+<!-- Build-time record maintained by better-planning-sync. NOT a planning artifact: it tracks
      the reconciliation between the TDD and the code that actually landed. The TDD stays canonical;
      this is the running diff of every architectural divergence and its fate. -->
 

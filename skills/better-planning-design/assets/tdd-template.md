@@ -67,4 +67,4 @@ Brownfield: what already exists that this builds on vs. introduces.>
 
 <Human-made calls distinguished from draft-level proposals awaiting review. Every architectural
 question raised anywhere must land here as settled or deliberately deferred. This table is the
-living record the comprehend loop updates when intentional evolution is accepted during the build.>
+living record the sync loop updates when intentional evolution is accepted during the build.>

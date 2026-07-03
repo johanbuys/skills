@@ -25,9 +25,10 @@ fuzzy idea to buildable work with no ambiguity between human and agent.
 | ④ plan | better-planning-plan | `<feature>-plan.md` — milestones with verifiable outcomes |
 | ⑤ tasks | better-planning-tasks | `<feature>-tasks.md` — agent-executable units |
 
-Two companions cut across the phases: **canvas** (the interactive surface) and
-**better-planning-comprehend** (the during-build loop that keeps the technical design true to the
-landed code). Every family skill opens the same way: read `docs/better-planning/README.md`'s status index to
+Companions cut across the phases: **canvas** (the interactive surface), **better-planning-sync**
+(the boundary reconciliation that keeps the technical design true to the landed code), and
+**better-planning-comprehend** (on-demand catch-up when the human has lost the thread). Every
+family skill opens the same way: read `docs/better-planning/README.md`'s status index to
 see where things stand. If the work belongs to a different phase, say so and offer the right
 sibling — wrong entry door, right room. Every skill closes with a handoff: flip the artifact's
 status, update the index, offer the next phase. Every family skill also reads the project's `GLOSSARY.md` — use its terms as
