@@ -1,0 +1,37 @@
+{
+  "skill_name": "better-planning-spike",
+  "evals": [
+    {
+      "id": 0,
+      "name": "poc-scope-build-harvest",
+      "prompt": "Let's PoC this — I want to prove the executor can drive a sandboxed agent end-to-end before we plan anything. Can we scaffold something quick and see?",
+      "expected_output": "Opens by naming the single question (\"can the executor drive a sandboxed agent end-to-end?\") and the run-X-see-Y demonstration that would answer it — one or two lines, no PRD/TDD/plan. Declares quality bars suspended and sandboxes the work (scratch branch or spike/ dir). Builds the smallest thing that answers the question, hardcoding what isn't the question. Runs the demonstration and states a plain verdict (proven/disproven/unresolved). Then runs the mandatory harvest: writes docs/better-planning/research/<topic>-findings.md with the question, verdict + evidence, implications, code-worth-keeping paths, and dead ends; feeds the brief's Evidence section if a brief exists. Offers the next planning phase with the findings as input; does not merge spike code to main.",
+      "files": [
+        "fixtures/taskpilot — greenfield-ish repo with an executor package and no planning space for this topic"
+      ],
+      "assertions": [
+        "one-question-scoped: the spike opens with a single named question and its run-X-see-Y answer condition",
+        "no-ladder-artifacts: no brief/PRD/TDD/plan/tasks are written for the spike itself",
+        "quality-bars-suspended-explicitly: the disposable-code trade is stated up front, and the work is sandboxed (branch or spike dir)",
+        "plain-verdict: the demonstration runs and the verdict is stated as proven/disproven/unresolved without spin",
+        "harvest-written: a research findings doc captures question, verdict, evidence, implications, keeper paths, and dead ends",
+        "no-wholesale-merge: spike code is kept as reference for later promotion, not merged to main"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "harvest-a-finished-spike-before-moving-on",
+      "prompt": "Ok this was a spike PoC and I think we're done with it. What have we proven with this, what is still left? Let's make sure we don't lose the insights before we start the real repo.",
+      "expected_output": "Treats this as the harvest step of an existing spike: reconstructs the question(s) the spike was answering from the code and session, states verdicts with evidence (what ran, what it showed), and writes the findings doc under docs/better-planning/research/ — proven/disproven/unresolved, implications for planning, which code artifacts are worth carrying forward (as reference), and dead ends worth remembering. Distinguishes proven from merely built. Updates/creates the brief's Evidence section. Recommends the onward route (e.g. brainstorm or PRD in the new repo, citing the findings doc) rather than migrating spike code wholesale.",
+      "files": [
+        "fixtures/taskpilot — a scratch repo containing a working but messy end-to-end PoC and no documentation of what it demonstrated"
+      ],
+      "assertions": [
+        "verdicts-with-evidence: each thing 'proven' is tied to an actual demonstrated run, and unproven-but-built parts are labelled as such",
+        "findings-doc-created: the harvest lands in docs/better-planning/research/ with implications, keeper paths, and dead ends",
+        "insights-fed-upstream: the brief/Evidence trail is updated or created so planning starts from the findings",
+        "onward-route-not-migration: the recommendation is to plan from the evidence and rebuild keepers properly, not to carry the spike code over wholesale"
+      ]
+    }
+  ]
+}
