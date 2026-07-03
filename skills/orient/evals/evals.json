@@ -1,0 +1,38 @@
+{
+  "skill_name": "orient",
+  "evals": [
+    {
+      "id": 0,
+      "name": "whats-next-with-planning-space",
+      "prompt": "Hey, what's next in this project? I merged the M2 PR yesterday and haven't looked since.",
+      "expected_output": "Reads the docs/better-planning/README.md status index and handoff docs FIRST, then git state (branch vs main, recent log), then the tracker (open PRs/issues, milestone progress). Presents a one-screen digest: what the project is (one sentence), where each feature stands, what changed since the M2 merge, and hygiene findings (e.g. the M2 branch not deleted, issues still open for merged tasks). Notices from the index that M2 landed but the sync/revision-pass boundary hasn't run, and recommends that as the highest-leverage move (routed to better-planning-sync then better-planning-tasks for M3), with one or two alternates. Performs no writes, no branch cleanup, no issue closing — recommendations only.",
+      "files": [
+        "fixtures/taskpilot — with a populated docs/better-planning/ status index showing M2 merged but no M2 sync checkpoint, two open issues belonging to merged tasks, and a stale M2 feature branch"
+      ],
+      "assertions": [
+        "records-first: the status index and handoff docs are read before deriving state from code or git",
+        "one-screen-digest: the answer opens with a compact digest (what it is / where things stand / what changed / hygiene), not a wall of raw output",
+        "contradictions-flagged: open issues for merged tasks and the stale branch are surfaced as findings",
+        "single-recommendation: ends with ONE recommended highest-leverage move with reasoning, plus at most two alternates — not an option menu",
+        "skill-routing: the recommended move names the skill that picks it up (sync/tasks) when installed",
+        "read-only: no writes, deletions, closes, or checkouts are performed"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "cold-repo-no-planning-space",
+      "prompt": "explore this code base and check the last couple of PRs to see what this is about and where we're at with this. I need to get it in a workable state asap.",
+      "expected_output": "No planning space exists — orients from CLAUDE.md/README, git history, and the last few PRs (gh). Digest covers: what the project is, what the recent PRs did, current branch/tree state, and what 'workable' is blocked on (e.g. failing tests on main, an unmerged fix PR, missing env setup). Recommends the single highest-leverage move toward workable (with reasoning) and alternates. Marks inferences as inferences. Does not modify anything; offers the follow-up actions for the session to take with the user's go.",
+      "files": [
+        "fixtures/taskpilot — no docs/better-planning/, recent PRs include one merged refactor and one open bugfix, and main has a failing test"
+      ],
+      "assertions": [
+        "works-without-planning-space: missing docs/better-planning/ does not block or degrade orientation into a refusal",
+        "pr-history-used: the recent PRs' content informs the digest",
+        "workable-blockers-identified: the failing test and open bugfix PR are identified as what blocks a workable state",
+        "recommendation-with-reasoning: one concrete recommended move with why, evidence-traced",
+        "read-only: nothing is changed; actions are proposed, not performed"
+      ]
+    }
+  ]
+}
