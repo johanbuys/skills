@@ -36,3 +36,13 @@ is intentionally skipped.
 
 The CLI's hard limit on `description` length is 1024 characters (only enforced for
 the remote registry index, not local skills, but stay under it regardless).
+
+## Shared reference files
+
+`references/doc-layout.md`, `references/html-artifacts.md`, and
+`assets/overview-template.html` are deliberately duplicated into every skill that uses
+them (self-containment for single-skill installs). **Never edit a copy directly** — edit
+the canonical file under `shared/` and run `scripts/sync-shared.sh` to stamp all copies.
+`scripts/sync-shared.sh --check` exits non-zero on drift; run it before committing any
+change that touches these files. A skill gains a shared file by `cp`-ing it in once;
+the sync script picks it up from then on.

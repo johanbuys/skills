@@ -127,6 +127,12 @@ diagram kit for graphs; options compared *on the page* with trade-offs visible, 
 Stable, meaningful `data-review-id`s (`decision-3-storage`, `sec-milestones`) — they appear in
 the feedback JSON and in your replies, and they let consecutive rounds diff cleanly.
 
+For decision pages, match the page to the decision's weight: a **genuine fork** gets its own
+screen — plain language, a concrete example of each option in practice, the recommendation marked
+and argued — while **ratification-grade** items are batched into one section with defaults stated,
+where an empty submit or a one-word comment accepts the lot. A page that walks trivia item by item
+trains the reviewer to blanket-approve, which then costs them the one decision that mattered.
+
 ## What this skill is not
 
 - Not a deployment: the server is a localhost/tailnet convenience for a session, not a hosted

@@ -74,6 +74,16 @@ You bring the analysis and a recommendation; the human makes the call. Challenge
 your own; develop the human's alternative to its strongest form before comparing. Nothing resolves
 silently.
 
+**Match the depth to the decision — the walk fails both ways.** Walking ratification-grade items
+one at a time makes the human a rubber stamp and the process feel slow; compressing a genuine fork
+makes them ratify without confidence. So split: a **genuine fork** — materially different options,
+expensive to reverse — gets the full treatment: plain language, a concrete example of what each
+road looks like in practice, a visual when it's easier seen than read, the recommendation and why.
+Everything **ratification-grade** — one obviously-conservative answer, or detail inside an
+already-made call — is batched: listed with defaults, accepted in one word, any item pullable into
+focus. When the human says the walk is dragging, re-batch harder; when they say they're
+rubber-stamping, slow the forks down. Those two complaints are the dial.
+
 ## TDD anatomy
 
 The completeness checklist lives in `references/doc-layout.md` → Technical design; check it before
