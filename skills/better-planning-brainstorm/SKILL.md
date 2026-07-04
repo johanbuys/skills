@@ -79,6 +79,16 @@ as: context → options with honest trade-offs → your recommendation → the a
 form or a battery of questions; pick the question whose answer most constrains the rest, and let
 its answer reshape the next one.
 
+**The first fork is usually altitude: proving or productizing?** An idea at the proving stage —
+the core bet unproven, the human saying "for now I just want to see if this works" — must not be
+brainstormed like a product: skip the productization forks (teams, pricing, self-hosting, scale)
+entirely, keep the brief to the bet and its riskiest assumptions, and offer
+**better-planning-spike** as the next step instead of the ladder. Record the altitude as a decided
+direction in the brief so the PRD phase honors it too. Over-planning an unproven idea steers the
+project by sheer weight of artifacts — it's the failure mode this fork exists to catch. When the
+bet is proven (often by a spike, whose findings land in `research/`), the brief graduates:
+re-open it at product altitude with the evidence in hand.
+
 Rules that make this work:
 
 - **Analysis + recommendation, user decides.** Always land on a recommendation and say why.

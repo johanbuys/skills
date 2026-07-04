@@ -48,6 +48,13 @@ The brief is written *for* this skill. On open:
   user-made and draft from there; the ladder serves alignment, and they've brought it.
 - **No brief, no decisions, fuzzy idea** → that's brainstorm-phase work; offer the sibling.
 
+**Honor the brief's altitude.** A brief marked *proving* (or a user saying "for now I just want
+to prove this works") gets a deliberately thin PRD — the core loop's stories and contracts only,
+with maturity concerns (teams, self-hosting, pricing, scale, admin surfaces) named once in a
+deferred section and not asked about. Interrogating an unproven idea at product depth is planning
+theater, and it's this phase's known failure mode. If even the thin PRD feels premature, say so
+and offer **better-planning-spike** — evidence first, spec after.
+
 If `docs/better-planning/` doesn't exist yet, read `references/doc-layout.md` and create it with
 the first draft.
 
