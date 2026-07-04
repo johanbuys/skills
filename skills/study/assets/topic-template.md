@@ -1,7 +1,7 @@
 # <topic>
 
 **Started:** <date>
-**Source:** <self / comprehend / other — and any free-form context from the queue line>
+**Source:** <self / sync / comprehend / other — and any free-form context from the queue line>
 **Medium:** <existing-code repo:path · sandbox · conceptual> (decided at first dive; may be mixed)
 
 ## Why I'm learning this

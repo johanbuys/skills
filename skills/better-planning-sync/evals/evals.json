@@ -1,0 +1,40 @@
+{
+  "skill_name": "better-planning-sync",
+  "evals": [
+    {
+      "id": 0,
+      "name": "boundary-sync-digest-forks-only",
+      "prompt": "M2 of recurring-tasks just merged. Run the sync — did the build drift from the design?",
+      "expected_output": "Reads the recurring-tasks TDD (anchor), the plan's milestone definitions, and the git diff for the M2 window (from the last checkpoint in the drift ledger). Classifies every change itself: routine churn summarized in a line, intentional evolution drafted as living-TDD edits, drift logged with a concrete proposed fix, and only genuine forks (calls the TDD never covered, or arguable accept-vs-fix items) held out for the human. Presents ONE digest — what landed, what moved on the shape, the forks with context + recommendation, then the batched proposed dispositions with defaults — rather than walking deltas one at a time or quizzing the human. On approval, updates the living TDD in place (rationale appended), writes the drift ledger entries + checkpoint row, updates the README status-index row, and commits TDD + ledger together. Never writes the fix code itself.",
+      "files": [
+        "fixtures/taskpilot — with a settled recurring-tasks-tdd.md, a recurring-tasks-plan.md, a recurring-tasks-drift.md with an M1 checkpoint, and code landed for M2 that diverges from one TDD decision and quietly adds one new concept"
+      ],
+      "assertions": [
+        "reads-tdd-and-diff-window: reconciliation is anchored on the TDD and the M2 diff window from the ledger checkpoint, not a from-scratch read",
+        "agent-classifies-first: the agent proposes a disposition (routine / intentional / drift / fork) for every delta itself before asking the human anything",
+        "single-digest-not-a-walk: findings arrive as one digest (shape moves + forks + batched dispositions), not an item-by-item interactive walk",
+        "forks-only-ask: only genuine forks request an explicit human decision; batched items carry defaults and accept with one word",
+        "no-recall-quiz: the human is never asked to recall or explain back what changed",
+        "complexity-called-out: the quietly-added concept is flagged plainly as complexity growth",
+        "drift-ledger-and-checkpoint: recurring-tasks-drift.md gains delta entries, dispositions, and an M2 checkpoint row",
+        "living-tdd-updated: intentional evolution and fork answers land in the TDD with rationale, committed together with the ledger",
+        "never-writes-the-fix: drift produces a flagged proposed fix, not applied code changes"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "no-tdd-offers-to-anchor-first",
+      "prompt": "The loop just landed three PRs on the billing feature — reconcile them against the design.",
+      "expected_output": "Finds no TDD for billing — so there is no design of record to reconcile against. Explains that drift is invisible without an anchor, and offers to either create one via better-planning-design or reconstruct a baseline TDD from the existing code, then sync forward from that baseline. Does not fabricate a reconciliation against a design that doesn't exist. If the user's underlying ask turns out to be understanding rather than reconciliation, points at better-planning-comprehend, which needs no anchor.",
+      "files": [
+        "fixtures/taskpilot — billing feature with landed code but no docs/better-planning/.../billing-tdd.md"
+      ],
+      "assertions": [
+        "detects-missing-anchor: recognizes there is no TDD to reconcile against",
+        "offers-to-anchor: offers better-planning-design or a code-reconstructed baseline TDD before syncing",
+        "no-fabricated-reconciliation: does not invent drift findings against a nonexistent design of record",
+        "routes-understanding-to-comprehend: an understanding-shaped ask is pointed at better-planning-comprehend rather than blocked on the missing TDD"
+      ]
+    }
+  ]
+}

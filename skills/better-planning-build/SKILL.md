@@ -1,12 +1,12 @@
 ---
 name: better-planning-build
-description: "better-planning-build — the family's build-time execution companion (pairs with comprehend). Run a slice of planned work as a small three-role mob — the human is the Architect who holds intent and makes the calls, the main session is the Lead who turns intent into tight tasks, dispatches Driver subagents test-first, runs Skeptics to verify, and surfaces only genuine forks at the altitude of the idea. The structural/routine line is the master dial — the Architect owns the structural work hands-on, the agent owns the routine work, and any routine task that turns out to be structural stops and escalates. Use this whenever executing planned work with the human staying in control instead of rubber-stamping an unattended loop — \"let's build this slice\", \"drive this task\", \"review and fix this loop PR\", \"execute this milestone with me in the loop\", \"pair on this build\", \"I want to stay the architect while we build\"."
+description: "better-planning-build — the family's build-time execution companion (pairs with sync at the boundary). Run a slice of planned work as a small three-role mob — the human is the Architect who holds intent and makes the calls, the main session is the Lead who turns intent into tight tasks, dispatches Driver subagents test-first, runs Skeptics to verify, and surfaces only genuine forks at the altitude of the idea. The structural/routine line is the master dial — the Architect owns the structural work hands-on, the agent owns the routine work, and any routine task that turns out to be structural stops and escalates. Use this whenever executing planned work with the human staying in control instead of rubber-stamping an unattended loop — \"let's build this slice\", \"drive this task\", \"review and fix this loop PR\", \"execute this milestone with me in the loop\", \"pair on this build\", \"I want to stay the architect while we build\"."
 ---
 
 # Better Planning · Build (build-time execution companion)
 
-Authorship erosion is the other quiet failure of agentic coding. `comprehend` defends the human's
-*understanding* as code lands; this skill defends their *authorship* as code is **written**. Handed
+Authorship erosion is the other quiet failure of agentic coding. `sync` defends the design of
+record as code lands; this skill defends the human's *authorship* as code is **written**. Handed
 to an unattended loop, execution grinds tasks and lands large green PRs — and a simple idea becomes
 a complex artifact the human never shaped, decision by invisible decision. It is worst on
 greenfield, where the system is complex before the human ever runs it. This skill is the
@@ -14,8 +14,9 @@ counter-loop: it runs a slice of planned work as a small mob with the human as t
 making the calls that matter, agents doing the typing, and complexity fought in real time — so the
 human stays the creator, not the rubber stamp.
 
-The family's **second build-time companion**, beside `comprehend`. They pair: this skill *executes*
-a slice; comprehend *reconciles* it at the milestone boundary.
+The family's **second build-time companion**, beside `sync`. They pair: this skill *executes*
+a slice; sync *reconciles* it at the milestone boundary. (`comprehend` is the third leg — the
+on-demand catch-up for a human who's lost the thread.)
 
 | Phase | Skill | Output |
 |---|---|---|
@@ -24,7 +25,7 @@ a slice; comprehend *reconciles* it at the milestone boundary.
 | ③ design | better-planning-design | `<feature>-tdd.md` |
 | ④ plan | better-planning-plan | `<feature>-plan.md` |
 | ⑤ tasks | better-planning-tasks | `<feature>-tasks.md` |
-| ⊕ comprehend | re-sync understanding at a boundary | `<feature>-drift.md` |
+| ⊕ sync | reconcile landed code vs the TDD at a boundary | `<feature>-drift.md` |
 | ⊕ **build** (this) | execute a slice with the human as Architect | verified, owned code |
 
 ## When it runs
@@ -36,7 +37,7 @@ the paired way", "the loop landed this, is it right" — where it opens with a S
 
 It needs something to build against — a task, a slice, a PR, or a clear intent. No plan yet? Offer
 `better-planning-plan` / `-tasks` first. Lost the thread of what already landed? That is
-`comprehend`.
+`comprehend` (on-demand catch-up, no prerequisites).
 
 ## The roles
 
@@ -85,9 +86,9 @@ the loop. A running skeleton the Architect has touched is owned; a finished pile
    deviation it reports.
 7. **Commit / merge** with a plain-language review-trail comment, and only on the Architect's
    explicit go for irreversible steps.
-8. **Offer `comprehend`.** When the slice or milestone lands, offer to run `comprehend` to
-   reconcile what landed against the design of record — build did the work, comprehend keeps the
-   Architect's understanding of it current. This is the family handoff that closes the loop.
+8. **Offer `sync`.** When the slice or milestone lands, offer to run `sync` to reconcile what
+   landed against the design of record — build did the work, sync keeps the record true and brings
+   only genuine forks back to the Architect. This is the family handoff that closes the loop.
 
 ## Decision routing — only genuine forks reach the Architect
 
@@ -133,6 +134,7 @@ bundled recommendations, no flourish.
 - **Not** the planning horizon. "Plan in shorter arcs" is a later tweak to
   `better-planning-plan` / `-tasks`.
 - **Not** a dashboard. The shared visual surface is `canvas`.
-- **Not** `comprehend`. That re-syncs understanding; this executes the work. They pair.
+- **Not** `sync` or `comprehend`. Sync reconciles the record at the boundary; comprehend rebuilds
+  the human's understanding on demand; this executes the work. They pair.
 
 Design spec: `docs/superpowers/specs/2026-06-23-better-planning-build-design.md`.

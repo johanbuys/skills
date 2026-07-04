@@ -1,6 +1,6 @@
 ---
 name: study
-description: "A personal, cross-project learning queue and tutor. Capture topics you want to understand deeply into a dumb home-dir backlog (~/.study/topics.md) from anywhere, then on demand run a guided, canvas-driven, recall-checked deep dive on any one of them. Topics can be grounded in your real code, in a sandbox the agent scaffolds, or be purely conceptual (\"investing\", \"solving a rubik's cube\"). Use whenever the user wants to learn or understand something deeply, park a rabbit hole for later, or be taught/quizzed — \"add X to my study list\", \"I want to understand Y\", \"teach me Z\", \"quiz me on…\", \"let's do a deep dive\", \"what's on my study queue\", \"explain how our <thing> actually works\" — and as the place other skills (e.g. better-planning-comprehend) send knowledge gaps. Works standalone; uses the canvas skill for interactive lessons when installed."
+description: "A personal, cross-project learning queue and tutor. Capture topics you want to understand deeply into a dumb home-dir backlog (~/.study/topics.md) from anywhere, then on demand run a guided, canvas-driven, recall-checked deep dive on any one of them. Topics can be grounded in your real code, in a sandbox the agent scaffolds, or be purely conceptual (\"investing\", \"solving a rubik's cube\"). Use whenever the user wants to learn or understand something deeply, park a rabbit hole for later, or be taught/quizzed — \"add X to my study list\", \"I want to understand Y\", \"teach me Z\", \"quiz me on…\", \"let's do a deep dive\", \"what's on my study queue\", \"explain how our <thing> actually works\" — and as the place other skills (e.g. better-planning-sync, better-planning-comprehend) send knowledge gaps. Works standalone; uses the canvas skill for interactive lessons when installed."
 ---
 
 # Study
@@ -63,7 +63,7 @@ When a topic is picked, run a **canvas-driven, recall-checked** lesson. Full ped
 
 - **Pick the right medium for *this* topic** — `study` is a general tutor, unusually strong at code:
   1. **Existing code** — the topic carries a repo/file pointer (common when it came from
-     better-planning-comprehend): teach the concept *through the real implementation*.
+     better-planning-sync or -comprehend): teach the concept *through the real implementation*.
   2. **Created or referenced sandbox** — a code topic with no source, or one where hands-on helps:
      scaffold a toy repo in `~/.study/<slug>/sandbox/`, or reference a known canonical repo.
   3. **No code at all** — "investing", "rubik's cube": diagrams, animations, worked scenarios,
@@ -81,9 +81,10 @@ When a topic is picked, run a **canvas-driven, recall-checked** lesson. Full ped
 ## Sources — the line format is the only contract
 
 `study` doesn't own the queue; anything that can append a line is a valid source, no import needed:
-the user by hand, `study` itself, and other skills. The highest-value contributor is
-**better-planning-comprehend**: when its build-time sync surfaces an architectural delta the human
-doesn't grok, it offers to park it here with the repo + path as context — so the rabbit hole is
+the user by hand, `study` itself, and other skills. The highest-value contributors are
+**better-planning-sync** (when its boundary reconciliation surfaces an architectural delta the
+human doesn't grok) and **better-planning-comprehend** (when an on-demand catch-up hits a topic
+worth a real deep dive): each offers to park it here with the repo + path as context — so the rabbit hole is
 captured at the moment of friction and chased when there's time. `study` needs none of those skills
 to work; they're contributors, not dependencies. (A future background agent can pre-research queued
 lines into ready workspaces — the protocol allows it without status tags, since "ready" is just "a

@@ -24,9 +24,10 @@ fuzzy idea to buildable work with no ambiguity between human and agent.
 | ④ plan | **better-planning-plan** (this one) | `<feature>-plan.md` — milestones with verifiable outcomes |
 | ⑤ tasks | better-planning-tasks | `<feature>-tasks.md` — agent-executable units |
 
-Two companions cut across the phases: **canvas** (the interactive surface) and
-**better-planning-comprehend** (the during-build loop that keeps the technical design true to the
-landed code). Every family skill opens by reading `docs/better-planning/README.md`'s status index; if the work
+Companions cut across the phases: **canvas** (the interactive surface), **better-planning-sync**
+(the boundary reconciliation that keeps the technical design true to the landed code), and
+**better-planning-comprehend** (on-demand catch-up when the human has lost the thread). Every
+family skill opens by reading `docs/better-planning/README.md`'s status index; if the work
 belongs to a different phase, say so and offer the right sibling. Every skill closes with a
 handoff: flip the artifact's status, update the index, offer the next phase.
 
@@ -99,9 +100,9 @@ plan, explicitly.
 
 What keeps the arc honest is a **revision pass at every milestone boundary** — and it is **gated**:
 better-planning-tasks will not break down the next milestone until this pass is recorded. It pairs
-with **better-planning-comprehend** — same boundary, two directions:
+with **better-planning-sync** — same boundary, two directions:
 
-- comprehend looks back at the **code** — does it still match the TDD? (updates the living design)
+- sync looks back at the **code** — does it still match the TDD? (updates the living design)
 - the revision pass looks forward at the **plan** — does the remaining arc still hold? (adjusts it)
 
 ### The revision pass (at each boundary, before the next milestone's tasks)
@@ -143,7 +144,7 @@ plan must pass, because it's the condition the plan will actually be used under.
 When the plan settles: flip its status header, update the README index row, commit, and offer
 the next phase — "plan's settled; the full arc is visible but only the first milestone is
 committed. Want tasks for the **first milestone** next (better-planning-tasks)? After it lands,
-comprehend and the revision pass run at the boundary before the next milestone is broken down."
+the sync and the revision pass run at the boundary before the next milestone is broken down."
 A small feature with a tight one- or two-milestone plan can go straight to building; anything
 larger runs the milestone-at-a-time loop.
 

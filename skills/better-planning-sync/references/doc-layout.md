@@ -27,7 +27,7 @@ docs/better-planning/
         <feature>-plan.md
         <feature>-plan-overview.html
         <feature>-tasks.md        ← phase ⑤ output; canonical even when exported to issues
-        <feature>-drift.md        ← comprehend's living drift ledger (build-time)
+        <feature>-drift.md        ← sync's living drift ledger (build-time)
   archive/
     <superseded-doc>.md           ← retired docs move here; never delete planning history
 ```
@@ -75,10 +75,10 @@ re-litigating. One row per artifact, grouped by feature:
 | product/shelfwise-prd.md | prd | in-review |
 | features/inventory-sync/inventory-sync-tdd.md | design | settled 2026-06-08 |
 | features/inventory-sync/inventory-sync-plan.md | plan | draft |
-| features/inventory-sync/inventory-sync-drift.md | comprehend | M2 synced 2026-06-12 |
+| features/inventory-sync/inventory-sync-drift.md | sync | M2 synced 2026-06-12 |
 ```
 
-The `comprehend` row is a *build-time* checkpoint, not a settle-able phase: it records how far the
+The `sync` row (labelled `comprehend` in older planning spaces — treat it as the same row) is a *build-time* checkpoint, not a settle-able phase: it records how far the
 drift ledger has been reconciled against landed code (e.g. "M2 synced"), so a fresh session knows
 where the human's last sync left off.
 
@@ -170,12 +170,12 @@ acceptance check (how the builder proves it done). The markdown file is canonica
 exported to an issue tracker — see the tasks skill for the export protocol.
 
 **Drift ledger** (`features/<feature>/<feature>-drift.md`): the build-time record maintained by
-better-planning-comprehend as code lands — *not* a planning artifact but the reconciliation between
+better-planning-sync as code lands — *not* a planning artifact but the reconciliation between
 the TDD and reality. One entry per consequential delta: what changed, where, the TDD section it
 touches, the disposition (intentional → the living TDD is updated; drift → flagged for fix;
 undecided → a new TDD decision is made now), and the sync checkpoint (milestone / commit). The TDD
 stays canonical and is edited in place as evolution is accepted; the ledger is the running record
-of every architectural divergence and its fate. See the comprehend skill for the sync protocol.
+of every architectural divergence and its fate. See the sync skill for the sync protocol.
 
 ## Conventions that keep the space healthy
 

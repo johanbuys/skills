@@ -22,9 +22,10 @@ fuzzy idea to buildable work with no ambiguity between human and agent.
 | ④ plan | better-planning-plan | `<feature>-plan.md` — milestones with verifiable outcomes |
 | ⑤ tasks | **better-planning-tasks** (this one) | `<feature>-tasks.md` — agent-executable units |
 
-Two companions cut across the phases: **canvas** (the interactive surface) and
-**better-planning-comprehend** (the during-build loop that keeps the technical design true to the
-landed code as these tasks are executed). Every family skill opens by reading
+Companions cut across the phases: **canvas** (the interactive surface), **better-planning-sync**
+(the boundary reconciliation that keeps the technical design true to the landed code as these
+tasks are executed), and **better-planning-comprehend** (on-demand catch-up when the human has
+lost the thread). Every family skill opens by reading
 `docs/better-planning/README.md`'s status index; if the work belongs to a different phase, say so
 and offer the right sibling.
 
@@ -165,10 +166,11 @@ is the end of the family's *planning* ladder — the handoff is to *building*: "
 
 Building is no longer where the family lets go, though — and this skill no longer hands off the
 *whole* breakdown. As the current milestone lands, the **boundary loop** runs:
-**better-planning-comprehend** reconciles the code against the TDD (you stay across the
-architecture), then the plan's **revision pass** adjusts the arc and dispositions the milestone's
-deferred items — and only then do you come back here for the next milestone's tasks. Offer it at the
-first boundary: "M1's landed — want to run comprehend + the plan revision before we break down M2?"
+**better-planning-sync** reconciles the code against the TDD (the agent does the reconciliation;
+only genuine forks come to you), then the plan's **revision pass** adjusts the arc and dispositions
+the milestone's deferred items — and only then do you come back here for the next milestone's
+tasks. Offer it at the first boundary: "M1's landed — want to run the sync + the plan revision
+before we break down M2?"
 
 ## What this skill is not
 
