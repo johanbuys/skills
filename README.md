@@ -44,9 +44,9 @@ comment boxes live next to the thing being discussed, and submissions wake the a
 page live — so it works over SSH/tailnet where `file://` can't reach. Other skills sit on it too.
 
 > Maintainer note: `references/doc-layout.md`, `references/html-artifacts.md`, and
-> `assets/overview-template.html` are intentionally duplicated across the family (seven skills
-> carry one or more of them) so each stays self-contained when installed individually. Edit all
-> copies together.
+> `assets/overview-template.html` are intentionally duplicated across the family so each skill
+> stays self-contained when installed individually. The canonical copies live in `shared/` —
+> edit there, then run `scripts/sync-shared.sh` to stamp every copy (`--check` detects drift).
 >
 > The original monolithic `better-planning` skill was retired in favor of this family
 > (see git history).

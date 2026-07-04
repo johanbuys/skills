@@ -1,0 +1,36 @@
+{
+  "skill_name": "better-planning-tasks",
+  "evals": [
+    {
+      "id": 0,
+      "name": "current-milestone-only-breakdown",
+      "prompt": "The recurring-tasks plan is settled — break it into tasks so agents can build it.",
+      "expected_output": "Reads the settled plan and breaks down ONLY the current (first) milestone, never the whole arc — later milestones are provisional and get broken down at their own boundaries. Each task is one focused agent session: imperative title, Implements-links to the exact plan/PRD sections (not whole docs), files likely touched, and its own Accept line (a command to run + a thing to observe). Records the one-PR-per-milestone strategy as a table (PR → tasks → merge gate). Offers — does not assume — the GitHub export (one batch label, one native Milestone per plan milestone, issues created in task order, current milestone only). The markdown file stays canonical.",
+      "files": [
+        "fixtures/taskpilot — with a settled recurring-tasks-plan.md (M1 firm, M2–M3 provisional), gh available, GitHub remote configured"
+      ],
+      "assertions": [
+        "current-milestone-only: tasks exist for M1 only; M2+ are not exploded",
+        "task-anatomy-complete: every task has Implements-links to exact sections, a Files line, and a verifiable Accept line",
+        "pr-strategy-table: the one-PR-per-milestone mapping (PR → tasks → merge gate) is recorded in the tasks file",
+        "export-offered-not-assumed: the GitHub export is offered as a choice, and if taken uses one batch label + native Milestones + issues in task order for the current milestone only",
+        "markdown-canonical: the tasks file is stated/kept as the source of truth over the issue tracker"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "gate-refuses-unrevised-boundary",
+      "prompt": "M1 is merged. Break down M2 into tasks — and while you're at it, add a few tasks for the config wiring we talked about that isn't in the plan.",
+      "expected_output": "Refuses both halves for the right reasons, politely and with the path forward. (1) M2's breakdown is gated: the M1 revision pass isn't recorded in the plan (and the sync checkpoint is behind), so it proposes running the boundary loop first — better-planning-sync to reconcile landed code, then the plan's revision pass — and only then breaking down M2. (2) The config-wiring work is a plan gap: tasks never invents scope, so it surfaces the gap to be fixed in the plan (and PRD above it if needed) rather than writing tasks for unplanned work. Does not silently proceed with either.",
+      "files": [
+        "fixtures/taskpilot — M1 merged; recurring-tasks-plan.md has no M1 revision pass recorded; recurring-tasks-drift.md checkpoint still at M0; the config wiring appears nowhere in the plan"
+      ],
+      "assertions": [
+        "gate-enforced: M2 breakdown does not proceed while the M1 revision pass is unrecorded",
+        "boundary-loop-proposed: the refusal comes with the concrete path — sync, then revision pass, then return for M2 tasks",
+        "no-scope-invention: the unplanned config-wiring work is surfaced as a plan gap, not turned into tasks",
+        "no-silent-compliance: neither refusal is bypassed by just doing a partial version quietly"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "skill_name": "better-planning-plan",
+  "evals": [
+    {
+      "id": 0,
+      "name": "settled-tdd-to-rolling-horizon-plan",
+      "prompt": "The recurring-tasks TDD is settled — write the implementation plan.",
+      "expected_output": "Reads the settled TDD (decisions table, system map, interfaces), the PRD and brief behind it, and the surrounding code/conventions. Derives structure and brings only the real sequencing forks one at a time (milestone boundaries, v0 cut, test strategy, build order) with context → options → recommendation. Produces recurring-tasks-plan.md where every milestone ends in a verifiable \"run X, see Y\" outcome, architecture decisions are cited from the TDD rather than re-made, the reality-disagrees protocol is written into the plan, the full arc is laid out but milestones past the next are explicitly marked provisional, and the revision-pass-at-boundary mechanism is documented. Companion plan-overview.html lands in the same commit. Offers the adversarial cold-reader stress test before settling.",
+      "files": [
+        "fixtures/taskpilot — with a settled recurring-tasks-tdd.md and its PRD/brief, no plan yet"
+      ],
+      "assertions": [
+        "cites-tdd-not-redecides: architecture/data-model/stack calls reference TDD sections; none are re-made in the plan",
+        "verifiable-milestones: every milestone ends in a concrete run-X-see-Y outcome",
+        "sequencing-forks-one-at-a-time: milestone boundaries, v0 cut, test strategy, and build order are decided with the user one per exchange, with recommendations",
+        "rolling-horizon-marked: only the next milestone is firm; later milestones are explicitly provisional",
+        "reality-disagrees-protocol: the plan instructs the builder to surface contradictions upstream, never silently deviate",
+        "companion-same-commit: plan-overview.html is created in the same commit as the plan",
+        "cold-reader-offered: an independent no-context stress-test review is offered before the plan settles"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "boundary-revision-pass-dispositions-everything",
+      "prompt": "M1 just landed and merged. Run the plan revision pass before we break down M2.",
+      "expected_output": "Re-opens recurring-tasks-plan.md at the boundary. Applies M1's lessons to the provisional arc (re-orders, resizes, adds, or drops later milestones with reasons). Pulls M1's open follow-up items and the plan's Carry-forward list and dispositions every single one as exactly fold-into-next / batch into an M1.5 maintenance milestone / accept-as-debt with a reason — nothing crosses the boundary undispositioned, and nothing is force-scheduled (accept-as-debt is legitimate). Records the pass in the plan (arc updated, Carry-forward updated) so better-planning-tasks' gate is satisfied, and offers the next milestone's task breakdown.",
+      "files": [
+        "fixtures/taskpilot — with recurring-tasks-plan.md (M1 firm, M2–M4 provisional), three open deferred review items from M1's PR, and a Carry-forward section with one older item"
+      ],
+      "assertions": [
+        "lessons-applied: the provisional milestones change (or are explicitly re-confirmed) based on what M1 taught",
+        "every-item-dispositioned: all four deferred items get exactly one of fold / M1.5 / accept-as-debt, each with a reason",
+        "no-forced-scheduling: accept-as-debt is used where appropriate rather than cramming everything into milestones",
+        "pass-recorded: the plan's arc and Carry-forward sections are updated so the tasks gate can verify the pass ran",
+        "handoff-to-tasks: ends by offering the next milestone's breakdown via better-planning-tasks"
+      ]
+    }
+  ]
+}

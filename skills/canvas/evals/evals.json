@@ -1,0 +1,34 @@
+{
+  "skill_name": "canvas",
+  "evals": [
+    {
+      "id": 0,
+      "name": "serve-review-page-live-loop",
+      "prompt": "Put this design decision on a canvas so I can review it from my laptop — I'm SSH'd into this box over tailscale. The decision: whether the scheduler should poll or subscribe for task updates.",
+      "expected_output": "Builds the decision as a served canvas page — context in plain language, the two options with honest trade-offs and a recommendation, a comment box on each section — under /tmp/better-planning/canvas/<topic>/. Reaps any stale canvas servers/ports first, starts canvas_server.py on a network-reachable address (tailscale/hostname IP, not localhost), and gives the user the http:// URL. Sets up the background watch so a browser submit wakes the agent; on wake it responds/regenerates, bumps version.json, and the page live-reloads. Does not just write a file:// HTML and stop, and does not narrate the decision in the terminal instead of serving it.",
+      "files": [],
+      "assertions": [
+        "served-not-file: the page is served over http on a network-reachable IP with the URL stated, not left as a file:// path",
+        "stale-servers-reaped: existing canvas servers/ports are checked and cleaned before starting a new one",
+        "comment-boxes-per-section: each reviewable section carries its own comment box",
+        "wake-loop-armed: a background watch exists so a browser submit wakes the agent and the page reloads after the response",
+        "decision-presentation: the page gives context, both options with trade-offs, and a recommendation in plain language"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "diagram-kit-shape-with-legend",
+      "prompt": "Draw me the high-level shape of this system as a concept map — what the moving parts are and what talks to what. Highlight what changed in the last week.",
+      "expected_output": "Uses the diagram kit: builds a nodes-and-edges scene (a node per concept, arrows for connections — not a screenshot, not ASCII art, not a hand-rolled SVG), assigns states to mark the recent changes (highlight/new/emphasis per the state vocabulary) with a legend whose chips use the consumer's words, and serves it as a canvas page. Node count stays at concept altitude (a handful, not one per file). If canvas can't run (no python/port), degrades to the documented fallback rather than failing silently.",
+      "files": [
+        "fixtures/taskpilot — a repo with several packages and a week of recent commits touching two subsystems"
+      ],
+      "assertions": [
+        "diagram-kit-used: the diagram is a diagram-kit nodes/edges scene, not ad-hoc HTML/ASCII/static image",
+        "concept-altitude: nodes are concepts/subsystems (a handful), not files or functions",
+        "states-mark-changes: recently changed parts carry non-base states and the legend labels them in plain words",
+        "served-with-url: the diagram is served and the URL stated (or the documented fallback is used with an explanation)"
+      ]
+    }
+  ]
+}

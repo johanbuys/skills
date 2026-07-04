@@ -92,6 +92,13 @@ recommendation → the ask. The collaboration rules from brainstorming apply unc
 recommendation with the user deciding, challenge premises including your own, develop the
 user's ideas to their strongest form, nothing resolves silently.
 
+Reserve the one-at-a-time treatment for items that genuinely fork the product. Ratification-grade
+items — one obviously-sensible answer, or detail inside a decision already made — get batched with
+defaults and accepted in one word; a review round that walks them singly turns the reviewer into a
+rubber stamp and the round into a slog. Genuine forks, conversely, get plain language, a concrete
+example per option, and a visual when it's easier seen than read — enough to decide with
+confidence, not just assent.
+
 For asynchronous review, the companion doubles as the feedback instrument: its poke-at items
 carry comment boxes and an "Export review" button that downloads `<stem>-feedback.json`, which
 you then walk through item by item (see `references/html-artifacts.md` → Review capture). If
