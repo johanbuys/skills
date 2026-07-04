@@ -1,0 +1,40 @@
+{
+  "skill_name": "pr-shepherd",
+  "evals": [
+    {
+      "id": 0,
+      "name": "review-comment-fix-push-full-loop",
+      "prompt": "Review PR #43, comment the findings on the PR, then fix them and push. Create issues for anything you don't fix.",
+      "expected_output": "Reviews the PR's diff (via the installed code-review skill at high effort if present, otherwise its own careful pass). Posts findings to the PR first — inline where file+line are known, summary comment otherwise — anchored to what the diff actually does. Presents a ranked triage with a proposed cut (fix now / issue / dismiss) and accepts a one-word approval. Checks out the PR's head branch (never main), groups related findings, dispatches one fix subagent per group with a scoped test-first brief, re-reviews each returned diff itself and runs the tests before accepting, commits per group with messages naming the finding. Runs the full test suite, pushes, comments the resolution mapping findings to commits, files one context-rich issue per deferred finding (file, line, why deferred, PR link), and reports fixed/deferred/dismissed with test results. Does not merge.",
+      "files": [
+        "fixtures/taskpilot — with an open PR #43 whose diff contains two real correctness bugs, one style nit, and one pre-existing issue outside the diff"
+      ],
+      "assertions": [
+        "findings-posted-first: review findings land on the PR (inline or summary) before any fixing starts",
+        "context-aware-comments: comments reflect the actual diff; nothing the diff already handles is flagged",
+        "triage-cut-proposed: findings arrive ranked with a proposed fix-now/issue/dismiss cut needing one word to accept",
+        "correct-branch: fixes happen on the PR's head branch after fetch/pull, never on main",
+        "subagent-per-group-rereviewed: fix subagents are dispatched per finding group and every diff is re-reviewed (read + tests) by the main session before acceptance",
+        "commit-per-group: commits map one-to-one onto finding groups with messages naming what they fix",
+        "resolution-comment: after push, a PR comment maps findings to commits/dismissals/issues",
+        "issues-with-context: each deferred finding becomes an issue carrying file, line, rationale, and a PR link",
+        "never-merges: the loop ends at merge-ready; no merge is performed"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "ingest-external-findings-assess-then-address",
+      "prompt": "We got a review from a different agent on this PR. Here are the findings: [{\"file\": \"src/schedule/rrule.ts\", \"line\": 88, \"severity\": \"high\", \"issue\": \"DST transition drops an occurrence\"}, {\"file\": \"src/cli.ts\", \"line\": 12, \"severity\": \"medium\", \"issue\": \"unused import\"}, {\"file\": \"src/store.ts\", \"line\": 40, \"severity\": \"high\", \"issue\": \"race on concurrent writes\"}] — assess and address.",
+      "expected_output": "Validates each pasted finding against the PR's actual diff before acting: confirms the real ones, and dismisses any that are stale (already fixed in the diff) or wrong (misread the code) with concrete evidence rather than taking the external review on faith or silently dropping items. Then runs the same loop on the confirmed findings: triage cut, PR branch checkout, fix subagents per group, self re-review with tests, commit per group, push, resolution comment on the PR, issues for deferrals. The dismissed finding is explained on the PR as part of the review record.",
+      "files": [
+        "fixtures/taskpilot — with an open PR where the rrule and store findings are real but the unused-import finding was already fixed by the latest commit"
+      ],
+      "assertions": [
+        "validates-before-acting: every pasted finding is checked against the actual diff before any fix is attempted",
+        "evidence-based-dismissal: the stale finding is dismissed with concrete evidence, visibly (on the PR), not silently dropped",
+        "confirmed-findings-fixed: the real findings go through the full fix loop (subagent, self re-review, tests, commit, push)",
+        "resolution-recorded: the PR carries the outcome of all three findings — fixed, fixed, dismissed-with-reason"
+      ]
+    }
+  ]
+}
