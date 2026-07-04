@@ -89,6 +89,29 @@ the loop. A running skeleton the Architect has touched is owned; a finished pile
 8. **Offer `sync`.** When the slice or milestone lands, offer to run `sync` to reconcile what
    landed against the design of record — build did the work, sync keeps the record true and brings
    only genuine forks back to the Architect. This is the family handoff that closes the loop.
+9. **Leave the trail** (below) — before the slice or the session ends, whichever comes first.
+
+## The handoff trail — every slice ends resumable
+
+Sessions die, contexts compact, and the next cycle is often a different session (or a different
+agent) — the questions "what did the previous run teach us?" and "does a cold start have enough
+to begin the next task?" should never need asking, because the answer is already on disk. At the
+end of every slice — and *immediately* if the session looks like it's ending mid-slice — write or
+update **`<feature>-handoff.md`** next to the feature's other artifacts (or a `HANDOFF.md` at the
+repo root when there's no planning space):
+
+- **Where the build stands** — tasks done / in-flight / remaining, branch and PR state, what's
+  verified vs. merely written.
+- **Learnings that change the next slice** — gotchas hit, Lead-level calls made in passing,
+  anything that surprised; the stuff a fresh session would otherwise rediscover the hard way.
+- **Next-task context** — what a cold start needs to begin the next task without re-deriving:
+  the exact plan/tasks sections, plus whatever this session knows that the docs don't yet.
+- **Open threads** — unverified work, Skeptic findings not yet addressed, decisions awaiting the
+  Architect.
+
+Write it for a cold reader, and **update it in place** — it's the current resume point, not a
+journal; superseded content gets deleted. Five honest lines beat a page of ceremony. This file is
+what an orientation pass (or the next build session) reads first.
 
 ## Decision routing — only genuine forks reach the Architect
 
