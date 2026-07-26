@@ -12,10 +12,47 @@ npx skills add johanbuys/skills
 Or a single skill:
 
 ```bash
-npx skills add johanbuys/skills --skill better-planning-brainstorm
+npx skills add johanbuys/skills --skill canvas
 ```
 
-## The better-planning family
+## ⚠️ The `better-planning-*` family is deprecated
+
+**Superseded by [johanbuys/ai-eng-skills](https://github.com/johanbuys/ai-eng-skills)**
+as of 2026-07-26. Use that suite for new work:
+
+```bash
+npx skills add johanbuys/ai-eng-skills
+```
+
+The two families solve the same problem — fuzzy idea to buildable work — and
+maintaining both split the effort and the vocabulary. `ai-eng-skills` is the one
+in real use (fathom, qed, agent-platform-mono all pin it) and the one that gets
+amendments. This family stays installable so existing planning spaces
+(`docs/better-planning/`) keep working, but it is **frozen**: no new features,
+no bug fixes, no vocabulary ports. Nothing here will be back-ported to
+`ai-eng-skills` unless a concrete gap shows up there first.
+
+Rough mapping, if you're moving a planning space over:
+
+| `better-planning-*` | `ai-eng-skills` |
+|---|---|
+| `brainstorm` | `/discover` |
+| `prd`, `design` | `/spec` (spec + ADRs) |
+| `plan` | `/plan` |
+| `tasks` | `/tickets` (+ `/publish` for GitHub issues) |
+| `build` | `/implement` |
+| `sync` | `/sync` |
+| `spike` | `/spike` |
+| `comprehend`, `orient` | `/start` |
+
+There is no migration tool and there won't be one — finish in-flight features
+where they are, start new ones in the new suite.
+
+The standalone skills below (`canvas`, `study`, `pr-shepherd`) are **not**
+deprecated; they are independent of the family. `orient` is the exception —
+it is superseded by `/start` even though it sits in the standalone section.
+
+## The better-planning family (deprecated — see above)
 
 Five phase skills — brainstorm → prd → design → plan → tasks — plus three during-build
 companions (build, sync, comprehend), one shared artifact space (`docs/better-planning/`), one
@@ -57,7 +94,7 @@ Not part of the better-planning family — usable on their own.
 
 | Skill | What |
 |---|---|
-| [`orient`](skills/orient/SKILL.md) | Cold-start orientation: "where are we and what's next?" answered with evidence — reads the planning space's status index, handoff docs, git state, and the tracker, digests them to one screen, flags records-vs-reality contradictions, and ends with the single highest-leverage next move routed to the skill that picks it up. Read-only. |
+| [`orient`](skills/orient/SKILL.md) — **deprecated**, use `/start` from [ai-eng-skills](https://github.com/johanbuys/ai-eng-skills) | Cold-start orientation: "where are we and what's next?" answered with evidence — reads the planning space's status index, handoff docs, git state, and the tracker, digests them to one screen, flags records-vs-reality contradictions, and ends with the single highest-leverage next move routed to the skill that picks it up. Read-only. |
 | [`pr-shepherd`](skills/pr-shepherd/SKILL.md) | Shepherd a PR from reviewed to merge-ready in one loop: run (or ingest) a code review, post findings on the PR, triage with one decision (fix now / issue / dismiss), dispatch a fix subagent per finding group, re-review every fix, commit per group, push, and file context-rich issues for the deferrals. Stops at merge-ready — never merges. |
 | [`canvas`](skills/canvas/SKILL.md) | A served-HTML interactive surface for agents: present anything as a page with per-section comment boxes, and run a live loop where a browser submit wakes the agent and reloads the page. Works over SSH/tailnet where `file://` can't. Several skills sit on it (see above); also useful on its own. |
 | [`study`](skills/study/SKILL.md) | A personal, cross-project learning queue + tutor. Capture topics worth understanding into a dumb home-dir backlog (`~/.study/topics.md`) from anywhere, then run a guided, canvas-driven, recall-checked deep dive on any one — grounded in your real code, a scaffolded sandbox, or purely conceptual. `better-planning-sync` and `-comprehend` feed it the rabbit holes they surface mid-build; works fully standalone. |
