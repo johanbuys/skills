@@ -47,7 +47,7 @@ glossary entries the moment a term earns one — nobody curates them as a chore.
 | `plans/<slug>.md` | one piece of work | The `work-discover` deliverable, run by `work-implement`. Disposable — deleted at ship. |
 | `handoff.md` | tracks inflight work | One `## <slug>` section per piece of work, dated entries of *what moved · what's next · verdict*. Sections are deleted when their work ships. |
 | `CONTEXT.md` + `docs/adr/` | permanent, curated | Shared language and only non-discoverable truths; decisions and their why. |
-| `CONSTITUTION.md` (optional) | permanent, amended deliberately | Binding engineering principles, each with its why — forward-looking law, not history (history is ADRs). A plan that conflicts with a MUST principle is a blocking finding: change the plan or amend the law, never ignore it. The skills respect it when present but never create it; no amendment log — git holds that. |
+| `CONSTITUTION.md` (optional) | permanent, amended deliberately | Binding engineering principles, each with its why — forward-looking law, not history (history is ADRs). A plan that conflicts with a MUST principle is a blocking finding: change the plan or amend the law, never ignore it. The skills respect it when present and may propose founding or amending it, but only the human legislates; no amendment log — git holds that. |
 
 The family leans on skills vendored from
 [mattpocock/skills](https://github.com/mattpocock/skills) rather than reinventing

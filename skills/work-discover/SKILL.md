@@ -12,7 +12,7 @@ Take an idea, thought, feature, or PRD to **shared understanding** between human
 
 Read `CONTEXT.md` (repo root) and use its vocabulary. Check `docs/adr/` before proposing a direction that touches decided ground; when a direction gets chosen or rejected for a reason worth keeping, write a new ADR.
 
-If the repo has a `CONSTITUTION.md` (root), it is binding law — a direction that conflicts with a MUST principle either changes or openly proposes an amendment; law changes deliberately, never by drift.
+If the repo has a `CONSTITUTION.md` (root), it is binding law — a direction that conflicts with a MUST principle either changes or openly proposes an amendment; law changes deliberately, never by drift. If there is no constitution and the same standing rule keeps coming up, you may propose founding one — but only the human legislates: never scaffold it yourself.
 
 A term earns a `CONTEXT.md` entry the moment discovery reveals that you and the human mean different things by it — add it then, in a sentence, creating the file if this is its first entry. That is the only bar; don't catalogue vocabulary that nobody has misunderstood.
 
