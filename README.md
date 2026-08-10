@@ -12,52 +12,75 @@ npx skills add johanbuys/skills
 Or a single skill:
 
 ```bash
-npx skills add johanbuys/skills --skill better-planning-brainstorm
+npx skills add johanbuys/skills --skill work-discover
 ```
 
-## The better-planning family
+## The work family
 
-Five phase skills — brainstorm → prd → design → plan → tasks — plus three during-build
-companions (build, sync, comprehend), one shared artifact space (`docs/better-planning/`), one
-objective: take a fuzzy idea to buildable work with no ambiguity between human and agent. Each phase ends
-in a durable artifact that is the next phase's input **and** the resume point for a fresh
-session — the artifact, not the conversation, carries the state. Each skill opens by reading
-the planning space's status index (and routes you to the right sibling if you entered at the
-wrong phase) and closes by offering the next one.
+Three slash-command skills over a four-file memory model. One objective: shared
+understanding between human and agent, **demonstrated, never asserted** — the bar
+for alignment is "the human experienced a prototype or slice and reacted", not
+"the human approved a document". A session that produced only conversation
+produced nothing; every session leaves a durable artifact and an honest handoff
+entry.
 
-| Phase | Skill | Input → Output |
+| Skill | When | What it does |
 |---|---|---|
-| ① | [`better-planning-brainstorm`](skills/better-planning-brainstorm/SKILL.md) | fuzzy idea → `<x>-brief.md` — the alignment record: decisions + rationale, open-question queue, glossary seeds. One decision per exchange, ephemeral HTML visuals for decisions easier seen than read. |
-| ② | [`better-planning-prd`](skills/better-planning-prd/SKILL.md) | settled brief → settled `<x>-prd.md` + self-contained HTML companion. Review rounds with built-in review capture, full decision traceability. |
-| ③ | [`better-planning-design`](skills/better-planning-design/SKILL.md) | settled PRD → `<feature>-tdd.md` + companion. System map, data model, interfaces, major decisions with alternatives, risks, NFRs, stack — walked layered-zoom one decision at a time, so the human stays the architect instead of rubber-stamping. The plan consumes it. |
-| ④ | [`better-planning-plan`](skills/better-planning-plan/SKILL.md) | settled TDD → `<feature>-plan.md` + companion. Milestones that each end in a verifiable "run X, see Y" outcome; cites the TDD's architecture instead of re-deciding it; reality-disagrees protocol for the builder; adversarial cold-reader review before settling. |
-| ⑤ | [`better-planning-tasks`](skills/better-planning-tasks/SKILL.md) | settled plan → `<feature>-tasks.md` — agent-executable tasks, each with links to the exact spec sections, files touched, and its own acceptance check. Optional GitHub-issues export under a user-chosen label. |
-| ⊕ | [`better-planning-build`](skills/better-planning-build/SKILL.md) | build-time execution companion: run a slice of planned work as a small mob — the human as Architect making the calls, Driver/Skeptic subagents doing the typing — so authorship doesn't erode while agents build. |
-| ⊕ | [`better-planning-sync`](skills/better-planning-sync/SKILL.md) | milestone-boundary reconciliation: the agent reads the diff, classifies every architectural delta, updates the living TDD, logs drift to `<feature>-drift.md` — then hands the human a one-screen digest where only genuine forks ask for a decision. Satisfies the gate before the next milestone's tasks. |
-| ⊕ | [`better-planning-comprehend`](skills/better-planning-comprehend/SKILL.md) | on-demand catch-up (pull, not ceremony): "catch me up", "explain how X works so I can feel it" — rebuilds the human's mental model shape-first in plain language, from the TDD when it exists or the code when it doesn't. No prerequisites, no bookkeeping, no quiz unless asked. |
+| [`work-start`](skills/work-start/SKILL.md) | session start | Reads the memory files, finds where inflight work stands, names **one** next move — not a menu. Biased to resume inflight work before starting new work. |
+| [`work-discover`](skills/work-discover/SKILL.md) | an idea, feature, or PRD needs shared understanding | Prototypes and slices the human reacts to, folded into a plan in plain words. Three exits, all legitimate: a plan (do it now), an issue (real, but later), or a recorded no. |
+| [`work-implement`](skills/work-implement/SKILL.md) | a plan exists | A subagent-driven loop where the controller never writes code: validation contract first, fresh implementers per task, a review gate after every task, a capped fix loop with model escalation, `progress.txt` as the crash-proof ledger, one ship-gate review, purge-and-promote at ship. |
 
-The family's review rounds, walkthroughs, and one-decision-at-a-time loops all render through
-[`canvas`](skills/canvas/SKILL.md) when it's installed — a **standalone**, served-HTML interactive
-surface (not part of any family). The page is served so any machine on the network can open it, the
-comment boxes live next to the thing being discussed, and submissions wake the agent and reload the
-page live — so it works over SSH/tailnet where `file://` can't reach. Other skills sit on it too.
+There is deliberately no `/wrap` skill — every skill ends with the same closing
+contract: append to `handoff.md` what moved, what's next, and the **verdict** —
+what was actually observed running, or "none".
 
-> Maintainer note: `references/doc-layout.md`, `references/html-artifacts.md`, and
-> `assets/overview-template.html` are intentionally duplicated across the family (seven skills
-> carry one or more of them) so each stays self-contained when installed individually. Edit all
-> copies together.
->
-> The original monolithic `better-planning` skill was retired in favor of this family
-> (see git history).
+### The memory model
+
+Each file has one job and one lifespan, and each is created lazily by the skill
+that first writes it — there is no setup step and no scaffolding. The permanent
+files grow only through the **purge-and-promotion** pass when work ships, plus
+glossary entries the moment a term earns one — nobody curates them as a chore.
+
+| File | Lifespan | Holds |
+|---|---|---|
+| `progress.txt` | one implementation loop | Validation contract, task checklist, breadcrumbs. Committed on the work branch; deleted in the final commit before merge. |
+| `plans/<slug>.md` | one piece of work | The `work-discover` deliverable, run by `work-implement`. Disposable — deleted at ship. |
+| `handoff.md` | tracks inflight work | One `## <slug>` section per piece of work, dated entries of *what moved · what's next · verdict*. Sections are deleted when their work ships. |
+| `CONTEXT.md` + `docs/adr/` | permanent, curated | Shared language and only non-discoverable truths; decisions and their why. |
+| `CONSTITUTION.md` (optional) | permanent, amended deliberately | Binding engineering principles, each with its why — forward-looking law, not history (history is ADRs). A plan that conflicts with a MUST principle is a blocking finding: change the plan or amend the law, never ignore it. The skills respect it when present and may propose founding or amending it, but only the human legislates; no amendment log — git holds that. |
+
+The family leans on skills vendored from
+[mattpocock/skills](https://github.com/mattpocock/skills) rather than reinventing
+them — `prototype`, `tdd`, `wait-what`, `handoff` (conversation compaction — a
+different thing from `handoff.md`):
+
+```bash
+npx skills add mattpocock/skills
+```
+
+Install them once at the **global** scope and every repo on the machine has
+them. The work skills degrade gracefully when a vendored skill is missing —
+each carries the essence of what it borrows — but they're better with the real
+thing installed.
 
 ## Standalone skills
 
-Not part of the better-planning family — usable on their own.
+Usable on their own, not part of any family.
 
 | Skill | What |
 |---|---|
-| [`canvas`](skills/canvas/SKILL.md) | A served-HTML interactive surface for agents: present anything as a page with per-section comment boxes, and run a live loop where a browser submit wakes the agent and reloads the page. Works over SSH/tailnet where `file://` can't. Several skills sit on it (see above); also useful on its own. |
-| [`study`](skills/study/SKILL.md) | A personal, cross-project learning queue + tutor. Capture topics worth understanding into a dumb home-dir backlog (`~/.study/topics.md`) from anywhere, then run a guided, canvas-driven, recall-checked deep dive on any one — grounded in your real code, a scaffolded sandbox, or purely conceptual. `better-planning-sync` and `-comprehend` feed it the rabbit holes they surface mid-build; works fully standalone. |
+| [`canvas`](skills/canvas/SKILL.md) | A served-HTML interactive surface for agents: present anything as a page with per-section comment boxes, and run a live loop where a browser submit wakes the agent and reloads the page. Works over SSH/tailnet where `file://` can't. Several skills sit on it; also useful on its own. |
+| [`study`](skills/study/SKILL.md) | A personal, cross-project learning queue + tutor. Capture topics worth understanding into a dumb home-dir backlog (`~/.study/topics.md`) from anywhere, then run a guided, canvas-driven, recall-checked deep dive on any one — grounded in your real code, a scaffolded sandbox, or purely conceptual. |
+
+## The better-planning family (frozen)
+
+Kept for history, not maintained. Nine skills (brainstorm → prd → design → plan →
+tasks, plus build/sync/comprehend companions and a shared workspace) that took a
+fuzzy idea to buildable work through a chain of durable documents. It died of
+ceremony — statuses, slice graphs, routing tables — and the three ideas that
+earned their keep (shared language, handoff as memory, the artifact mindset) live
+on in the work family above. The skills remain installable as-is under
+`skills/better-planning-*`; see git history for their story.
 
 ## License
 
