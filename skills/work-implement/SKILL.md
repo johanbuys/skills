@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 Run a plan — usually `plans/<slug>.md` from `/work-discover`, or whatever the user hands you. Read `CONTEXT.md` (repo root) and use its vocabulary. Consult `docs/adr/` before contradicting a decision; if reality disagrees with an ADR, say so and decide with the human — never silently override.
 
+If the repo has a `CONSTITUTION.md` (root), it is binding law: the contract, the tasks, and the code must not conflict with a MUST principle. A conflict is a blocking finding — resolved by changing the plan or amending the constitution with the human, never by quietly ignoring it.
+
 ## Before any code: progress.txt
 
 Create `progress.txt` at the repo root, **committed on the work branch** — it must survive crashes and worktree switches, and subagents must be able to read it. Three parts:
