@@ -58,6 +58,11 @@ different thing from `handoff.md`):
 npx skills add mattpocock/skills
 ```
 
+Install them once at the **global** scope and every repo on the machine has
+them. The work skills degrade gracefully when a vendored skill is missing —
+each carries the essence of what it borrows — but they're better with the real
+thing installed.
+
 ## Standalone skills
 
 Usable on their own, not part of any family.

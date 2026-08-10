@@ -20,7 +20,7 @@ A term earns a `CONTEXT.md` entry the moment discovery reveals that you and the 
 
 Loop: show something, get a reaction, fold it in.
 
-- A state model, logic flow, or UI the human should *feel* → the `/prototype` skill (vendored from mattpocock/skills): throwaway code that answers a question.
+- A state model, logic flow, or UI the human should *feel* → a prototype: throwaway code that answers a question. Use the `/prototype` skill (from mattpocock/skills) when it's installed; when it isn't, carry its essence yourself — clearly marked throwaway, trivial to run, no persistence, no polish, the full state surfaced after every action.
 - Structure easier seen than read → a diagram or pseudo-code.
 - Open questions → ask them one at a time, in plain words.
 
