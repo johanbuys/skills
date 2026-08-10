@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>recurring-tasks — PRD Overview</title>
+<!-- better-planning companion. Self-contained: inline CSS/JS only, no CDN, no external assets. -->
+<style>
+  :root {
+    --ink: #1a2233; --muted: #5b6678; --faint: #8b94a6;
+    --bg: #fafbfd; --card: #ffffff; --line: #e3e8f0;
+    --accent: #0f62fe; --hx: #33415c;
+    --c1: #64748b; --c2: #2563eb; --c3: #7c3aed; --c4: #d97706; --c5: #059669;
+    --err: #dc2626; --warn: #d97706; --info: #2563eb; --ok: #059669;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--bg); line-height: 1.55; font-size: 16px; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 28px 120px; }
+  header { padding: 56px 0 32px; border-bottom: 1px solid var(--line); margin-bottom: 44px; }
+  .crumb { font-size: 13px; color: var(--faint); font-weight: 600; letter-spacing: .5px; }
+  .crumb b { color: var(--c5); }
+  .brand { font-size: 44px; font-weight: 800; letter-spacing: -1.5px; margin-top: 4px; }
+  .tagline { font-size: 18px; color: var(--muted); margin-top: 6px; max-width: 760px; }
+  .tagline b { color: var(--ink); }
+  .status-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .chip { font-size: 12.5px; font-weight: 600; padding: 4px 12px; border-radius: 999px;
+          border: 1px solid var(--line); background: var(--card); color: var(--muted); }
+  .chip.ok { background: #ecfdf5; border-color: #6ee7b7; color: #047857; }
+  .chip.info { background: #eef4ff; border-color: #93c5fd; color: #1d4ed8; }
+  section { margin-bottom: 60px; }
+  h2 { font-size: 25px; font-weight: 750; letter-spacing: -.5px; margin-bottom: 6px;
+       display: flex; align-items: baseline; gap: 12px; }
+  h2 .num { font-size: 14px; font-weight: 700; color: var(--faint); letter-spacing: 1px; }
+  .lede { color: var(--muted); margin-bottom: 22px; max-width: 840px; }
+  .lede b, .lede strong { color: var(--ink); }
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .88em;
+         background: #eef1f6; padding: 1px 6px; border-radius: 4px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+          padding: 20px 22px; box-shadow: 0 1px 2px rgba(20,30,60,.04); }
+  .pill { font-size: 11px; font-weight: 800; letter-spacing: .4px; padding: 2px 10px; border-radius: 999px; }
+  .pill.warn { background: #fef3c7; color: #b45309; }
+  .pill.info { background: #dbeafe; color: #1d4ed8; }
+  .pill.ok { background: #d1fae5; color: #047857; }
+  .pill.gray { background: #f1f5f9; color: #475569; }
+  .dflow { display: flex; align-items: stretch; flex-wrap: wrap; }
+  .dnode { flex: 1; min-width: 165px; background: var(--card); border: 1.5px solid var(--line);
+           border-radius: 10px; padding: 13px 15px; }
+  .dnode .t { font-weight: 700; font-size: 13.5px; }
+  .dnode .d { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .dnode.q { border-color: #c9d6ea; background: #f7fafd; }
+  .dsep { display: flex; align-items: center; padding: 0 9px; color: var(--faint); font-size: 17px; }
+  .schema { border: 1.5px solid var(--line); border-radius: 12px; background: var(--card); padding: 16px 18px; }
+  .schema .sname { font-family: ui-monospace, Menlo, monospace; font-weight: 700; font-size: 14px; color: var(--accent); }
+  .fieldrow { display: flex; gap: 10px; font-size: 12.8px; padding: 4px 0;
+              border-bottom: 1px dashed #eef1f6; align-items: baseline; }
+  .fieldrow:last-child { border-bottom: none; }
+  .fieldrow .fn { font-family: ui-monospace, Menlo, monospace; font-weight: 600; min-width: 130px; }
+  .fieldrow .fv { color: var(--muted); }
+  .nest { border: 1.5px solid var(--line); border-left: 4px solid var(--accent); border-radius: 10px;
+          background: #fbfcfe; padding: 12px 14px; margin-top: 12px; }
+  .nest.green { border-left-color: var(--c5); }
+  .states { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .state { border-radius: 10px; border: 1.5px solid var(--line); border-top-width: 4px;
+           background: var(--card); padding: 13px 14px; }
+  .state .sn { font-family: ui-monospace, Menlo, monospace; font-weight: 700; font-size: 13.5px; }
+  .state .sd { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 12px;
+          background: var(--card); border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 11.5px; letter-spacing: 1px; color: var(--muted); background: #f4f7fb; }
+  tr:last-child td { border-bottom: none; }
+  .dec-res { font-weight: 600; }
+  .dot-ok { color: var(--ok); }
+  .dot-open { color: var(--warn); }
+  .ask { border-left: 4px solid var(--warn); background: #fffbeb; border-radius: 0 10px 10px 0;
+         padding: 13px 17px; margin-bottom: 11px; }
+  .ask.resolved { border-left-color: var(--ok); background: #f0fdf6; }
+  .ask .q { font-weight: 700; font-size: 14px; }
+  .ask .c { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  footer { border-top: 1px solid var(--line); margin-top: 56px; padding-top: 18px;
+           font-size: 13px; color: var(--faint); }
+  .review-input { display: block; width: 100%; margin-top: 10px; min-height: 44px; resize: vertical;
+                  border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
+                  font: 13px/1.4 inherit; color: var(--ink); background: #fff; }
+  .review-input:focus { outline: 2px solid #bfdbfe; border-color: var(--accent); }
+  .review-bar { display: flex; align-items: center; gap: 14px; margin-top: 18px; padding: 14px 16px;
+                border: 1.5px dashed #c9d6ea; border-radius: 10px; background: #f7fafd; }
+  .review-hint { font-size: 12.5px; color: var(--muted); }
+  #export-review { font: 600 13px inherit; padding: 8px 16px; border-radius: 8px; cursor: pointer;
+                   border: 1.5px solid var(--accent); background: var(--accent); color: #fff; }
+  #export-review:hover { filter: brightness(1.1); }
+  @media (max-width: 800px) { .states { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="crumb">taskpilot / feature PRD / <b>recurring-tasks</b></div>
+  <div class="brand">Recurring tasks</div>
+  <div class="tagline">Say <b>"every Tuesday"</b> once and the right task shows up forever —
+  with taskpilot staying a program that only works when you run it. No daemon, ever.</div>
+  <div class="status-row">
+    <span class="chip ok">STATUS: SETTLED — 2026-06-20</span>
+    <span class="chip">briefless entry — user-made calls D1–D3</span>
+    <span class="chip info">review round 1 applied 2026-06-19</span>
+    <span class="chip">detail: recurring-tasks-prd.md</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="num">01</span>The shape: lazy, on-run generation</h2>
+  <p class="lede">Every <code>tp</code> invocation catches the store up <b>before</b> the
+  command runs: each active template materializes occurrences into the window
+  <code>now → now + 1 year</code>. Idempotent — running twice creates nothing twice.</p>
+  <div class="dflow">
+    <div class="dnode q"><div class="t">user runs any <code>tp</code> command</div><div class="d">the only trigger there is</div></div>
+    <div class="dsep">→</div>
+    <div class="dnode"><div class="t">catch-up pass</div><div class="d">for each active template: fill <code>lastGenerated → now + 1y</code>; overdue rows collapse to the most recent (D9)</div></div>
+    <div class="dsep">→</div>
+    <div class="dnode"><div class="t">occurrences land in the store</div><div class="d">first-class tasks with <code>templateId</code> + <code>due</code> (D4)</div></div>
+    <div class="dsep">→</div>
+    <div class="dnode"><div class="t">the command executes</div><div class="d"><code>list</code>/<code>done</code>/<code>skip</code> see a current world</div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Data model: one store, two new shapes</h2>
+  <p class="lede">The store stays one JSON array in <code>~/.taskpilot.json</code>. Plain v0.4
+  tasks pass through untouched; two extended shapes carry recurrence.</p>
+  <div class="schema">
+    <span class="sname">~/.taskpilot.json — Task[]</span>
+    <div class="nest">
+      <div class="fieldrow"><span class="fn">TemplateTask</span><span class="fv">the generator — never listed as an actionable row</span></div>
+      <div class="fieldrow"><span class="fn">rrule</span><span class="fv">RFC 5545 string, e.g. <code>FREQ=WEEKLY;BYDAY=TU</code> (D1)</span></div>
+      <div class="fieldrow"><span class="fn">dtstart</span><span class="fv">ISO anchor, local wall-clock (D8)</span></div>
+      <div class="fieldrow"><span class="fn">paused</span><span class="fv">boolean — pause stops generation, resume never backfills (D6)</span></div>
+      <div class="fieldrow"><span class="fn">lastGenerated</span><span class="fv">high-water mark that makes generation idempotent</span></div>
+    </div>
+    <div class="nest green">
+      <div class="fieldrow"><span class="fn">OccurrenceTask</span><span class="fv">a real task, materialized per scheduled date (D4)</span></div>
+      <div class="fieldrow"><span class="fn">templateId</span><span class="fv">the series it belongs to — orphans must never exist</span></div>
+      <div class="fieldrow"><span class="fn">due</span><span class="fv">ISO date-time — the field the future notifications feature consumes</span></div>
+      <div class="fieldrow"><span class="fn">skipped</span><span class="fv">boolean — mutually exclusive with <code>done</code> (D5)</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Occurrence lifecycle</h2>
+  <p class="lede">Per-occurrence states are independent of the series; only <b>pause</b> acts
+  on the template.</p>
+  <div class="states">
+    <div class="state" style="border-top-color: var(--c2);"><div class="sn">pending</div><div class="sd">materialized, due date in view, listed by <code>tp list</code></div></div>
+    <div class="state" style="border-top-color: var(--ok);"><div class="sn">done</div><div class="sd"><code>tp done</code> — series unaffected, next occurrence still comes</div></div>
+    <div class="state" style="border-top-color: var(--warn);"><div class="sn">skipped</div><div class="sd"><code>tp skip</code> — "chose not to", kept for history (≠ done, ≠ delete)</div></div>
+    <div class="state" style="border-top-color: var(--c1);"><div class="sn">(template) paused</div><div class="sd"><code>tp pause</code> — no new occurrences; resume starts fresh, no guilt backlog</div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Decisions</h2>
+  <p class="lede">D1–D3 arrived with the user (briefless entry); D4–D9 were draft proposals
+  settled in review round 1. Full rationale in the markdown's decisions table.</p>
+  <table>
+    <tr><th>#</th><th>decision</th><th>call</th></tr>
+    <tr><td>D1</td><td>Schedule storage</td><td class="dec-res"><span class="dot-ok">●</span> RRULE strings + <code>dtstart</code> on the task — <span class="pill info">user</span></td></tr>
+    <tr><td>D2</td><td>Generation model</td><td class="dec-res"><span class="dot-ok">●</span> lazy, on-run; no background jobs — <span class="pill info">user</span></td></tr>
+    <tr><td>D3</td><td>Lookahead</td><td class="dec-res"><span class="dot-ok">●</span> capped at 1 year — <span class="pill info">user</span></td></tr>
+    <tr><td>D4</td><td>Occurrence representation</td><td class="dec-res"><span class="dot-ok">●</span> materialized first-class tasks, not virtual rows</td></tr>
+    <tr><td>D5</td><td>Skip semantics</td><td class="dec-res"><span class="dot-ok">●</span> per-occurrence state, distinct from done/delete</td></tr>
+    <tr><td>D6</td><td>Pause semantics</td><td class="dec-res"><span class="dot-ok">●</span> stops generation; resume does not backfill</td></tr>
+    <tr><td>D7</td><td>Template edits</td><td class="dec-res"><span class="dot-ok">●</span> future occurrences only; history stays true</td></tr>
+    <tr><td>D8</td><td>Time semantics</td><td class="dec-res"><span class="dot-ok">●</span> local wall-clock; DST shifts the instant, not the shown time</td></tr>
+    <tr><td>D9</td><td>Long-absence catch-up</td><td class="dec-res"><span class="dot-ok">●</span> overdue occurrences collapse to the most recent</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Things to poke at</h2>
+  <p class="lede">The round-1 agenda, kept with resolutions for the record — all items landed;
+  the PRD is settled. The undecided <b>how</b>s (RRULE library, store migration mechanics,
+  CLI surface syntax) are deliberately left for the technical design.</p>
+  <div class="ask resolved" data-review-id="poke-virtual-vs-materialized">
+    <div class="q">Virtual occurrences (computed at list time) instead of materialized rows?</div>
+    <div class="c">Resolved in round 1 → materialized (D4): done/skip need a row to live on, and
+    every existing command keeps working on plain tasks.</div>
+  </div>
+  <div class="ask resolved" data-review-id="poke-missed-backlog">
+    <div class="q">What does a user see after a month away — 30 overdue dailies?</div>
+    <div class="c">Resolved in round 1 → collapse to most recent (D9). The alternative made the
+    first run after a holiday unusable.</div>
+  </div>
+  <div class="ask resolved" data-review-id="poke-notifications-scope">
+    <div class="q">Do reminders belong in this feature?</div>
+    <div class="c">Resolved in round 1 → no; deferred to a <code>notifications</code> feature PRD.
+    This PRD only guarantees <code>due</code> exists to consume.</div>
+  </div>
+  <div class="review-bar">
+    <span class="review-hint">Comments autosave in this browser. When done:</span>
+    <button id="export-review">Export review → recurring-tasks-prd-feedback.json</button>
+  </div>
+</section>
+
+<script>
+(function () {
+  var DOC = "recurring-tasks-prd";
+  var KEY = "bp-review:" + DOC;
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  document.querySelectorAll("[data-review-id]").forEach(function (el) {
+    var id = el.getAttribute("data-review-id");
+    var ta = document.createElement("textarea");
+    ta.className = "review-input";
+    ta.placeholder = "Your comment on this item (optional)…";
+    ta.value = saved[id] || "";
+    ta.addEventListener("input", function () {
+      saved[id] = ta.value;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+    el.appendChild(ta);
+  });
+  var btn = document.getElementById("export-review");
+  if (btn) btn.addEventListener("click", function () {
+    var comments = {};
+    Object.keys(saved).forEach(function (k) { if (saved[k].trim()) comments[k] = saved[k].trim(); });
+    var blob = new Blob([JSON.stringify({ doc: DOC, exported: new Date().toISOString(), comments: comments }, null, 2)],
+                        { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = DOC + "-feedback.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+})();
+</script>
+
+<footer>
+  taskpilot — recurring-tasks PRD overview · generated from
+  <code>docs/better-planning/product/features/recurring-tasks/recurring-tasks-prd.md</code>
+  (settled, 2026-06-20) · draws on <code>docs/plans/old-roadmap.md</code>
+</footer>
+
+</div>
+</body>
+</html>

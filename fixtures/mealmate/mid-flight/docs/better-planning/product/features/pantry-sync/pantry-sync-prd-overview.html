@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pantry-sync — PRD Overview</title>
+<!-- better-planning companion. Self-contained: inline CSS/JS only, no CDN, no external assets. -->
+<style>
+  :root {
+    --ink: #1a2233; --muted: #5b6678; --faint: #8b94a6;
+    --bg: #fafbfd; --card: #ffffff; --line: #e3e8f0;
+    --accent: #0f62fe; --hx: #33415c;
+    --c1: #64748b; --c2: #2563eb; --c3: #7c3aed; --c4: #d97706; --c5: #059669;
+    --err: #dc2626; --warn: #d97706; --info: #2563eb; --ok: #059669;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--bg); line-height: 1.55; font-size: 16px; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 28px 120px; }
+  header { padding: 56px 0 32px; border-bottom: 1px solid var(--line); margin-bottom: 44px; }
+  .crumb { font-size: 13px; color: var(--faint); font-weight: 600; letter-spacing: .5px; }
+  .crumb b { color: var(--c4); }
+  .brand { font-size: 44px; font-weight: 800; letter-spacing: -1.5px; margin-top: 4px; }
+  .tagline { font-size: 18px; color: var(--muted); margin-top: 6px; max-width: 760px; }
+  .tagline b { color: var(--ink); }
+  .status-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .chip { font-size: 12.5px; font-weight: 600; padding: 4px 12px; border-radius: 999px;
+          border: 1px solid var(--line); background: var(--card); color: var(--muted); }
+  .chip.draft { background: #fff7ed; border-color: #fdba74; color: #c2410c; }
+  .chip.info { background: #eef4ff; border-color: #93c5fd; color: #1d4ed8; }
+  section { margin-bottom: 60px; }
+  h2 { font-size: 25px; font-weight: 750; letter-spacing: -.5px; margin-bottom: 6px;
+       display: flex; align-items: baseline; gap: 12px; }
+  h2 .num { font-size: 14px; font-weight: 700; color: var(--faint); letter-spacing: 1px; }
+  .lede { color: var(--muted); margin-bottom: 22px; max-width: 840px; }
+  .lede b, .lede strong { color: var(--ink); }
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .88em;
+         background: #eef1f6; padding: 1px 6px; border-radius: 4px; }
+  .pill { font-size: 11px; font-weight: 800; letter-spacing: .4px; padding: 2px 10px; border-radius: 999px; }
+  .pill.warn { background: #fef3c7; color: #b45309; }
+  .pill.info { background: #dbeafe; color: #1d4ed8; }
+  .pill.ok { background: #d1fae5; color: #047857; }
+  .dflow { display: flex; align-items: stretch; flex-wrap: wrap; }
+  .dnode { flex: 1; min-width: 165px; background: var(--card); border: 1.5px solid var(--line);
+           border-radius: 10px; padding: 13px 15px; }
+  .dnode .t { font-weight: 700; font-size: 13.5px; }
+  .dnode .d { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .dsep { display: flex; align-items: center; padding: 0 9px; color: var(--faint); font-size: 17px; }
+  .schema { border: 1.5px solid var(--line); border-radius: 12px; background: var(--card); padding: 16px 18px; }
+  .schema .sname { font-family: ui-monospace, Menlo, monospace; font-weight: 700; font-size: 14px; color: var(--accent); }
+  .fieldrow { display: flex; gap: 10px; font-size: 12.8px; padding: 4px 0;
+              border-bottom: 1px dashed #eef1f6; align-items: baseline; }
+  .fieldrow:last-child { border-bottom: none; }
+  .fieldrow .fn { font-family: ui-monospace, Menlo, monospace; font-weight: 600; min-width: 110px; }
+  .fieldrow .fv { color: var(--muted); }
+  .nest { border: 1.5px solid var(--line); border-left: 4px solid var(--accent); border-radius: 10px;
+          background: #fbfcfe; padding: 12px 14px; margin-top: 12px; }
+  .nest.green { border-left-color: var(--c5); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 12px;
+          background: var(--card); border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 11.5px; letter-spacing: 1px; color: var(--muted); background: #f4f7fb; }
+  tr:last-child td { border-bottom: none; }
+  .dec-res { font-weight: 600; }
+  .dot-ok { color: var(--ok); }
+  .dot-open { color: var(--warn); }
+  .ask { border-left: 4px solid var(--warn); background: #fffbeb; border-radius: 0 10px 10px 0;
+         padding: 13px 17px; margin-bottom: 11px; }
+  .ask .q { font-weight: 700; font-size: 14px; }
+  .ask .c { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  footer { border-top: 1px solid var(--line); margin-top: 56px; padding-top: 18px;
+           font-size: 13px; color: var(--faint); }
+  .review-input { display: block; width: 100%; margin-top: 10px; min-height: 44px; resize: vertical;
+                  border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
+                  font: 13px/1.4 inherit; color: var(--ink); background: #fff; }
+  .review-input:focus { outline: 2px solid #bfdbfe; border-color: var(--accent); }
+  .review-bar { display: flex; align-items: center; gap: 14px; margin-top: 18px; padding: 14px 16px;
+                border: 1.5px dashed #c9d6ea; border-radius: 10px; background: #f7fafd; }
+  .review-hint { font-size: 12.5px; color: var(--muted); }
+  #export-review { font: 600 13px inherit; padding: 8px 16px; border-radius: 8px; cursor: pointer;
+                   border: 1.5px solid var(--accent); background: var(--accent); color: #fff; }
+  #export-review:hover { filter: brightness(1.1); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="crumb">mealmate / feature PRD / <b>pantry-sync</b></div>
+  <div class="brand">pantry-sync</div>
+  <div class="tagline">Keep the pantry — the product's source of truth — honest, at a friction
+  cost a tired human will actually pay. <b>This feature carries the core bet.</b></div>
+  <div class="status-row">
+    <span class="chip draft">STATUS: IN-REVIEW — 2026-06-02</span>
+    <span class="chip draft">1 open question: P7 barcode scope</span>
+    <span class="chip">depends on mealmate-prd.md §Features</span>
+    <span class="chip info">contracts consumed by shopping-list-gen</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="num">01</span>The loop: census once, sync forever</h2>
+  <p class="lede">Two jobs: the one-time <b>census</b> (bounded, one sitting) and the
+  recurring <b>sync</b> — counts change as a side effect of living (shopping, cooking), never
+  as a chore. Corrections repair drift; events explain it.</p>
+  <div class="dflow">
+    <div class="dnode"><div class="t">census</div><div class="d">one guided sitting; name + unit + count; ≤15 min for 40 items</div></div>
+    <div class="dsep">→</div>
+    <div class="dnode"><div class="t">shop-receipt event</div><div class="d">confirm the list into the pantry — ≤3 taps for 25 lines</div></div>
+    <div class="dsep">→</div>
+    <div class="dnode"><div class="t">meal-cooked event</div><div class="d">planned or improvised; decrements ingredient lines</div></div>
+    <div class="dsep">→</div>
+    <div class="dnode"><div class="t">audit + undo</div><div class="d">90-day event log; undo = compensating correction, history never rewritten</div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Contracts (the dependency surface)</h2>
+  <p class="lede">shopping-list-gen reads stock and subscribes to events — its PRD is not
+  drafted until these settle. Both shapes ship in a <code>v: 1</code> envelope so a barcode
+  field, if P7 lands that way, is additive.</p>
+  <div class="schema">
+    <span class="sname">pantry-sync contracts</span>
+    <div class="nest">
+      <div class="fieldrow"><span class="fn">PantryItem</span><span class="fv">the stock row shopping-list-gen subtracts from</span></div>
+      <div class="fieldrow"><span class="fn">name / unit</span><span class="fv">user's words; case/whitespace-normalized for matching only</span></div>
+      <div class="fieldrow"><span class="fn">count</span><span class="fv">current stock — floored at zero, never negative (P4)</span></div>
+      <div class="fieldrow"><span class="fn">updatedAt</span><span class="fv">staleness signal for the census-refresh nudge</span></div>
+    </div>
+    <div class="nest green">
+      <div class="fieldrow"><span class="fn">SyncEvent</span><span class="fv">a recorded real-world cause of change</span></div>
+      <div class="fieldrow"><span class="fn">kind</span><span class="fv"><code>shop-receipt</code> | <code>meal-cooked</code> — two kinds only (P2)</span></div>
+      <div class="fieldrow"><span class="fn">lines</span><span class="fv">signed deltas per name+unit</span></div>
+      <div class="fieldrow"><span class="fn">undoneBy?</span><span class="fv">id of the compensating correction (P3)</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Decisions</h2>
+  <table>
+    <tr><th>#</th><th>decision</th><th>call</th></tr>
+    <tr><td>P1</td><td>Census shape</td><td class="dec-res"><span class="dot-ok">●</span> guided one-sitting flow — settled, round 1</td></tr>
+    <tr><td>P2</td><td>Event vocabulary</td><td class="dec-res"><span class="dot-ok">●</span> two kinds only; corrections are repairs, not events — settled, round 1</td></tr>
+    <tr><td>P3</td><td>Undo model</td><td class="dec-res"><span class="dot-ok">●</span> compensating correction; append-only history — settled, round 1</td></tr>
+    <tr><td>P4</td><td>Negative stock</td><td class="dec-res"><span class="dot-ok">●</span> floor at zero + recount flag — settled, round 1</td></tr>
+    <tr><td>P5</td><td>Unit conversion</td><td class="dec-res"><span class="dot-ok">●</span> per-item learned mappings, no conversion DB — settled, round 1</td></tr>
+    <tr><td>P6</td><td>Event retention</td><td class="dec-res"><span class="dot-ok">●</span> 90 days — settled, round 1</td></tr>
+    <tr data-review-id="dec-p7-barcode"><td>P7</td><td><b>Barcode scanning scope</b></td><td class="dec-res"><span class="dot-open">●</span> <b>Open</b> — in-feature accelerator vs defer wholesale to v2. Parked with Johan for review round 2.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Things to poke at</h2>
+  <p class="lede">One item stands between this PRD and settled.</p>
+  <div class="ask" data-review-id="poke-barcode-scope">
+    <div class="q">P7 — Barcode scanning: accelerator inside shop-receipt, or v2 entirely?</div>
+    <div class="c">For: 3/12 interviewees said scanning is the only way they'd keep counts
+    current, and shop-receipt confirmation is where taps concentrate. Against: coverage is
+    worst exactly where waste happens (produce/bulk), and a camera + product-DB dependency
+    cuts against the lean local-first PWA. What changes with the answer: the shop-receipt
+    flow's contract, the permission surface, and whether a product-name lookup dependency
+    enters v1.</div>
+  </div>
+  <div class="review-bar">
+    <span class="review-hint">Comments autosave in this browser. When done:</span>
+    <button id="export-review">Export review → pantry-sync-prd-feedback.json</button>
+  </div>
+</section>
+
+<script>
+(function () {
+  var DOC = "pantry-sync-prd";
+  var KEY = "bp-review:" + DOC;
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  document.querySelectorAll("[data-review-id]").forEach(function (el) {
+    var id = el.getAttribute("data-review-id");
+    var ta = document.createElement("textarea");
+    ta.className = "review-input";
+    ta.placeholder = "Your comment on this item (optional)…";
+    ta.value = saved[id] || "";
+    ta.addEventListener("input", function () {
+      saved[id] = ta.value;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+    if (el.tagName === "TR") {
+      var td = el.querySelector("td:last-child");
+      if (td) td.appendChild(ta); else el.appendChild(ta);
+    } else {
+      el.appendChild(ta);
+    }
+  });
+  var btn = document.getElementById("export-review");
+  if (btn) btn.addEventListener("click", function () {
+    var comments = {};
+    Object.keys(saved).forEach(function (k) { if (saved[k].trim()) comments[k] = saved[k].trim(); });
+    var blob = new Blob([JSON.stringify({ doc: DOC, exported: new Date().toISOString(), comments: comments }, null, 2)],
+                        { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = DOC + "-feedback.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+})();
+</script>
+
+<footer>
+  mealmate — pantry-sync PRD overview · generated from
+  <code>docs/better-planning/product/features/pantry-sync/pantry-sync-prd.md</code>
+  (in-review, 2026-06-02) · draws on <code>research/user-interviews-findings.md</code>
+</footer>
+
+</div>
+</body>
+</html>

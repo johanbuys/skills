@@ -61,6 +61,21 @@ Fixture worlds live under `fixtures/`. Two kinds:
 
 `prepare` never mutates the checked-in fixture — it copies to a throwaway temp dir first.
 
+Two conventions for `cwd` fixtures:
+
+- **No `.git` ships with a fixture** (git can't track a nested repo). When an eval's prompt or
+  assertions assume git state — "empty git repo", "git status clean" — the driver should
+  `git init && git add -A && git commit -q -m fixture` in the materialized copy before running
+  the skill.
+- **The `fixtures/taskpilot/` snapshots are a timeline**, not independent worlds: progressive
+  states of one project moving through the family
+  (`legacy-docs` → `prd-settled` → `prd-in-review` → the future Tier-3 built-code snapshots).
+  Each later snapshot is a byte-consistent evolution of the earlier one — same app code, same
+  untouched legacy roadmap, more planning artifacts. Edit them as a set: a change to the app or
+  a shared doc in one snapshot must be replayed into the later ones. Details in
+  `fixtures/taskpilot/README.md` (the per-project READMEs at `fixtures/<project>/README.md` sit
+  *above* the copied snapshot dirs, so the materialized worlds carry no eval-harness markers).
+
 ## Driving a behavioral run
 
 ```bash
