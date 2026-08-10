@@ -26,7 +26,7 @@ Create `progress.txt` at the repo root, **committed on the work branch** — it 
 
 Before merge, one pass over `progress.txt` and the plan while they still exist:
 
-- a durable gotcha an agent could *not* rediscover from the repo → `CONTEXT.md`
+- a durable gotcha an agent could *not* rediscover from the repo → `CONTEXT.md` (created by its first promotion — never scaffolded empty)
 - a decision and its why → `docs/adr/`
 - everything else dies with the files
 
@@ -38,4 +38,4 @@ Not a task-graph manager. Tasks live in `progress.txt` for this loop only — no
 
 ## Closing contract
 
-Before ending, append one dated entry to this work's `## <slug>` section in `handoff.md` (repo root; create the section if new): what moved, what's next, and the **verdict** — what was actually observed running, in plain words, or "none". A session that produced only conversation says so.
+Before ending, append one dated entry to this work's `## <slug>` section in `handoff.md` (repo root; create the file or section if new): what moved, what's next, and the **verdict** — what was actually observed running, in plain words, or "none". A session that produced only conversation says so.

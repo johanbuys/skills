@@ -14,7 +14,7 @@ Orient this session. Read the repo's memory, find where work stands, name **one*
 2. `handoff.md` (repo root) — where each inflight piece of work stands: one `## <slug>` section per piece, dated entries of *what moved · what's next · verdict*.
 3. `progress.txt` — only if it exists on the current branch. Its presence means an implementation loop is mid-flight; it holds that loop's validation contract, task checklist, and breadcrumbs.
 
-A missing file is information, not an error — the repo just hasn't adopted that part of the memory model yet. Say so and carry on.
+A missing file is information, not an error — the memory files are created lazily by the skills that first write them (`handoff.md` by a closing contract, `CONTEXT.md` by a promotion or an earned glossary entry), never as a setup step. Say which are missing and carry on.
 
 ## Name one move
 

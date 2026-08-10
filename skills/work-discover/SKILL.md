@@ -12,6 +12,8 @@ Take an idea, thought, feature, or PRD to **shared understanding** between human
 
 Read `CONTEXT.md` (repo root) and use its vocabulary. Check `docs/adr/` before proposing a direction that touches decided ground; when a direction gets chosen or rejected for a reason worth keeping, write a new ADR.
 
+A term earns a `CONTEXT.md` entry the moment discovery reveals that you and the human mean different things by it — add it then, in a sentence, creating the file if this is its first entry. That is the only bar; don't catalogue vocabulary that nobody has misunderstood.
+
 ## Work the question
 
 Loop: show something, get a reaction, fold it in.
@@ -32,4 +34,4 @@ A discovery that ends in an issue or a no succeeded. Reaching a plan is not the 
 
 ## Closing contract
 
-Before ending, append one dated entry to this work's `## <slug>` section in `handoff.md` (repo root; create the section if new): what moved, what's next, and the **verdict** — what the human actually experienced running, in plain words, or "none". A session that produced only conversation says so.
+Before ending, append one dated entry to this work's `## <slug>` section in `handoff.md` (repo root; create the file or section if new): what moved, what's next, and the **verdict** — what the human actually experienced running, in plain words, or "none". A session that produced only conversation says so.

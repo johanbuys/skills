@@ -36,8 +36,10 @@ what was actually observed running, or "none".
 
 ### The memory model
 
-Each file has one job and one lifespan. The permanent files grow only through the
-**purge-and-promotion** pass when work ships — nobody curates them as a chore.
+Each file has one job and one lifespan, and each is created lazily by the skill
+that first writes it — there is no setup step and no scaffolding. The permanent
+files grow only through the **purge-and-promotion** pass when work ships, plus
+glossary entries the moment a term earns one — nobody curates them as a chore.
 
 | File | Lifespan | Holds |
 |---|---|---|
