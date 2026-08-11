@@ -18,7 +18,7 @@ If the question's vocabulary came from an issue or doc (a "spike", a codename), 
 One fresh builder subagent per artifact — parallel builders only for deliberately different takes on the same question (three UI variants, two competing state models). The dispatch contains:
 
 - the question, verbatim, and the artifact's home — the session scratchpad for pure logic demos; next to the code it probes when repo context matters, clearly named as throwaway; never committed to main;
-- the rules: invoke the `/prototype` skill (from mattpocock/skills) when installed; otherwise carry its essence — clearly marked throwaway, trivial to run, no persistence, no polish, the full state surfaced after every action;
+- the rules: invoke the `/prototype` skill (from mattpocock/skills) when installed — the essence fallback below is for when it is *absent*; paraphrasing an installed skill is a skip, not a fallback. Without it: clearly marked throwaway, trivial to run, no persistence, no polish, the full state surfaced after every action;
 - the reply contract: return the artifact path and one line on how to open it — not an analysis, not conclusions.
 
 ## Hand over, then stop
