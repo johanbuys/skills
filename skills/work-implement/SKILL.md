@@ -58,4 +58,4 @@ Not a task-graph manager, and not process for its own sake. `progress.txt` stays
 
 ## Closing contract
 
-Before ending, append one dated entry to this work's `## <slug>` section in `handoff.md` (repo root; create the file or section if new): what moved, what's next, and the **verdict** — what was actually observed running, in plain words, or "none". A session that produced only conversation says so.
+Open this work's `## <slug>` section in `handoff.md` (repo root; create the file if needed) **when the loop starts**, and update the entry as tasks complete and at every stopping point: what moved, what's next, and the **verdict** — what was actually observed running, in plain words, or "none". Sessions end without warning; an entry written only "at the end" is an entry that doesn't get written. A session that produced only conversation says so.
