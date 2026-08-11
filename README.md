@@ -28,11 +28,14 @@ entry.
 |---|---|---|
 | [`work-start`](skills/work-start/SKILL.md) | session start | Reads the memory files, finds where inflight work stands, names **one** next move — not a menu. Biased to resume inflight work before starting new work. |
 | [`work-discover`](skills/work-discover/SKILL.md) | an idea, feature, or PRD needs shared understanding | Prototypes and slices the human reacts to, folded into a plan in plain words. Three exits, all legitimate: a plan (do it now), an issue (real, but later), or a recorded no. |
+| [`work-prototype`](skills/work-prototype/SKILL.md) | a question should be settled by experiencing something | The dispatch wrapper around a throwaway prototype: a builder subagent constructs it (following the vendored `prototype` rules) while the main session stays in the conversation. Announces what it will build before building; hands over something the human can open or run, never narrated terminal output. The one family member the model may invoke itself — discover routes through it. |
 | [`work-implement`](skills/work-implement/SKILL.md) | a plan exists | A subagent-driven loop where the controller never writes code: validation contract first, fresh implementers per task, a review gate after every task, a capped fix loop with model escalation, `progress.txt` as the crash-proof ledger, one ship-gate review, purge-and-promote at ship. |
 
-There is deliberately no `/wrap` skill — every skill ends with the same closing
-contract: append to `handoff.md` what moved, what's next, and the **verdict** —
-what was actually observed running, or "none".
+There is deliberately no `/wrap` skill — every skill carries the same closing
+contract: open the work's `handoff.md` section when work starts and keep it
+updated as things move (sessions end without warning, so "write it at the end"
+is how entries don't get written): what moved, what's next, and the
+**verdict** — what was actually observed running, or "none".
 
 ### The memory model
 
