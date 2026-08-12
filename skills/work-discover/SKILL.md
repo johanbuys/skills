@@ -21,7 +21,7 @@ A term earns a `CONTEXT.md` entry the moment discovery reveals that you and the 
 Loop: show something, get a reaction, fold it in.
 
 - A state model, logic flow, or UI the human should *feel* → a prototype: throwaway code that answers a question. Use the `/prototype` skill (from mattpocock/skills) when it's installed; when it isn't, carry its essence yourself — clearly marked throwaway, trivial to run, no persistence, no polish, the full state surfaced after every action.
-- Structure easier seen than read → a diagram or pseudo-code.
+- Structure easier seen than read → a diagram or pseudo-code. Use the `canvas` skill when it's installed: the diagram is served over the network with a comment box beside it, so the human's reaction lands on the picture instead of scrolling past it in chat. When it isn't, carry the essence — a diagram in the reply, and ask what's wrong with it.
 - Open questions → ask them one at a time, in plain words.
 
 Feedback from what the human experienced shapes the plan. If discovery is producing artifacts nobody has experienced, it isn't done — it's stalled. Stop writing and build something the human can react to.

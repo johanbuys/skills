@@ -15,10 +15,14 @@ truth; the HTML is the review surface.
   no CDN links, no JS frameworks, no external fonts or images, no server. It must render
   identically from `file://` on any machine, forever.
 - **CSS-only diagrams.** Flexbox/grid boxes, borders, and pills compose into architecture
-  diagrams, timelines, ladders, state machines. No image files, no mermaid. *Exception:* when
-  **canvas** is installed and the shape is a node-and-arrow graph (a system shape / concept map),
-  use its **diagram kit** (`canvas/references/diagram-kit.md`) — a self-contained SVG renderer,
-  still no CDN — rather than forcing a graph into CSS boxes.
+  diagrams, timelines, ladders, state machines. No image files, no CDN. *Exception:* when
+  **canvas** is installed and the thing has a real shape (a system shape or concept map, an
+  exchange over time, a state machine), use its **diagram kit**
+  (`canvas/references/diagram-kit.md`) rather than forcing it into CSS boxes: author Mermaid
+  source, render it with `canvas/scripts/render_diagram.mjs`, and **inline the resulting SVG**
+  into the page. The SVG carries no external refs, so the `file://` rule still holds — but inline
+  it you must; the sibling-file form (`data-diagram-src`) fetches, and a fetch is blocked on
+  `file://`. That form is for served canvas pages, not for companions that open from disk.
 - **Tell the user how to open it** (`xdg-open <path>` / `open <path>`) every time you create or
   update one.
 
@@ -104,7 +108,7 @@ looks like one family. Available components (see template source for markup):
 | state cards (colored top border) | state machines, outcome states |
 | decision table (`.dec-res` dots) | resolved (green) vs open (amber) decisions |
 | ask boxes (amber left border) | "things to poke at" items |
-| concept map (canvas diagram kit) | a system's shape — concepts as nodes, how they connect (graphs CSS boxes can't draw) |
+| canvas diagram kit | anything with a real shape — a system's concepts and how they connect, an exchange over time, a state machine (what CSS boxes can't draw) |
 
 Adapt freely — the family resemblance matters more than pixel fidelity. For accents, derive a
 small set of semantic colors per project (e.g., one per phase/component) and use them
@@ -114,7 +118,8 @@ consistently across all of that project's artifacts.
 
 The canvas diagram kit is **generic**: it knows five visual states and nothing about planning. The
 family maps its vocabulary onto them, so a concept map reads the same in any phase. Use these terms
-when you describe a diagram, and the matching state when you draw one:
+when you describe a diagram, and the matching state when you draw one — in Mermaid source a state
+is a class on the node, `verify["agreement-verify"]:::alert`:
 
 | family term | canvas state | when |
 |---|---|---|
@@ -125,4 +130,4 @@ when you describe a diagram, and the matching state when you draw one:
 | new concept | `new` | it appeared this milestone |
 
 If a project coins a sixth thing to show, it maps onto an existing state — the kit stays generic and
-canvas stays installable on its own. Full schema: `canvas/references/diagram-kit.md`.
+canvas stays installable on its own. Authoring guide: `canvas/references/diagram-kit.md`.
