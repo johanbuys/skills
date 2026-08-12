@@ -30,4 +30,4 @@ This is orientation, not reporting. Don't summarize everything you read, generat
 
 ## Closing contract
 
-When the session's work wraps — not right after orienting — append one dated entry to the work's `## <slug>` section in `handoff.md`: what moved, what's next, and the **verdict** — what was actually observed running, in plain words, or "none". A session that produced only conversation says so. Skip only if `/work-discover` or `/work-implement` already wrote this session's entry.
+If the session does real work outside a sibling skill, open or update the work's `## <slug>` section in `handoff.md` as the work moves — not at "the end", which sessions never announce: what moved, what's next, and the **verdict** — what was actually observed running, in plain words, or "none". A session that produced only conversation says so. Skip only if `/work-discover` or `/work-implement` is keeping this session's entry.
