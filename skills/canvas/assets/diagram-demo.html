@@ -4,10 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>canvas diagram kit — demo</title>
-<!-- Self-contained demo of the canvas diagram kit. Open directly (file://) or
-     serve it; it references diagram-kit.js as a sibling. The agent authors only
-     the JSON scene blocks below — the kit renders the SVG and the interactive
-     legend (click a legend chip to toggle that state's nodes on/off). -->
+<!-- Self-contained demo. The SVGs below were rendered ahead of time by
+     scripts/render_diagram.mjs from the mermaid source shown next to each one;
+     they are inlined here so the demo also opens on file://. On a real canvas
+     page keep the SVG a sibling file and point at it with data-diagram-src —
+     then a redrawn round costs no page markup. diagram-legend.js adds the live
+     legend either way: click a chip to toggle that state's nodes on and off. -->
 <style>
   :root {
     --ink:#1a2233; --muted:#5b6678; --faint:#8b94a6; --bg:#fafbfd; --card:#fff; --line:#e3e8f0;
@@ -23,83 +25,319 @@
   .lede { color:var(--muted); font-size:14px; margin-bottom:14px; }
   .panel { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 16px 10px;
            box-shadow:0 1px 2px rgba(20,30,60,.04); }
+  .panel + .panel { margin-top:10px; }
   code { font-family:ui-monospace,Menlo,monospace; font-size:.86em; background:#eef1f6; padding:1px 6px; border-radius:4px; }
+  pre { font-family:ui-monospace,Menlo,monospace; font-size:12.5px; line-height:1.5; color:var(--muted);
+        background:#f7f9fc; border:1px solid var(--line); border-radius:10px; padding:12px 14px;
+        overflow-x:auto; margin-top:10px; }
   .note { font-size:13px; color:var(--muted); margin-top:8px; }
+  .dk svg { max-width:720px; margin:0 auto; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>canvas diagram kit</h1>
-  <p class="sub">A generic node-and-arrow concept map, clean SVG, rendered from a structured
-  <code>{nodes, edges}</code> scene. The kit knows shapes and five visual <b>states</b> — it knows
-  nothing about any domain. Consumers map their own words onto the states, and the
-  <b>legend below each diagram is live</b>: click a chip to toggle that state's nodes on or off.</p>
+  <p class="sub">Diagrams are authored as <b>mermaid source</b> and rendered to a self-contained SVG by
+  <code>scripts/render_diagram.mjs</code> (which wraps
+  <a href="https://github.com/adewale/agentic-mermaid">agentic-mermaid</a>): real layered layout,
+  orthogonal edge routing, every mermaid family. The agent writes only the source. Five visual
+  <b>states</b> — <code>base / highlight / emphasis / alert / new</code> — are mermaid classes the
+  renderer paints, and the <b>legend under each diagram is live</b>: click a chip to toggle that
+  state's nodes, and every edge touching them, on or off.</p>
 
-  <h2>1 · Concept map (radial layout)</h2>
-  <p class="lede">A real shape from stet's review phase. <code>composite.run</code> is the hub; one node
-  carries each state. No coordinates given — the kit places them. Try toggling <b>unchanged</b> off to
-  see only what moved.</p>
+  <h2>1 · Concept map</h2>
+  <p class="lede">A real shape from stet's review phase. One node carries each state; no coordinates
+  anywhere — the layout engine places them and routes around them. Try toggling <b>unchanged</b> off
+  to see only what moved.</p>
   <div class="panel">
-    <div class="dk" data-diagram>
-      <script type="application/json">
-      {
-        "layout": "radial",
-        "legend": { "base": "unchanged", "highlight": "moved", "emphasis": "grew", "alert": "drift", "new": "new" },
-        "nodes": [
-          { "id": "composite", "label": "composite.run", "state": "emphasis" },
-          { "id": "specialist", "label": "specialists" },
-          { "id": "verify", "label": "agreement-verify", "state": "highlight" },
-          { "id": "coordinator", "label": "coordinator", "state": "alert" },
-          { "id": "rollup", "label": "all-low roll-up", "state": "new" },
-          { "id": "findings", "label": "findings" }
-        ],
-        "edges": [
-          { "from": "composite", "to": "specialist", "label": "fans out" },
-          { "from": "specialist", "to": "verify", "label": "submits" },
-          { "from": "verify", "to": "coordinator", "label": "feeds" },
-          { "from": "coordinator", "to": "findings", "label": "rolls up" },
-          { "from": "verify", "to": "rollup", "label": "degraded →", "state": "new" },
-          { "from": "rollup", "to": "findings" }
-        ]
-      }
-      </script>
+    <div class="dk" data-diagram
+         data-legend='{"base":"unchanged","highlight":"moved","emphasis":"grew","alert":"drift","new":"new"}'>
+<svg class="dk-svg" xmlns="http://www.w3.org/2000/svg" width="340.546" height="729.6999999999999" viewBox="0 0 340.546 729.6999999999999" style="--bg:#FFFFFF;--fg:#27272A;--font:Inter;background:#FFFFFF">
+<style>
+  text { font-family: var(--font, 'Inter'), system-ui, sans-serif; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          #27272A;
+    --_text-sec:      #575759;
+    --_text-muted:    #707072;
+    --_text-faint:    #8a8a8c;
+    --_line:          #939395;
+    --_arrow:         #47474a;
+    --_node-fill:     #f9f9f9;
+    --_node-stroke:   #d4d4d4;
+    --_group-fill:    #FFFFFF;
+    --_group-hdr:     #f4f4f4;
+    --_inner-stroke:  #e5e5e5;
+    --_key-badge:     #e9e9ea;
+  }
+</style>
+<defs>
+  <marker id="d1-arrowhead" markerWidth="8" markerHeight="5" refX="7" refY="2.5" orient="auto">
+    <polygon points="0 0, 8 2.5, 0 5" fill="#47474a" stroke="#47474a" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+  <marker id="d1-arrowhead-start" markerWidth="8" markerHeight="5" refX="1" refY="2.5" orient="auto">
+    <polygon points="8 0, 0 2.5, 8 5" fill="#47474a" stroke="#47474a" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+</defs>
+<polyline class="edge" data-from="composite" data-to="specialist" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-marker-end="arrow" data-label="fans out" points="167.27125,76.9 167.27125,193.2" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d1-arrowhead)" data-relationship="flowchart-edge" data-direction="forward" data-id="edge:composite-&gt;specialist#0" data-role="edge" role="graphics-symbol" aria-roledescription="relation" aria-label="composite to specialist: fans out" />
+<polyline class="edge" data-from="specialist" data-to="verify" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-marker-end="arrow" data-label="submits" points="167.27125,230.10000000000002 167.27125,346.40000000000003" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d1-arrowhead)" data-relationship="flowchart-edge" data-direction="forward" data-id="edge:specialist-&gt;verify#0" data-role="edge" role="graphics-symbol" aria-roledescription="relation" aria-label="specialist to verify: submits" />
+<polyline class="edge" data-from="verify" data-to="coordinator" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-marker-end="arrow" data-label="feeds" points="143.60708333333335,383.30000000000007 143.60708333333335,499.6000000000001" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d1-arrowhead)" data-relationship="flowchart-edge" data-direction="forward" data-id="edge:verify-&gt;coordinator#0" data-role="edge" role="graphics-symbol" aria-roledescription="relation" aria-label="verify to coordinator: feeds" />
+<polyline class="edge" data-from="coordinator" data-to="findings" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-marker-end="arrow" data-label="rolls up" points="99.1365,536.5000000000001 99.1365,594.6500000000001 156.273,594.6500000000001 156.273,652.8" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d1-arrowhead)" data-relationship="flowchart-edge" data-direction="forward" data-id="edge:coordinator-&gt;findings#0" data-role="edge" role="graphics-symbol" aria-roledescription="relation" aria-label="coordinator to findings: rolls up" />
+<polyline class="edge" data-from="verify" data-to="rollup" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-marker-end="arrow" data-label="degraded" points="190.9354166666667,383.30000000000007 190.9354166666667,499.6000000000001" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d1-arrowhead)" data-relationship="flowchart-edge" data-direction="forward" data-id="edge:verify-&gt;rollup#0" data-role="edge" role="graphics-symbol" aria-roledescription="relation" aria-label="verify to rollup: degraded" />
+<polyline class="edge" data-from="rollup" data-to="findings" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-marker-end="arrow" points="241.40949999999998,536.5000000000001 241.40949999999998,594.6500000000001 184.273,594.6500000000001 184.273,652.8" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d1-arrowhead)" data-relationship="flowchart-edge" data-direction="forward" data-id="edge:rollup-&gt;findings#0" data-role="edge" role="graphics-symbol" aria-roledescription="relation" aria-label="rollup to findings" />
+<g class="edge-label" data-from="composite" data-to="specialist" data-label="fans out">
+  <rect class="edge-label-halo" x="136.27125" y="115.9" width="61.884" height="38.3" rx="4" ry="4" fill="#FFFFFF" stroke="none" />
+  <rect x="140.27125" y="119.9" width="53.884" height="30.3" rx="2" ry="2" fill="#FFFFFF" stroke="#e5e5e5" stroke-width="1" />
+  <text x="167.21325000000002" y="135.05" text-anchor="middle" font-size="11" font-weight="400" fill="#575759" dy="3.8499999999999996" textLength="37.884" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">fans out</text>
+</g>
+<g class="edge-label" data-from="specialist" data-to="verify" data-label="submits">
+  <rect class="edge-label-halo" x="136.27125" y="269.1" width="61.290000000000006" height="38.3" rx="4" ry="4" fill="#FFFFFF" stroke="none" />
+  <rect x="140.27125" y="273.1" width="53.290000000000006" height="30.3" rx="2" ry="2" fill="#FFFFFF" stroke="#e5e5e5" stroke-width="1" />
+  <text x="166.91625000000002" y="288.25" text-anchor="middle" font-size="11" font-weight="400" fill="#575759" dy="3.8499999999999996" textLength="37.29" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">submits</text>
+</g>
+<g class="edge-label" data-from="verify" data-to="coordinator" data-label="feeds">
+  <rect class="edge-label-halo" x="117.71408333333335" y="430.9000000000001" width="51.786" height="38.3" rx="4" ry="4" fill="#FFFFFF" stroke="none" />
+  <rect x="121.71408333333335" y="434.9000000000001" width="43.786" height="30.3" rx="2" ry="2" fill="#FFFFFF" stroke="#e5e5e5" stroke-width="1" />
+  <text x="143.60708333333335" y="450.05000000000007" text-anchor="middle" font-size="11" font-weight="400" fill="#575759" dy="3.8499999999999996" textLength="27.786" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">feeds</text>
+</g>
+<g class="edge-label" data-from="coordinator" data-to="findings" data-label="rolls up">
+  <rect class="edge-label-halo" x="68.7885" y="575.5000000000001" width="60.696000000000005" height="38.3" rx="4" ry="4" fill="#FFFFFF" stroke="none" />
+  <rect x="72.7885" y="579.5000000000001" width="52.696000000000005" height="30.3" rx="2" ry="2" fill="#FFFFFF" stroke="#e5e5e5" stroke-width="1" />
+  <text x="99.1365" y="594.6500000000001" text-anchor="middle" font-size="11" font-weight="400" fill="#575759" dy="3.8499999999999996" textLength="36.696" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">rolls up</text>
+</g>
+<g class="edge-label" data-from="verify" data-to="rollup" data-label="degraded">
+  <rect class="edge-label-halo" x="154.9444166666667" y="383.5333333333334" width="71.982" height="38.3" rx="4" ry="4" fill="#FFFFFF" stroke="none" />
+  <rect x="158.9444166666667" y="387.5333333333334" width="63.982" height="30.3" rx="2" ry="2" fill="#FFFFFF" stroke="#e5e5e5" stroke-width="1" />
+  <text x="190.9354166666667" y="402.6833333333334" text-anchor="middle" font-size="11" font-weight="400" fill="#575759" dy="3.8499999999999996" textLength="47.982" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">degraded</text>
+</g>
+<g class="node emphasis" data-id="composite" data-label="composite.run" data-shape="rectangle" data-role="node">
+  <rect x="104.80025" y="40" width="124.94200000000001" height="36.900000000000006" rx="0" ry="0" fill="#fff7ed" stroke="#d97706" stroke-width="2.6px" data-id="node-shape:composite" data-role="node" />
+  <text x="167.27125" y="58.45" text-anchor="middle" font-size="13" font-weight="500" fill="#9a4d05" dy="4.55" textLength="84.942" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">composite.run</text>
+</g>
+<g class="node" data-id="specialist" data-label="specialists" data-shape="rectangle" data-role="node">
+  <rect x="114.43325000000002" y="193.2" width="105.676" height="36.900000000000006" rx="0" ry="0" fill="#f9f9f9" stroke="#d4d4d4" stroke-width="0.75" data-id="node-shape:specialist" data-role="node" />
+  <text x="167.27125" y="211.64999999999998" text-anchor="middle" font-size="13" font-weight="500" fill="#27272A" dy="4.55" textLength="65.676" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">specialists</text>
+</g>
+<g class="node highlight" data-id="verify" data-label="agreement-verify" data-shape="rectangle" data-role="node">
+  <rect x="96.27875" y="346.40000000000003" width="141.985" height="36.900000000000006" rx="0" ry="0" fill="#eef4ff" stroke="#0f62fe" stroke-width="2.4px" data-id="node-shape:verify" data-role="node" />
+  <text x="167.27125" y="364.85" text-anchor="middle" font-size="13" font-weight="500" fill="#0b3ea8" dy="4.55" textLength="101.985" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">agreement-verify</text>
+</g>
+<g class="node alert" data-id="coordinator" data-label="coordinator" data-shape="rectangle" data-role="node">
+  <rect x="40" y="499.6000000000001" width="118.273" height="36.900000000000006" rx="0" ry="0" fill="#fef2f2" stroke="#dc2626" stroke-width="2.2px" data-id="node-shape:coordinator" data-role="node" />
+  <text x="99.1365" y="518.0500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="#b91c1c" dy="4.55" textLength="71.604" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">coordinator</text>
+</g>
+<g class="node new" data-id="rollup" data-label="all-low roll-up" data-shape="rectangle" data-role="node">
+  <rect x="182.273" y="499.6000000000001" width="118.273" height="36.900000000000006" rx="0" ry="0" fill="#ecfdf5" stroke="#059669" stroke-width="2.2px" data-id="node-shape:rollup" data-role="node" />
+  <text x="241.40949999999998" y="518.0500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="#047857" dy="4.55" textLength="78.273" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">all-low roll-up</text>
+</g>
+<g class="node" data-id="findings" data-label="findings" data-shape="rectangle" data-role="node">
+  <rect x="126.327" y="652.8" width="87.892" height="36.900000000000006" rx="0" ry="0" fill="#f9f9f9" stroke="#d4d4d4" stroke-width="0.75" data-id="node-shape:findings" data-role="node" />
+  <text x="170.273" y="671.25" text-anchor="middle" font-size="13" font-weight="500" fill="#27272A" dy="4.55" textLength="47.892" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">findings</text>
+</g>
+</svg>
     </div>
   </div>
-  <p class="note">The amber <b>grew</b> node is bigger — that's the "this concept grew past its
-  original job" signal. The red dashed <b>drift</b> node and the green <b>new</b> node + edge show a
-  change landing. The five states are the kit's; <code>"unchanged / moved / grew / drift / new"</code>
-  are this project's labels, passed in <code>legend</code>.</p>
+  <div class="panel"><pre>flowchart TD
+  composite[&quot;composite.run&quot;]:::emphasis
+  specialist[&quot;specialists&quot;]
+  verify[&quot;agreement-verify&quot;]:::highlight
+  coordinator[&quot;coordinator&quot;]:::alert
+  rollup[&quot;all-low roll-up&quot;]:::new
+  findings[&quot;findings&quot;]
+  composite --&gt;|fans out| specialist
+  specialist --&gt;|submits| verify
+  verify --&gt;|feeds| coordinator
+  coordinator --&gt;|rolls up| findings
+  verify --&gt;|degraded| rollup
+  rollup --&gt; findings</pre></div>
+  <p class="note">The five states are the kit's; <code>unchanged / moved / grew / drift / new</code> are
+  this project's labels, passed in <code>data-legend</code>. A consumer never invents a sixth state —
+  it maps its vocabulary onto these.</p>
 
-  <h2>2 · Pipeline (row layout)</h2>
-  <p class="lede">The same kit, laid out left-to-right — for a flow rather than a graph.</p>
+  <h2>2 · Pipeline</h2>
+  <p class="lede">The same renderer, left-to-right — for a flow rather than a graph. Direction is part
+  of the source (<code>flowchart LR</code>), not a separate layout setting.</p>
   <div class="panel">
-    <div class="dk" data-diagram>
-      <script type="application/json">
-      {
-        "layout": "row", "height": 200,
-        "legend": { "base": "unchanged", "highlight": "moved", "emphasis": "grew" },
-        "nodes": [
-          { "id": "diff", "label": "diff" },
-          { "id": "tracer", "label": "tracer", "state": "highlight" },
-          { "id": "scheduler", "label": "scheduler" },
-          { "id": "phases", "label": "phases", "state": "emphasis" },
-          { "id": "report", "label": "report" }
-        ],
-        "edges": [
-          { "from": "diff", "to": "tracer" },
-          { "from": "tracer", "to": "scheduler" },
-          { "from": "scheduler", "to": "phases" },
-          { "from": "phases", "to": "report" }
-        ]
-      }
-      </script>
+    <div class="dk" data-diagram data-legend='{"base":"unchanged","highlight":"moved","emphasis":"grew"}'>
+<svg class="dk-svg" xmlns="http://www.w3.org/2000/svg" width="679.122" height="116.9" viewBox="0 0 679.122 116.9" style="--bg:#FFFFFF;--fg:#27272A;--font:Inter;background:#FFFFFF">
+<style>
+  text { font-family: var(--font, 'Inter'), system-ui, sans-serif; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          #27272A;
+    --_text-sec:      #575759;
+    --_text-muted:    #707072;
+    --_text-faint:    #8a8a8c;
+    --_line:          #939395;
+    --_arrow:         #47474a;
+    --_node-fill:     #f9f9f9;
+    --_node-stroke:   #d4d4d4;
+    --_group-fill:    #FFFFFF;
+    --_group-hdr:     #f4f4f4;
+    --_inner-stroke:  #e5e5e5;
+    --_key-badge:     #e9e9ea;
+  }
+</style>
+<defs>
+  <marker id="d2-arrowhead" markerWidth="8" markerHeight="5" refX="7" refY="2.5" orient="auto">
+    <polygon points="0 0, 8 2.5, 0 5" fill="#47474a" stroke="#47474a" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+  <marker id="d2-arrowhead-start" markerWidth="8" markerHeight="5" refX="1" refY="2.5" orient="auto">
+    <polygon points="8 0, 0 2.5, 8 5" fill="#47474a" stroke="#47474a" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+</defs>
+<polyline class="edge" data-from="diff" data-to="tracer" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-marker-end="arrow" points="100,58.45 148,58.45" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d2-arrowhead)" data-relationship="flowchart-edge" data-direction="forward" data-id="edge:diff-&gt;tracer#0" data-role="edge" role="graphics-symbol" aria-roledescription="relation" aria-label="diff to tracer" />
+<polyline class="edge" data-from="tracer" data-to="scheduler" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-marker-end="arrow" points="227,58.45 275,58.45" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d2-arrowhead)" data-relationship="flowchart-edge" data-direction="forward" data-id="edge:tracer-&gt;scheduler#0" data-role="edge" role="graphics-symbol" aria-roledescription="relation" aria-label="tracer to scheduler" />
+<polyline class="edge" data-from="scheduler" data-to="phases" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-marker-end="arrow" points="377.712,58.45 425.712,58.45" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d2-arrowhead)" data-relationship="flowchart-edge" data-direction="forward" data-id="edge:scheduler-&gt;phases#0" data-role="edge" role="graphics-symbol" aria-roledescription="relation" aria-label="scheduler to phases" />
+<polyline class="edge" data-from="phases" data-to="report" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-marker-end="arrow" points="512.122,58.45 560.122,58.45" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d2-arrowhead)" data-relationship="flowchart-edge" data-direction="forward" data-id="edge:phases-&gt;report#0" data-role="edge" role="graphics-symbol" aria-roledescription="relation" aria-label="phases to report" />
+<g class="node" data-id="diff" data-label="diff" data-shape="rectangle" data-role="node">
+  <rect x="40" y="40" width="60" height="36.900000000000006" rx="0" ry="0" fill="#f9f9f9" stroke="#d4d4d4" stroke-width="0.75" data-id="node-shape:diff" data-role="node" />
+  <text x="70" y="58.45" text-anchor="middle" font-size="13" font-weight="500" fill="#27272A" dy="4.55" textLength="18.252" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">diff</text>
+</g>
+<g class="node highlight" data-id="tracer" data-label="tracer" data-shape="rectangle" data-role="node">
+  <rect x="148" y="40" width="79" height="36.900000000000006" rx="0" ry="0" fill="#eef4ff" stroke="#0f62fe" stroke-width="2.4px" data-id="node-shape:tracer" data-role="node" />
+  <text x="187.5" y="58.45" text-anchor="middle" font-size="13" font-weight="500" fill="#0b3ea8" dy="4.55" textLength="39" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">tracer</text>
+</g>
+<g class="node" data-id="scheduler" data-label="scheduler" data-shape="rectangle" data-role="node">
+  <rect x="275" y="40" width="102.712" height="36.900000000000006" rx="0" ry="0" fill="#f9f9f9" stroke="#d4d4d4" stroke-width="0.75" data-id="node-shape:scheduler" data-role="node" />
+  <text x="326.356" y="58.45" text-anchor="middle" font-size="13" font-weight="500" fill="#27272A" dy="4.55" textLength="62.712" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">scheduler</text>
+</g>
+<g class="node emphasis" data-id="phases" data-label="phases" data-shape="rectangle" data-role="node">
+  <rect x="425.712" y="40" width="86.41" height="36.900000000000006" rx="0" ry="0" fill="#fff7ed" stroke="#d97706" stroke-width="2.6px" data-id="node-shape:phases" data-role="node" />
+  <text x="468.917" y="58.45" text-anchor="middle" font-size="13" font-weight="500" fill="#9a4d05" dy="4.55" textLength="46.41" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">phases</text>
+</g>
+<g class="node" data-id="report" data-label="report" data-shape="rectangle" data-role="node">
+  <rect x="560.122" y="40" width="79" height="36.900000000000006" rx="0" ry="0" fill="#f9f9f9" stroke="#d4d4d4" stroke-width="0.75" data-id="node-shape:report" data-role="node" />
+  <text x="599.622" y="58.45" text-anchor="middle" font-size="13" font-weight="500" fill="#27272A" dy="4.55" textLength="39" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">report</text>
+</g>
+</svg>
     </div>
   </div>
+  <div class="panel"><pre>flowchart LR
+  diff[&quot;diff&quot;] --&gt; tracer[&quot;tracer&quot;]:::highlight
+  tracer --&gt; scheduler[&quot;scheduler&quot;]
+  scheduler --&gt; phases[&quot;phases&quot;]:::emphasis
+  phases --&gt; report[&quot;report&quot;]</pre></div>
 
-  <p class="note" style="margin-top:34px">Scene is the source of truth — the agent reads and writes
-  this JSON, and a future in-browser editor edits the same document. Clean straight lines, no external
-  library.</p>
+  <h2>3 · A family the old kit could not draw</h2>
+  <p class="lede">Canvas's own feedback loop, as a sequence diagram. Sequence, state, class, ER and
+  gantt all render through the same one-line call — reach for whichever actually fits the thing you
+  are explaining. No states here, so no legend.</p>
+  <div class="panel">
+    <div class="dk" data-diagram data-legend="false">
+<svg class="dk-svg" xmlns="http://www.w3.org/2000/svg" width="695.7365" height="506" viewBox="0 0 695.7365 506" style="--bg:#FFFFFF;--fg:#27272A;--font:Inter;background:#FFFFFF">
+<style>
+  text { font-family: var(--font, 'Inter'), system-ui, sans-serif; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          #27272A;
+    --_text-sec:      #575759;
+    --_text-muted:    #707072;
+    --_text-faint:    #8a8a8c;
+    --_line:          #939395;
+    --_arrow:         #47474a;
+    --_node-fill:     #f9f9f9;
+    --_node-stroke:   #d4d4d4;
+    --_group-fill:    #FFFFFF;
+    --_group-hdr:     #f4f4f4;
+    --_inner-stroke:  #e5e5e5;
+    --_key-badge:     #e9e9ea;
+  }
+</style>
+<defs>
+  <marker id="d3-seq-arrow" markerWidth="8" markerHeight="5" refX="8" refY="2.5" orient="auto-start-reverse">
+    <polygon points="0 0, 8 2.5, 0 5" fill="#47474a" />
+  </marker>
+  <marker id="d3-seq-arrow-open" markerWidth="8" markerHeight="5" refX="8" refY="2.5" orient="auto-start-reverse">
+    <polyline points="0 0, 8 2.5, 0 5" fill="none" stroke="#47474a" stroke-width="1" />
+  </marker>
+  <marker id="d3-seq-arrow-cross" markerWidth="8" markerHeight="5" refX="4" refY="2.5" orient="auto">
+    <path d="M1 1 L7 4 M1 4 L7 1" fill="none" stroke="#47474a" stroke-width="1.5" />
+  </marker>
+  <marker id="d3-seq-arrow-half-top" markerWidth="8" markerHeight="5" refX="8" refY="2.5" orient="auto-start-reverse">
+    <path d="M0 0 L8 2.5" fill="none" stroke="#47474a" stroke-width="1" />
+  </marker>
+  <marker id="d3-seq-arrow-half-bottom" markerWidth="8" markerHeight="5" refX="8" refY="2.5" orient="auto-start-reverse">
+    <path d="M0 5 L8 2.5" fill="none" stroke="#47474a" stroke-width="1" />
+  </marker>
+</defs>
+<line class="lifeline" data-actor="User" x1="70" y1="70" x2="70" y2="476" stroke="#939395" stroke-width="0.75" stroke-dasharray="6 4" data-relationship="lifeline" data-direction="undirected" />
+<line class="lifeline" data-actor="Page" x1="210" y1="70" x2="210" y2="476" stroke="#939395" stroke-width="0.75" stroke-dasharray="6 4" data-relationship="lifeline" data-direction="undirected" />
+<line class="lifeline" data-actor="Server" x1="377.6865" y1="70" x2="377.6865" y2="476" stroke="#939395" stroke-width="0.75" stroke-dasharray="6 4" data-relationship="lifeline" data-direction="undirected" />
+<line class="lifeline" data-actor="Agent" x1="531.9565" y1="70" x2="531.9565" y2="476" stroke="#939395" stroke-width="0.75" stroke-dasharray="6 4" data-relationship="lifeline" data-direction="undirected" />
+<g class="message" data-label="write page + bump version.json" data-line-style="solid" data-start-head="none" data-end-head="filled" data-central-start="false" data-central-end="false" data-self="false" data-id="message:Agent-&gt;Page#0" data-role="message">
+  <line x1="531.9565" y1="96" x2="210" y2="96" stroke="#939395" stroke-width="1" marker-end="url(#d3-seq-arrow)" data-relationship="sequence-message" data-direction="forward" data-id="message:Agent-&gt;Page#0:line" data-role="message" data-from="Agent" data-to="Page" role="graphics-symbol" aria-roledescription="relation" aria-label="Agent to Page: write page + bump version.json" />
+  <text x="370.97825" y="86" font-size="11" text-anchor="middle" font-weight="400" fill="#707072" dy="3.8499999999999996" textLength="145.398" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">write page + bump version.json</text>
+</g>
+<g class="message" data-label="comment on a section" data-line-style="solid" data-start-head="none" data-end-head="filled" data-central-start="false" data-central-end="false" data-self="false" data-id="message:User-&gt;Page#0" data-role="message">
+  <line x1="70" y1="136" x2="210" y2="136" stroke="#939395" stroke-width="1" marker-end="url(#d3-seq-arrow)" data-relationship="sequence-message" data-direction="forward" data-id="message:User-&gt;Page#0:line" data-role="message" data-from="User" data-to="Page" role="graphics-symbol" aria-roledescription="relation" aria-label="User to Page: comment on a section" />
+  <text x="140" y="126" font-size="11" text-anchor="middle" font-weight="400" fill="#707072" dy="3.8499999999999996" textLength="99.66" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">comment on a section</text>
+</g>
+<g class="message" data-label="POST /feedback" data-line-style="solid" data-start-head="none" data-end-head="filled" data-central-start="false" data-central-end="false" data-self="false" data-id="message:Page-&gt;Server#0" data-role="message">
+  <line x1="210" y1="176" x2="377.6865" y2="176" stroke="#939395" stroke-width="1" marker-end="url(#d3-seq-arrow)" data-relationship="sequence-message" data-direction="forward" data-id="message:Page-&gt;Server#0:line" data-role="message" data-from="Page" data-to="Server" role="graphics-symbol" aria-roledescription="relation" aria-label="Page to Server: POST /feedback" />
+  <text x="293.84325" y="166" font-size="11" text-anchor="middle" font-weight="400" fill="#707072" dy="3.8499999999999996" textLength="78.87" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">POST /feedback</text>
+</g>
+<g class="message" data-label="write feedback + wake marker" data-line-style="solid" data-start-head="none" data-end-head="filled" data-central-start="false" data-central-end="false" data-self="true" data-id="message:Server-&gt;Server#0" data-role="message">
+  <polyline points="377.6865,216 407.6865,216 407.6865,236 377.6865,236" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d3-seq-arrow)" data-relationship="sequence-message" data-direction="self" data-id="message:Server-&gt;Server#0:line" data-role="message" data-from="Server" data-to="Server" role="graphics-symbol" aria-roledescription="relation" aria-label="Server to Server: write feedback + wake marker" />
+  <text x="415.6865" y="226" font-size="11" text-anchor="start" font-weight="400" fill="#707072" dy="3.8499999999999996" textLength="140.646" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">write feedback + wake marker</text>
+</g>
+<g class="message" data-label="marker appears — watch fires" data-line-style="dashed" data-start-head="none" data-end-head="filled" data-central-start="false" data-central-end="false" data-self="false" data-id="message:Server-&gt;Agent#0" data-role="message">
+  <line x1="377.6865" y1="286" x2="531.9565" y2="286" stroke="#939395" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#d3-seq-arrow)" data-relationship="sequence-message" data-direction="forward" data-id="message:Server-&gt;Agent#0:line" data-role="message" data-from="Server" data-to="Agent" role="graphics-symbol" aria-roledescription="relation" aria-label="Server to Agent: marker appears — watch fires" />
+  <text x="454.8215" y="276" font-size="11" text-anchor="middle" font-weight="400" fill="#707072" dy="3.8499999999999996" textLength="138.27" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">marker appears — watch fires</text>
+</g>
+<g class="message" data-label="act on the comment" data-line-style="solid" data-start-head="none" data-end-head="filled" data-central-start="false" data-central-end="false" data-self="true" data-id="message:Agent-&gt;Agent#0" data-role="message">
+  <polyline points="531.9565,326 561.9565,326 561.9565,346 531.9565,346" fill="none" stroke="#939395" stroke-width="1" marker-end="url(#d3-seq-arrow)" data-relationship="sequence-message" data-direction="self" data-id="message:Agent-&gt;Agent#0:line" data-role="message" data-from="Agent" data-to="Agent" role="graphics-symbol" aria-roledescription="relation" aria-label="Agent to Agent: act on the comment" />
+  <text x="569.9565" y="336" font-size="11" text-anchor="start" font-weight="400" fill="#707072" dy="3.8499999999999996" textLength="87.78" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">act on the comment</text>
+</g>
+<g class="message" data-label="regenerate + bump version" data-line-style="solid" data-start-head="none" data-end-head="filled" data-central-start="false" data-central-end="false" data-self="false" data-id="message:Agent-&gt;Page#1" data-role="message">
+  <line x1="531.9565" y1="396" x2="210" y2="396" stroke="#939395" stroke-width="1" marker-end="url(#d3-seq-arrow)" data-relationship="sequence-message" data-direction="forward" data-id="message:Agent-&gt;Page#1:line" data-role="message" data-from="Agent" data-to="Page" role="graphics-symbol" aria-roledescription="relation" aria-label="Agent to Page: regenerate + bump version" />
+  <text x="370.97825" y="386" font-size="11" text-anchor="middle" font-weight="400" fill="#707072" dy="3.8499999999999996" textLength="128.172" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">regenerate + bump version</text>
+</g>
+<g class="message" data-label="reloads itself" data-line-style="dashed" data-start-head="none" data-end-head="filled" data-central-start="false" data-central-end="false" data-self="false" data-id="message:Page-&gt;User#0" data-role="message">
+  <line x1="210" y1="436" x2="70" y2="436" stroke="#939395" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#d3-seq-arrow)" data-relationship="sequence-message" data-direction="forward" data-id="message:Page-&gt;User#0:line" data-role="message" data-from="Page" data-to="User" role="graphics-symbol" aria-roledescription="relation" aria-label="Page to User: reloads itself" />
+  <text x="140" y="426" font-size="11" text-anchor="middle" font-weight="400" fill="#707072" dy="3.8499999999999996" textLength="61.644" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">reloads itself</text>
+</g>
+<g class="actor" data-id="User" data-label="User" data-type="actor" data-role="actor">
+  <g transform="translate(52,32) scale(1.5)">
+    <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" fill="none" stroke="#939395" stroke-width="0.6666666666666666" />
+    <path d="M15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10Z" fill="none" stroke="#939395" stroke-width="0.6666666666666666" />
+    <path d="M5.62842 18.3563C7.08963 17.0398 9.39997 16 12 16C14.6 16 16.9104 17.0398 18.3716 18.3563" fill="none" stroke="#939395" stroke-width="0.6666666666666666" />
+  </g>
+  <text x="70" y="84" font-size="13" text-anchor="middle" font-weight="500" fill="#27272A" dy="4.55" textLength="31.59" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">User</text>
+</g>
+<g class="actor" data-id="Page" data-label="canvas page" data-type="participant" data-role="actor">
+  <rect x="154.8635" y="30" width="110.273" height="40" rx="4" ry="4" fill="#f9f9f9" stroke="#d4d4d4" stroke-width="1" data-id="actor:Page:box" data-role="actor" />
+  <text x="210" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="#27272A" dy="4.55" textLength="78.273" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">canvas page</text>
+</g>
+<g class="actor" data-id="Server" data-label="canvas_server.py" data-type="participant" data-role="actor">
+  <rect x="305.1365" y="30" width="145.10000000000002" height="40" rx="4" ry="4" fill="#f9f9f9" stroke="#d4d4d4" stroke-width="1" data-id="actor:Server:box" data-role="actor" />
+  <text x="377.6865" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="#27272A" dy="4.55" textLength="113.1" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">canvas_server.py</text>
+</g>
+<g class="actor" data-id="Agent" data-label="Agent" data-type="participant" data-role="actor">
+  <rect x="491.9565" y="30" width="80" height="40" rx="4" ry="4" fill="#f9f9f9" stroke="#d4d4d4" stroke-width="1" data-id="actor:Agent:box" data-role="actor" />
+  <text x="531.9565" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="#27272A" dy="4.55" textLength="36.036" lengthAdjust="spacingAndGlyphs" data-font-metrics="deterministic-fit">Agent</text>
+</g>
+</svg>
+    </div>
+  </div>
+  <div class="panel"><pre>sequenceDiagram
+  actor User
+  participant Page as canvas page
+  participant Server as canvas_server.py
+  participant Agent
+  Agent-&gt;&gt;Page: write page + bump version.json
+  User-&gt;&gt;Page: comment on a section
+  Page-&gt;&gt;Server: POST /feedback
+  Server-&gt;&gt;Server: write feedback + wake marker
+  Server--&gt;&gt;Agent: marker appears — watch fires
+  Agent-&gt;&gt;Agent: act on the comment
+  Agent-&gt;&gt;Page: regenerate + bump version
+  Page--&gt;&gt;User: reloads itself</pre></div>
+
+  <p class="note" style="margin-top:34px">The mermaid source is the source of truth — the agent writes
+  it, reads it back, and edits it with typed mutations rather than regenerating the whole diagram.
+  Nothing on this page fetches anything: the SVG carries no external refs.</p>
 </div>
-<script src="diagram-kit.js"></script>
+<script src="diagram-legend.js"></script>
 </body>
 </html>

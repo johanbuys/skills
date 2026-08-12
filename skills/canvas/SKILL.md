@@ -1,6 +1,6 @@
 ---
 name: canvas
-description: "An interactive surface for agents — present any explanation, design, decision, lesson, or review as a served HTML page with comment boxes on every section, and run a live loop where the user submits feedback in the browser, the agent wakes automatically, responds or regenerates, and the page reloads itself. It also ships a diagram kit that draws a clean concept map / architecture / flow from a node-and-arrow scene, with a live legend toggling parts on and off. Use this whenever the user wants to review, learn, or brainstorm visually, or to draw a diagram of a system's shape — \"put this on a canvas\", \"make a review page\", \"let me comment on each part\", \"host the html\", \"quiz me\", \"show me\", \"diagram this\", \"draw the concept map\" — whenever an HTML artifact must be viewed from another machine (SSH/remote sessions where file:// is unreachable), and as the preferred surface for the better-planning family's review rounds and walkthroughs and for study's interactive lessons when it's installed."
+description: "An interactive surface for agents — present any explanation, design, decision, lesson, or review as a served HTML page with comment boxes on every section, and run a live loop where the user submits feedback in the browser, the agent wakes automatically, responds or regenerates, and the page reloads itself. It also ships a diagram kit that renders a concept map / architecture / flow / sequence / state machine from Mermaid source into publication-quality SVG, with a live legend toggling parts on and off. Use this whenever the user wants to review, learn, or brainstorm visually, or to draw a diagram of a system's shape — \"put this on a canvas\", \"make a review page\", \"let me comment on each part\", \"host the html\", \"quiz me\", \"show me\", \"diagram this\", \"draw the concept map\" — whenever an HTML artifact must be viewed from another machine (SSH/remote sessions where file:// is unreachable), and as the preferred surface for the better-planning family's review rounds and walkthroughs and for study's interactive lessons when it's installed."
 ---
 
 # Canvas
@@ -32,8 +32,9 @@ One server script, one workspace dir, two JS blocks. Copy-paste canonical patter
    `assets/brainstorm-template.html` and each round you write only `state.json`** — never
    regenerate the markup per round (token waste, measured ~80%); see
    `references/canvas-pages.md` → The brainstorm template.
-2. **Serve**: first free the port — reap any stale server on it
-   (`pkill -f "canvas_server.py.*--port 3119"`, or `lsof -ti :3119 | xargs -r kill`) — then
+2. **Serve**: first free the port — reap any stale server on it, **by port, never by pattern**
+   (`lsof -ti :3119 | xargs -r kill`; a `pkill -f "…--port 3119"` matches your own shell and kills
+   the command that ran it) — then
    `python3 <skill-dir>/scripts/canvas_server.py --dir <workspace> --port 3119 &` (any port
    works). It serves the dir on `0.0.0.0` and accepts `POST /feedback`, writing
    `feedback/<doc>-feedback.json` + a timestamped archive + a wake marker `feedback/<doc>.new`.
@@ -47,7 +48,7 @@ One server script, one workspace dir, two JS blocks. Copy-paste canonical patter
    you. No polling, no "tell me when you're done."
 5. **On wake**: delete the marker, read the latest feedback, act on it, regenerate the page,
    bump `version.json` — the user's browser reloads within seconds. Restart the watch.
-6. **Done**: kill the server (`pkill -f canvas_server.py`, or by port), fold anything durable
+6. **Done**: kill the server (`lsof -ti :3119 | xargs -r kill`), fold anything durable
    into committed artifacts, leave the feedback archives in place (they're the round-by-round
    record until the dir is cleaned). If you forget — or the session closes before you get here —
    the idle-timeout reaps it within 15 min, so a forgotten server is self-correcting, not a leak.
@@ -99,31 +100,43 @@ user asks to "see the full document", "read the source", or comment while readin
 
 ## The diagram kit
 
-For anything whose shape is a **node-and-arrow graph** — a concept map, an architecture, a flow, a
-mind map — canvas ships a shared drawing primitive: `assets/diagram-kit.js` renders clean SVG from a
-structured `{nodes, edges}` scene. The agent authors only the scene (a JSON block on the page); the
-kit lays it out, draws it, and renders a **live legend** — clicking a state's chip toggles its nodes
-on/off (hide `base` to see only what changed), no agent round-trip. It is the visual sibling of the
-comment box — comment boxes are canvas's shared *interactive* primitive, this is its shared
-*drawing* primitive.
+For anything with a **shape** — a concept map, an architecture, a flow, an exchange over time, a
+state machine — canvas ships a shared drawing primitive. The agent authors **Mermaid source** and
+nothing else; `scripts/render_diagram.mjs` renders it to one self-contained SVG, and
+`assets/diagram-legend.js` gives that SVG a **live legend** — clicking a state's chip hides its
+nodes and every edge touching them (drop `base` to see only what changed), no agent round-trip. It
+is the visual sibling of the comment box — comment boxes are canvas's shared *interactive*
+primitive, this is its shared *drawing* primitive.
 
-It is **generic**: it knows shapes and five visual **states** — `base`, `highlight`, `emphasis`
-(grew — bigger node), `alert` (problem — dashed red), `new` — and nothing about any domain.
-Consumers map their own words onto the states, both in prose and as legend labels (the better-planning
-family maps drift → `alert`, ballooned → `emphasis`, and so on — see `html-artifacts.md`). Because
-the scene is a *document*, not a drawing, the agent reads and edits it — which is the foundation for
-a future drag-and-edit board. Full schema, layouts, states, legend, and the editable-board direction:
-`references/diagram-kit.md`. A self-contained demo is `assets/diagram-demo.html`.
+The renderer wraps [agentic-mermaid](https://github.com/adewale/agentic-mermaid): real layered
+layout, orthogonal routing around nodes, every mermaid family, ~35 looks and palettes, all
+synchronous — no browser, nothing fetched at render time. It verifies before writing, so a diagram
+that wouldn't render never reaches the page.
+
+It stays **generic**: five visual **states** — `base`, `highlight`, `emphasis` (grew), `alert`
+(problem — dashed red), `new` — written as `node:::alert` in the source, and nothing about any
+domain. Consumers map their own words onto the states, in prose and as legend labels (the
+better-planning family maps drift → `alert`, ballooned → `emphasis` — see `html-artifacts.md`).
+Because the source is a *document*, not a drawing, the agent reads it back and edits it with typed
+mutations rather than regenerating — which is the foundation for a future drag-and-edit board.
+Authoring, states, legend, looks, and the fallback: `references/diagram-kit.md`. A self-contained
+demo is `assets/diagram-demo.html`.
+
+It needs Node ≥ 22 and installs its renderer on first use (~16 MB, cached). Check with
+`node <skill-dir>/scripts/render_diagram.mjs --check`; on exit 3 fall back to
+`assets/diagram-kit.js`, the zero-dependency renderer — simpler layouts and straight lines, same
+five states, same legend. A diagram in the simpler kit beats no diagram.
 
 Keep the CSS components for *linear* shapes (pipelines, layers, state cards — they're cheaper); reach
-for the kit when the shape is a 2D graph the CSS boxes can't draw.
+for the kit when the shape is a graph the CSS boxes can't draw.
 
 ## Page quality bar
 
 Canvas pages follow the better-planning family's design language (`assets/overview-template.html`, component
 table in `html-artifacts.md`): self-contained except for the canvas JS blocks (comment capture,
-auto-reload, and the optional diagram kit); diagrams are CSS-only for linear shapes or the SVG
-diagram kit for graphs; options compared *on the page* with trade-offs visible, recommendations marked.
+auto-reload, and the optional diagram legend) and any rendered `.svg` sibling; diagrams are CSS-only
+for linear shapes or the diagram kit for anything with a real shape; options compared *on the page*
+with trade-offs visible, recommendations marked.
 Stable, meaningful `data-review-id`s (`decision-3-storage`, `sec-milestones`) — they appear in
 the feedback JSON and in your replies, and they let consecutive rounds diff cleanly.
 
