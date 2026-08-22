@@ -31,3 +31,7 @@ This is orientation, not reporting. Don't summarize everything you read, generat
 ## Closing contract
 
 If the session does real work outside a sibling skill, open or update the work's `## <slug>` section in `handoff.md` as the work moves — not at "the end", which sessions never announce: what moved, what's next, and the **verdict** — what was actually observed running, in plain words, or "none". A session that produced only conversation says so. Skip only if `/work-discover` or `/work-implement` is keeping this session's entry.
+
+**A line is a line.** A dated entry is one line, roughly thirty words. A field that wants a second sentence is pointing at detail that already lives somewhere addressable — the PR body, the commit message, the plan; name the artifact instead of reproducing it. Prior entries are never rewritten, amplified, or summarized: updating a section means appending its next line.
+
+**`handoff.md` and a live loop's `progress.txt` are the only ledgers.** A parallel narrative journal — session notes rewritten as prose each pass, a status file no skill reads — is drift surface competing with the memory files that are load-bearing. Where a repo has grown one, stop appending to it; its history stays in git.

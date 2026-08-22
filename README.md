@@ -35,7 +35,10 @@ There is deliberately no `/wrap` skill — every skill carries the same closing
 contract: open the work's `handoff.md` section when work starts and keep it
 updated as things move (sessions end without warning, so "write it at the end"
 is how entries don't get written): what moved, what's next, and the
-**verdict** — what was actually observed running, or "none".
+**verdict** — what was actually observed running, or "none". An entry is one
+line (~30 words) that rides a work commit — overflow names an artifact, prior
+entries are never rewritten, and bookkeeping never ships as its own commit
+chain.
 
 ### The memory model
 
