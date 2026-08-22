@@ -22,18 +22,23 @@ The server is started detached (`… &`), so nothing ties its life to your sessi
 it from sticking around:
 
 - **Reap before you start.** Free the target port first so stale servers don't pile up across
-  sessions: `pkill -f "canvas_server.py.*--port <port>"` (or `lsof -ti :<port> | xargs -r kill`).
+  sessions: `lsof -ti :<port> | xargs -r kill`. **Kill by port, not by pattern** —
+  `pkill -f "canvas_server.py.*--port <port>"` also matches *your own shell*, whose command line
+  contains that string, so it kills the very command that ran it (exit 143/144, no server started,
+  and it looks like the server failed to launch). Pattern-killing is only safe when the pattern
+  can't match the killing command itself.
 - **Idle self-shutdown (automatic).** The server exits itself after `--idle-timeout` seconds with
   no request (default **900 = 15 min**). The page polls `version.json` every ~3s, so an open tab
   keeps it alive; once the tab/session is gone, the clock runs out and the process stops on its own.
   This is the safety net for "user just closed the session" — pass `0` to disable in the rare case
   you want a long-lived server.
-- **Kill explicitly when done.** `pkill -f canvas_server.py`, or by port. The idle-timeout is the
-  fallback, not a substitute.
+- **Kill explicitly when done.** `lsof -ti :<port> | xargs -r kill`. The idle-timeout is the
+  fallback, not a substitute. To sweep every canvas server at once, `pkill -f canvas_server.py` is
+  fine — that pattern doesn't match the killing command.
 
-For guaranteed cleanup on normal session exits, a harness **SessionEnd hook** can run the `pkill`
-above — belt-and-suspenders on top of the idle-timeout, but it's per-machine `settings.json` config
-and won't fire on a hard close/crash, which is exactly why the idle-timeout exists.
+For guaranteed cleanup on normal session exits, a harness **SessionEnd hook** can run that sweep —
+belt-and-suspenders on top of the idle-timeout, but it's per-machine `settings.json` config and
+won't fire on a hard close/crash, which is exactly why the idle-timeout exists.
 
 ## Comment capture block
 
@@ -171,10 +176,11 @@ stays canonical), regenerate with the next decision, bump the version.
 
 **Explainer page** — no decision pending, just "look at this": architecture, a diff's story, a
 pipeline. Comment boxes on each section invite reactions; the live loop turns reactions into a
-conversation. When the thing to look at is a node-and-arrow graph (a concept map, an architecture,
-a system shape), draw it with the **diagram kit** (`references/diagram-kit.md`) rather than
-hand-authoring SVG — its live legend lets the reader toggle parts of the diagram on and off, and a
-comment box beside it captures their reaction like any section.
+conversation. When the thing to look at has a shape (a concept map, an architecture, an exchange
+over time), draw it with the **diagram kit** (`references/diagram-kit.md`) — author Mermaid source,
+render it to a sibling `.svg`, point the page at it — rather than hand-authoring SVG. Its live
+legend lets the reader toggle parts of the diagram on and off, and a comment box beside it captures
+their reaction like any section.
 
 **Doc-review page** — the full markdown source of a real artifact (a PRD, a plan, any doc),
 rendered live with a comment box per `##` section. Built from `assets/docview-template.html`

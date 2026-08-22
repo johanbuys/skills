@@ -72,7 +72,7 @@ Usable on their own, not part of any family.
 
 | Skill | What |
 |---|---|
-| [`canvas`](skills/canvas/SKILL.md) | A served-HTML interactive surface for agents: present anything as a page with per-section comment boxes, and run a live loop where a browser submit wakes the agent and reloads the page. Works over SSH/tailnet where `file://` can't. Several skills sit on it; also useful on its own. |
+| [`canvas`](skills/canvas/SKILL.md) | A served-HTML interactive surface for agents: present anything as a page with per-section comment boxes, and run a live loop where a browser submit wakes the agent and reloads the page. Works over SSH/tailnet where `file://` can't. Also draws the diagrams: Mermaid source rendered to publication-quality SVG — any family — with a legend that toggles parts of the picture on and off. Several skills sit on it; also useful on its own. |
 | [`study`](skills/study/SKILL.md) | A personal, cross-project learning queue + tutor. Capture topics worth understanding into a dumb home-dir backlog (`~/.study/topics.md`) from anywhere, then run a guided, canvas-driven, recall-checked deep dive on any one — grounded in your real code, a scaffolded sandbox, or purely conceptual. |
 
 ## The better-planning family (frozen)
