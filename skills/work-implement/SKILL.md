@@ -18,7 +18,7 @@ On a work branch — never main — create `progress.txt` at the repo root, **co
 
 1. **Contract** — how we'll know the whole thing worked, in plain words: which tests, what gets observed running, what the human will look at. User-facing acceptance criteria as plain sentences.
 2. **Tasks** — a checklist derived from the plan; each task is one plain sentence plus *done when* (observable behaviour) and *check by* (the command, test, or thing to look at). Size tasks to their complexity — a one-file change is one task; don't shred work into ceremony.
-3. **Breadcrumbs** — append-only log: what each dispatch did and ran, fix rounds, parked findings with rulings, and the gotchas iteration N+1 shouldn't rediscover.
+3. **Breadcrumbs** — append-only log: what each dispatch did and ran, fix rounds, parked findings with rulings, and the gotchas iteration N+1 shouldn't rediscover. A breadcrumb is an appended one-line fact, never narrative prose and never a rewrite of earlier lines — the file is read by subagents mid-loop, not by posterity.
 
 Then read the plan once and scan for conflicts — tasks that contradict each other, the contract, or the constitution. Ask the human about all of it in one batched question before task 1, not one interrupt per discovery.
 
@@ -56,6 +56,8 @@ Then delete `progress.txt` and `plans/<slug>.md` in the final commit. The PR is 
 
 Not a task-graph manager, and not process for its own sake. `progress.txt` stays one file — no per-task workspaces, no report files, no scripts; statuses are checkboxes plus appended fact lines, no dependency graphs. If the bookkeeping starts outweighing the code, the tasks are sized wrong.
 
+**Bookkeeping never ships alone.** A status flip and its breadcrumb ride the task's own code commit; the handoff line rides the close-out. A per-step journal chain — "loop opened", "dispatch done", "gate passed", "PR open", "merged" as five ledger-only commits — is ceremony, not history: git already timestamps every one of those moments. Budget: at most one ledger-only commit per feature close-out, none per step. (Origin: fathom's Aug 2026 feature branch ran 95 bookkeeping-only commits out of 135, growing a 1,500-line `progress.txt` that outlived the loop it belonged to.)
+
 ## Closing contract
 
-Open this work's `## <slug>` section in `handoff.md` (repo root; create the file if needed) **when the loop starts**, and update the entry as tasks complete and at every stopping point: what moved, what's next, and the **verdict** — what was actually observed running, in plain words, or "none". Sessions end without warning; an entry written only "at the end" is an entry that doesn't get written. A session that produced only conversation says so.
+Open this work's `## <slug>` section in `handoff.md` (repo root; create the file if needed) **when the loop starts**, and update the entry as tasks complete and at every stopping point: what moved, what's next, and the **verdict** — what was actually observed running, in plain words, or "none". Sessions end without warning; an entry written only "at the end" is an entry that doesn't get written. A session that produced only conversation says so. An update is an appended one-line dated entry (see `work-start`'s line cap), committed with the work it describes — never its own commit per step.
