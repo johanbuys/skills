@@ -27,7 +27,7 @@ Give the human the artifact and the one line on how to open it: a double-clickab
 
 ## When it's answered
 
-Say the verdict in plain words — the question, and what the artifact showed. Feed it back to whatever invoked this (usually `/work-discover`, which folds it into the plan and its `handoff.md` entry); a settled direction worth keeping becomes an ADR. Invoked standalone, write the `handoff.md` entry yourself — dated, under the work's `## <slug>` section, verdict being what the human actually experienced. The artifact dies unless the human wants it kept on a throwaway branch.
+Say the verdict in plain words — the question, and what the artifact showed. Feed it back to whatever invoked this (usually `/work-discover`, which folds it into the plan and its `handoff.md` entry); a settled direction worth keeping becomes an ADR in `docs/adr/`, following `work-discover/adr-template.md`. Invoked standalone, write the `handoff.md` entry yourself — dated, under the work's `## <slug>` section, verdict being what the human actually experienced. The artifact dies unless the human wants it kept on a throwaway branch.
 
 ## Guardrail
 

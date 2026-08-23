@@ -10,7 +10,7 @@ Take an idea, thought, feature, or PRD to **shared understanding** between human
 
 ## Ground yourself
 
-Read `CONTEXT.md` (repo root) and use its vocabulary. Check `docs/adr/` before proposing a direction that touches decided ground; when a direction gets chosen or rejected for a reason worth keeping, write a new ADR.
+Read `CONTEXT.md` (repo root) and use its vocabulary. Check `docs/adr/` before proposing a direction that touches decided ground; when a direction gets chosen or rejected for a reason worth keeping, write a new ADR — [adr-template.md](adr-template.md) is the shape, and its **Alternatives considered** section is the part that stops the next agent re-litigating the same debate.
 
 If the repo has a `CONSTITUTION.md` (root), it is binding law — a direction that conflicts with a MUST principle either changes or openly proposes an amendment; law changes deliberately, never by drift. If there is no constitution and the same standing rule keeps coming up, you may propose founding one — but only the human legislates: never scaffold it yourself.
 
