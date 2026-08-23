@@ -11,6 +11,8 @@ A prototype is throwaway code that answers a question. This skill is the dispatc
 
 Tell the human, in one or two sentences: the question this artifact will answer, and what they will get to open or run. If the question came from you rather than from them, wait for a nod before building. The first mention of an artifact must never be in the past tense.
 
+The artifact is never the first place a design decision appears. Name the direction you'd take — your recommendation in a line, plus one or two real alternatives when the human might see it differently or has no opinion yet to lean on. Taste calls — UI, interface shapes, data structures, and stack or architecture when they're genuinely open — belong to the human and are made at the offer, before the build. The offer is one message, not a ceremony; a nod is enough.
+
 If the question's vocabulary came from an issue or doc (a "spike", a codename), say what it means in plain words the first time you use it.
 
 ## Dispatch
@@ -18,6 +20,7 @@ If the question's vocabulary came from an issue or doc (a "spike", a codename), 
 One fresh builder subagent per artifact — parallel builders only for deliberately different takes on the same question (three UI variants, two competing state models). The dispatch contains:
 
 - the question, verbatim, and the artifact's home — the session scratchpad for pure logic demos; next to the code it probes when repo context matters, clearly named as throwaway; never committed to main;
+- the path to `CONTEXT.md` when it exists, so the artifact speaks the domain's language — and the note that beyond what the offer settled, the builder builds in whatever is quickest: a throwaway prototype's stack is not a decision;
 - the rules: invoke the `/prototype` skill (from mattpocock/skills) when installed — the essence fallback below is for when it is *absent*; paraphrasing an installed skill is a skip, not a fallback. Without it: clearly marked throwaway, trivial to run, no persistence, no polish, the full state surfaced after every action;
 - the reply contract: return the artifact path and one line on how to open it — not an analysis, not conclusions.
 
@@ -27,7 +30,7 @@ Give the human the artifact and the one line on how to open it: a double-clickab
 
 ## When it's answered
 
-Say the verdict in plain words — the question, and what the artifact showed. Feed it back to whatever invoked this (usually `/work-discover`, which folds it into the plan and its `handoff.md` entry); a settled direction worth keeping becomes an ADR in `docs/adr/`, following `work-discover/adr-template.md`. Invoked standalone, write the `handoff.md` entry yourself — dated, under the work's `## <slug>` section, verdict being what the human actually experienced. The artifact dies unless the human wants it kept on a throwaway branch.
+Say the verdict in plain words — the question, and what the artifact showed. Feed it back to whatever invoked this (usually `/work-discover`, which folds it into the plan and its `handoff.md` entry); a settled direction that passes `work-discover`'s ADR bar (hard to reverse, surprising without context, a real trade-off) becomes an ADR in `docs/adr/`, following `work-discover/ADR-FORMAT.md`. Invoked standalone, write the `handoff.md` entry yourself — dated, under the work's `## <slug>` section, verdict being what the human actually experienced. The artifact dies unless the human wants it kept on a throwaway branch.
 
 ## Guardrail
 
