@@ -10,7 +10,7 @@ Orient this session. Read the repo's memory, find where work stands, name **one*
 
 ## Read, in order
 
-1. `CONTEXT.md` (repo root) — the project's shared language and non-discoverable truths. Use its vocabulary for the rest of the session.
+1. `CONTEXT.md` (repo root) — the project's shared language. Use its vocabulary for the rest of the session. If `CONTEXT-MAP.md` exists instead, the repo has multiple contexts — read the map, then the `CONTEXT.md` of whichever context the inflight work touches.
 2. `handoff.md` (repo root) — where each inflight piece of work stands: one `## <slug>` section per piece, dated entries of *what moved · what's next · verdict*.
 3. `progress.txt` — only if it exists on the current branch. Its presence means an implementation loop is mid-flight; it holds that loop's validation contract, task checklist, and breadcrumbs.
 
