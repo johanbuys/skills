@@ -47,7 +47,7 @@ When every box is checked: one fresh reviewer on the most capable model reads th
 Before merge, one pass over `progress.txt` and the plan while they still exist:
 
 - a durable gotcha an agent could *not* rediscover from the repo → `CONTEXT.md` (created by its first promotion — never scaffolded empty)
-- a decision and its why → `docs/adr/`
+- a decision and its why → `docs/adr/`, in the shape of `work-discover/adr-template.md` (context, decision, alternatives considered, consequences; superseded rather than amended)
 - everything else dies with the files
 
 Then delete `progress.txt` and `plans/<slug>.md` in the final commit. The PR is the unit of record.
