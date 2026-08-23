@@ -2,7 +2,6 @@
 
 Date: YYYY-MM-DD
 Status: accepted | superseded by [NNNN](NNNN-slug.md)
-Work: <slug from handoff.md, or "cross-cutting">
 
 <!--
 Lives at `docs/adr/NNNN-slug.md`. NNNN is the next unused four-digit number —

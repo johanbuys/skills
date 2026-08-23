@@ -46,8 +46,9 @@ When every box is checked: one fresh reviewer on the most capable model reads th
 
 Before merge, one pass over `progress.txt` and the plan while they still exist:
 
-- a durable gotcha an agent could *not* rediscover from the repo → `CONTEXT.md` (created by its first promotion — never scaffolded empty)
-- a decision and its why → `docs/adr/`, in the shape of `work-discover/adr-template.md` (context, decision, alternatives considered, consequences; superseded rather than amended)
+- a durable gotcha an agent could *not* rediscover from the repo → `AGENTS.md` (repo root), the cross-vendor agent-instructions file. Bootstrap on first promotion: if only `CLAUDE.md` exists, move its content into `AGENTS.md` and leave `CLAUDE.md` as a symlink to it; if neither exists, create `AGENTS.md` plus the `CLAUDE.md` symlink; if only `AGENTS.md` exists, add the symlink. Both existing as separate real files means someone diverged them deliberately — flag it and touch neither. Never `CONTEXT.md` — that is a glossary, and it stays pure.
+- a term that caused real friction → the owning `CONTEXT.md`, in the shape of `work-discover/CONTEXT-FORMAT.md` (created by its first promotion — never scaffolded empty)
+- a decision and its why → `docs/adr/`, in the shape of `work-discover/ADR-FORMAT.md` (context, decision, alternatives considered, consequences; superseded rather than amended)
 - everything else dies with the files
 
 Then delete `progress.txt` and `plans/<slug>.md` in the final commit. The PR is the unit of record.
