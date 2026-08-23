@@ -43,6 +43,8 @@ If a `CONTEXT-MAP.md` exists at the root, the repo has multiple contexts. The ma
 │       └── docs/adr/
 ```
 
+A session that spans contexts reads every glossary it touches, and a term defined in more than one is never used bare — qualify it ("fulfillment's Order") or ask which one the human means. Founding a new context is a rename-first, human-decided, ADR-recorded move; [CONTEXT-FORMAT.md](CONTEXT-FORMAT.md) has the bar.
+
 Create files lazily: only when you have something to write. If no `CONTEXT.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
 
 ## Offer ADRs sparingly

@@ -58,3 +58,9 @@ The skill infers which structure applies:
 - If neither exists, create a root `CONTEXT.md` lazily when the first term is resolved
 
 When multiple contexts exist, infer which one the current topic relates to. If unclear, ask.
+
+## Founding a split
+
+One root `CONTEXT.md` is the default, even for a monorepo touching many packages. A term collision is always answered by a rename first — sharpen, pick the canonical word, list the loser under `_Avoid_`. A context split is the last resort: founded only when one term needs two correct meanings, because a rename would fight how the domain experts on each side genuinely speak. That is the human's call, recorded as an ADR — never the agent's.
+
+Size never founds a map — a big but consistent glossary gets subheadings, not a split. A term lives in exactly one place: its context's glossary, or the map's shared section when it genuinely crosses the seam. A map replaces the root `CONTEXT.md`; the two never coexist.
