@@ -23,7 +23,12 @@ consistency strategy named with its failure modes · idempotency addressed · da
 one cost/scale trade-off · one thing explicitly out of scope.
 
 ## After diag-3
-Write `learner.baseline: {debug: x/2 in Nm, review: x/5, design: x/5, note: "<one line>"}`. Set the
-queue to the first ladder items of `focus` (run `setup` first if no track exists). Say, in plain
-words, what the three numbers suggest — usually fluency (blank-file writing) slips first and
-judgment (review, design) holds; say which it is here, with the evidence.
+Write `learner.baseline: {debug: x/2 in Nm, review: x/5, design: x/5, note: "<one line>"}`. Say, in
+plain words, what the three numbers suggest — usually fluency (blank-file writing) slips first and
+judgment (review, design) holds; say which it is here, with the evidence. Then:
+- If `.dojo/tracks/<learn>.yaml` exists: set the queue to its first ladder items and, if `focus` is
+  still `diagnostics`, propose `focus: <learn>` in one sentence (the learner edits it).
+- If it does not: leave the queue empty and end with the exact commands to run before the next
+  session — `/sensei setup <learn> [capstone]` and `/sensei setup <each sharpen track> --sharpen` —
+  filled in from `learner.learn` and `learner.sharpen`. Setup is a separate command, not a session.
+  The next `/sensei start` with an empty queue and no track repeats this instruction and stops.
