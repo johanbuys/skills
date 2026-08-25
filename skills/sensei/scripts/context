@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Everything the sensei needs at the top of a turn. Safe in any harness; silent about nothing.
+h="${SENSEI_HOME:-$HOME/.sensei}"; here="$(cd "$(dirname "$0")" && pwd)"
+echo "## Now"; date '+%F %H:%M (%a)'
+echo "## Learner model"
+[ -f "$h/learner.yaml" ] && cat "$h/learner.yaml" || echo "NO LEARNER MODEL — see First run."
+echo "## Last 5 sessions"
+[ -s "$h/log.jsonl" ] && tail -n 5 "$h/log.jsonl" || echo "(no sessions yet)"
+echo "## Attendance"; "$here/streak"
+echo "## Tracks on disk"
+ls "$h/tracks/" 2>/dev/null || echo "(none — /sensei setup <track>)"
+[ -f "$h/session.json" ] && { echo "## OPEN SESSION"; cat "$h/session.json"; "$here/clock.sh" | jq -r '.hookSpecificOutput.additionalContext'; }
+exit 0

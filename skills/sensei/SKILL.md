@@ -8,15 +8,15 @@ hooks:
     - matcher: "Edit|Write|MultiEdit|NotebookEdit"
       hooks:
         - type: command
-          command: "${CLAUDE_SKILL_DIR}/scripts/guard-kata.sh"
+          command: "bash -c 'for d in \"$CLAUDE_SKILL_DIR\" \"$CLAUDE_PROJECT_DIR/.claude/skills/sensei\" \"$HOME/.claude/skills/sensei\"; do [ -x \"$d/scripts/guard-kata.sh\" ] && exec \"$d/scripts/guard-kata.sh\"; done; exit 0'"
   UserPromptSubmit:
     - hooks:
         - type: command
-          command: "${CLAUDE_SKILL_DIR}/scripts/clock.sh"
+          command: "bash -c 'for d in \"$CLAUDE_SKILL_DIR\" \"$CLAUDE_PROJECT_DIR/.claude/skills/sensei\" \"$HOME/.claude/skills/sensei\"; do [ -x \"$d/scripts/clock.sh\" ] && exec \"$d/scripts/clock.sh\"; done; exit 0'"
   Stop:
     - hooks:
         - type: command
-          command: "${CLAUDE_SKILL_DIR}/scripts/debrief-gate.sh"
+          command: "bash -c 'for d in \"$CLAUDE_SKILL_DIR\" \"$CLAUDE_PROJECT_DIR/.claude/skills/sensei\" \"$HOME/.claude/skills/sensei\"; do [ -x \"$d/scripts/debrief-gate.sh\" ] && exec \"$d/scripts/debrief-gate.sh\"; done; exit 0'"
 ---
 
 # Sensei
@@ -31,12 +31,12 @@ Everything lives in `~/.sensei/` (personal, cross-project — the learner is a p
 katas are written and committed in the **dojo**, a repo path named in `learner.yaml`. Full contract
 in `references/layout.md` — read it before touching the files.
 
-## Context the harness injects
-!`date '+%F %H:%M (%a)'`
-!`cat "${SENSEI_HOME:-$HOME/.sensei}/learner.yaml" 2>/dev/null || echo "NO LEARNER MODEL — see First run."`
-!`tail -n 5 "${SENSEI_HOME:-$HOME/.sensei}/log.jsonl" 2>/dev/null || echo "(no sessions yet)"`
-!`"${CLAUDE_SKILL_DIR}/scripts/streak" 2>/dev/null || echo "sessions 0"`
-!`ls "${SENSEI_HOME:-$HOME/.sensei}/tracks/" 2>/dev/null || echo "(no tracks — /sensei setup <track>)"`
+## Context
+!`"${CLAUDE_SKILL_DIR}/scripts/context"`
+
+If no context block appears above (a harness without `!` injection), run `scripts/context` from
+this skill's directory yourself, first, and read it. It prints the date, the learner model, the
+last five log lines, attendance, and the tracks on disk — or "NO LEARNER MODEL" (see First run).
 
 ## First run
 If there is no learner model: `mkdir -p ~/.sensei && cp "${CLAUDE_SKILL_DIR}/assets/learner-template.yaml"
@@ -46,7 +46,7 @@ committed), and one line of `context`. Fill `home_lang`, `learn`, `sharpen`, `do
 the first three sessions are diagnostics with the agent silent, and stop. No track, no kata, no
 curriculum. Every later edit to the file comes from the Log phase, `setup`, or the diagnostics.
 
-## Dispatch on `$0`
+## Dispatch on the argument (`$0` in Claude Code; otherwise the first word after `/sensei`)
 - (empty) or `start` → today's session. If `queue[0].kind` is `diagnostic`, follow
   `references/diagnostics.md` instead of the phases below.
 - `done` → jump to **explain-back**.
@@ -105,6 +105,13 @@ evidence says, never that they are doing great.
 - State changes come from `references/rules.md`. Derived things (streak, counts) are never stored.
 - Track switches are proposed in one sentence; the learner decides by editing `learner.focus`.
 - Coverage is the ladder's job; adaptivity is the kata's. Never pre-generate lessons.
+
+## Harnesses without hooks (opencode, codex, …)
+The three hooks are Claude Code enforcement; elsewhere they do not fire and the rules are yours to
+keep. Run `scripts/clock.sh` at every phase change and before every reply during the kata, and
+obey its `SENSEI CLOCK` line. Never edit inside `kata_dir` after setup — the guard is you. Before
+ending a session run `scripts/debrief-gate.sh`; if it prints a `block`, you are not done. All
+scripts read `~/.sensei/session.json` and are silent when no session is open.
 
 ## What this skill is not
 Not a course (the ladder is a checklist with an order, the lessons are made daily). Not a deep-dive
