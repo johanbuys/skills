@@ -1,0 +1,20 @@
+track: nest
+lang: ts
+toolchain: "node --version"
+sources: [https://docs.nestjs.com/]
+ladder:
+  - {slug: modules,      name: "modules and the app tree",  prereqs: [],             done: "a second module imported by AppModule"}
+  - {slug: providers-di, name: "providers and injection",   prereqs: [modules],      done: "a service injected into a controller"}
+  - {slug: dto-pipes,    name: "DTOs and validation pipes", prereqs: [providers-di], done: "POST returns 400 on a bad body"}
+  - {slug: guards,       name: "guards",                    prereqs: [providers-di], done: "a route returns 403 without the header"}
+  - {slug: interceptors, name: "interceptors",              prereqs: [providers-di], done: "responses wrapped in {data}"}
+capstone:
+  name: gym-app
+  nouns: [Workout, Set, Exercise]
+  bricks:
+    - {n: 1, concept: modules,      brick: "scaffold + GET /health",        visible: "curl 200"}
+    - {n: 2, concept: providers-di, brick: "exercise catalogue service",    visible: "GET /exercises"}
+    - {n: 3, concept: dto-pipes,    brick: "POST /sets rejects a bad body", visible: "400"}
+    - {n: 4, concept: guards,       brick: "only the owner reads a workout", visible: "403"}
+    - {n: 5, concept: interceptors, brick: "envelope every response",       visible: "{data}"}
+  scaffolded: []

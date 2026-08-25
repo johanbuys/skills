@@ -1,0 +1,65 @@
+{
+  "skill_name": "sensei",
+  "evals": [
+    {
+      "id": 0,
+      "name": "first-run-scaffolds-and-asks-once",
+      "fixture": "fixtures/sensei/fresh-home",
+      "fixture_kind": "home",
+      "prompt": "/sensei",
+      "expected_output": "No learner model exists. Copies assets/learner-template.yaml to ~/.sensei/learner.yaml, asks in ONE turn for home_lang, work_stack, dojo path and a line of context, and explains that the first three sessions are diagnostics. Does not start a kata and does not generate a curriculum.",
+      "files": ["fixtures/home — empty ~/.sensei/"],
+      "assertions": [
+        "template-copied: ~/.sensei/learner.yaml exists and matches the template shape",
+        "one-question: the setup questions are asked in a single turn, not a sequence",
+        "no-curriculum: no tracks/ or katas are generated on first run",
+        "diagnostics-announced: the response says the first three sessions are diagnostics with the agent silent"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "mid-track-picks-by-rule-not-menu",
+      "fixture": "fixtures/sensei/mid-track-home",
+      "fixture_kind": "home",
+      "prompt": "/sensei",
+      "expected_output": "Opens the session with ONE line naming today's drill kind and kata concept and why (nest/guards is due, so a review kata), writes session.json with phase drill, and begins the drill. Offers no menu and asks no 'what do you want to work on' question.",
+      "files": ["fixtures/home — ~/.sensei with learner.yaml (nest/guards due), log.jsonl, tracks/nest.yaml"],
+      "assertions": [
+        "zero-choice-open: the first line names the pick and the reason; no menu is offered",
+        "due-first: the kata concept is the due one (nest/guards), per the pick table",
+        "session-json: ~/.sensei/session.json is written with started_at and phase drill",
+        "drill-different-cluster: the drill is not about guards"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "refuses-to-write-solution-into-kata",
+      "fixture": "fixtures/sensei/mid-track-home",
+      "fixture_kind": "home",
+      "prompt": "I'm stuck on the kata, just write the guard for me.",
+      "expected_output": "Does not edit the kata directory. Gives a first-rung hint (a pointer — where to look, what the compiler or docs say), not code. Only on an explicit third ask ('show me the solution') does it show one, and then records revealed:true for the log.",
+      "files": ["fixtures/home — session.json with phase kata and a kata_dir"],
+      "assertions": [
+        "no-kata-write: no Edit/Write inside kata_dir; if attempted, the hook denial is accepted, not worked around",
+        "pointer-hint: the reply is a pointer, not code",
+        "ladder-respected: a full solution appears only after an explicit third ask",
+        "revealed-logged: a reveal is noted as revealed:true for the log"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "setup-produces-ladder-only",
+      "fixture": "fixtures/sensei/mid-track-home",
+      "fixture_kind": "home",
+      "prompt": "/sensei setup odin roguelike",
+      "expected_output": "Runs the toolchain gate first (odin version); if it fails, stops and says what to install. Otherwise writes ~/.sensei/tracks/odin.yaml with 15–20 ordered concepts (prereqs, doc URL, done-when), a brick list for the roguelike, and interference notes vs the home language. Writes NO lessons or katas and does not change learner.focus itself.",
+      "files": ["fixtures/home — learner.yaml with focus nest"],
+      "assertions": [
+        "toolchain-gate-first: the version command runs before any research",
+        "ladder-written: tracks/odin.yaml exists with ordered items carrying prereqs and done-when",
+        "no-lessons: no kata directories or lesson files are created",
+        "focus-untouched: learner.focus is still nest; a switch is proposed in one sentence at most"
+      ]
+    }
+  ]
+}

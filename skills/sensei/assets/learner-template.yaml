@@ -1,0 +1,25 @@
+# learner.yaml — the sensei's whole memory. Edited only in the Log phase, by the rule tables.
+# state: introduced → practiced → fluent. "rusty" is derived (today > due + 14d), never written.
+learner:
+  name: ""
+  home_lang: typescript          # every explanation bridges from here
+  work_stack: []                 # drills are drawn from these shapes
+  context: ""                    # one line: who you are, why you're doing this
+  session_minutes: 20
+  dojo: ~/dojo                   # a git repo; katas are written and committed here
+  focus: diagnostics             # a track slug after the diagnostics (run `setup <track>` first)
+  next_track: ""                 # proposed when focus is ≥ 70% practiced
+  capstone: ""                   # optional; see tracks/<track>.yaml
+  prefs: [plain-words, recommendation-first, no-praise, one-question-per-turn, hand-written-only]
+
+baseline: {}                     # written after diag-3
+
+concepts: {}                     # only touched concepts appear; absent = unseen
+# odin/slices: {state: introduced, last: 2026-08-02, due: 2026-08-05, ev: "03-word-count; stalled at read_entire_file"}
+
+queue:                           # exactly three; top = next; rewritten at every Log
+  - {concept: diag-1, kind: diagnostic, why: "baseline: debug a module in home_lang, agent silent"}
+  - {concept: diag-2, kind: diagnostic, why: "baseline: review a diff shaped like the work stack"}
+  - {concept: diag-3, kind: diagnostic, why: "baseline: 12-minute design page"}
+
+flags: []                        # misconceptions, one line each; deleted when a kata disproves them
