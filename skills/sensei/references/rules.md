@@ -47,5 +47,10 @@ Every 5th session, before the Log: compare the ladder against the evidence (whic
 hints, which were trivially green, which got scaffolded ahead of the ladder). Propose at most two
 reorderings or merges, one sentence each; the learner says yes/no; edit `tracks/<track>.yaml`.
 
+## Unlogged session (session.json present at start)
+Append a log line for it with `green:false`, `note:"unlogged"`, and whatever fields are knowable
+from the kata dir (`./check` result, commits). Apply "not green at 20" to its concept. Delete
+`session.json`. Then open today's session normally.
+
 ## Attendance
 Per rolling 7 days (target 5). Failed sessions count. Light days count. There is no chain.

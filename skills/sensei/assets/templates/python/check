@@ -2,5 +2,6 @@
 # Green = exit 0.
 cd "$(dirname "$0")" || exit 1
 out=$(python3 -m unittest -q 2>&1); rc=$?
-if [ $rc -eq 0 ]; then echo "PASS"; else echo "$out" | grep -m1 -E "FAIL|Error|error" || echo "FAIL"; fi
+clk=$([ -x ./clock ] && ./clock)
+if [ $rc -eq 0 ]; then echo "PASS${clk:+ · $clk}"; else echo "$out" | grep -m1 -E "FAIL|Error|error" || echo "FAIL"; [ -n "$clk" ] && echo "$clk"; fi
 exit $rc
