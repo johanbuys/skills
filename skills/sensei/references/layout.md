@@ -9,10 +9,10 @@ work is committed under the learner's own identity and the streak is visible in 
   learner.yaml        ← the whole memory; edited only in the Log phase, by the rule tables
   log.jsonl           ← one line per session, append-only, never rewritten
   tracks/<track>.yaml ← a ladder per track, written by `setup`, revised every 5th session
-  session.json        ← ephemeral: {started_at, phase, kata_dir}; the hooks read it
+  session.json        ← ephemeral: {started_at, phase, kata_dir}; exists = session open
   tangents.md         ← rabbit holes parked (only if the `study` skill is not installed)
 <dojo>/
-  katas/<date>-<track>-<concept>-<slug>/{README.md, <starter>, <tests>, check, meta.yaml}
+  katas/<date>-<track>-<concept>-<slug>/{README.md, <starter>, <tests>, check, clock, meta.yaml}
   experiments/        ← where a drill that got interesting is allowed to grow
 ```
 
@@ -36,11 +36,17 @@ Attendance = `scripts/streak`: sessions · green · distinct days in the last 7 
 
 ## tracks/<track>.yaml — see references/setup.md for the shape.
 
-## session.json — the hooks' contract
-`phase ∈ {drill, setup, kata, review, debrief}`. `guard-kata.sh` denies agent writes under
-`kata_dir` unless phase is `setup`. `clock.sh` injects `SENSEI CLOCK: m/20 · phase` on every prompt.
-`debrief-gate.sh` blocks ending the turn while a session is open unless phase is `debrief` and
-`learner.yaml` was modified after `started_at`. Deleting `session.json` closes the session.
+## session.json — the open-session marker
+`{"started_at": "<ISO, UTC>", "phase": "drill|setup|kata|review|debrief", "kata_dir": "…"}`.
+Its existence means a session is open. `scripts/clock` reads it (and is copied into each kata dir so
+`./check` prints the clock); `scripts/context` shouts UNLOGGED SESSION if it survives to the next
+start. Deleting it is how a session closes. No hooks read it — nothing does unless run.
+
+## Two commits per kata — the write guard
+1. `kata(setup): <track>/<concept> — red` — by the agent, right after scaffolding. The line.
+2. `kata(<track>): <concept> — green 9m` — by the learner, under their own git identity. The done signal.
+`scripts/context` prints the authorship of the last kata's commits; any agent-authored commit after
+`kata(setup)` is drift and gets said out loud.
 
 ## Templates
 `assets/templates/<lang>/check` — executable, runs from its own dir, exit 0 = green, prints one

@@ -3,20 +3,6 @@ name: sensei
 description: "A daily twenty-minute hand-coding practice session run by an agent that decides what comes next. A five-minute drill drawn from whatever is due across your tracks (fix this, read this, review this, which pattern?), then a kata you write by hand with exactly one TODO(human) where the decision lives, then explain-it-back, then a learner model in ~/.sensei/ is updated by rule tables — never by vibes. Tracks are either learn (one at a time, climbed by katas) or sharpen (already known, reviewed as it decays); a ladder per track made from the official docs plus real courses, katas generated the morning they're needed, optionally as bricks of a capstone codebase. Use for \"/sensei\", \"daily kata\", \"let's practice\", \"set up a track for <language or framework>\", \"how am I doing on <track>\". Manual only — never self-invoked."
 disable-model-invocation: true
 argument-hint: "[start|done|light|status|setup <track> [capstone]]"
-hooks:
-  PreToolUse:
-    - matcher: "Edit|Write|MultiEdit|NotebookEdit"
-      hooks:
-        - type: command
-          command: "bash -c 'for d in \"$CLAUDE_SKILL_DIR\" \"$CLAUDE_PROJECT_DIR/.claude/skills/sensei\" \"$HOME/.claude/skills/sensei\"; do [ -x \"$d/scripts/guard-kata.sh\" ] && exec \"$d/scripts/guard-kata.sh\"; done; exit 0'"
-  UserPromptSubmit:
-    - hooks:
-        - type: command
-          command: "bash -c 'for d in \"$CLAUDE_SKILL_DIR\" \"$CLAUDE_PROJECT_DIR/.claude/skills/sensei\" \"$HOME/.claude/skills/sensei\"; do [ -x \"$d/scripts/clock.sh\" ] && exec \"$d/scripts/clock.sh\"; done; exit 0'"
-  Stop:
-    - hooks:
-        - type: command
-          command: "bash -c 'for d in \"$CLAUDE_SKILL_DIR\" \"$CLAUDE_PROJECT_DIR/.claude/skills/sensei\" \"$HOME/.claude/skills/sensei\"; do [ -x \"$d/scripts/debrief-gate.sh\" ] && exec \"$d/scripts/debrief-gate.sh\"; done; exit 0'"
 ---
 
 # Sensei
@@ -31,12 +17,10 @@ Everything lives in `~/.sensei/` (personal, cross-project — the learner is a p
 katas are written and committed in the **dojo**, a repo path named in `learner.yaml`. Full contract
 in `references/layout.md` — read it before touching the files.
 
-## Context
-!`"${CLAUDE_SKILL_DIR}/scripts/context"`
-
-If no context block appears above (a harness without `!` injection), run `scripts/context` from
-this skill's directory yourself, first, and read it. It prints the date, the learner model, the
-last five log lines, attendance, and the tracks on disk — or "NO LEARNER MODEL" (see First run).
+## Context — first, every session
+Run `scripts/context` from this skill's directory and read it. It prints the date, an UNLOGGED
+SESSION warning if one is open, the learner model, the last five log lines, attendance, the tracks
+on disk, and the commit authorship of the last kata. No harness injects anything; you fetch it.
 
 ## First run
 If there is no learner model: `mkdir -p ~/.sensei && cp "${CLAUDE_SKILL_DIR}/assets/learner-template.yaml"
@@ -46,7 +30,7 @@ committed), and one line of `context`. Fill `home_lang`, `learn`, `sharpen`, `do
 the first three sessions are diagnostics with the agent silent, and stop. No track, no kata, no
 curriculum. Every later edit to the file comes from the Log phase, `setup`, or the diagnostics.
 
-## Dispatch on the argument (`$0` in Claude Code; otherwise the first word after `/sensei`)
+## Dispatch on the argument (the first word after `/sensei`)
 - (empty) or `start` → today's session. If `queue[0].kind` is `diagnostic`, follow
   `references/diagnostics.md` instead of the phases below.
 - `done` → jump to **explain-back**.
@@ -62,9 +46,11 @@ decompose ("this is two things"); no praise, no padding; announce every decision
 ("Picked defer: it is due and only introduced."); one question per turn. Tell the learner what the
 evidence says, never that they are doing great.
 
-## The session — the clock arrives in every prompt as `SENSEI CLOCK`
-0. **Open.** Write `~/.sensei/session.json` = `{"started_at":"<ISO now>","phase":"drill","kata_dir":""}`.
-   One line: today's drill kind + kata concept and why. Then begin. No menu.
+## The session — the clock is printed by every `./check` and by `scripts/context`
+0. **Open.** If context showed an UNLOGGED SESSION, log it first per `references/rules.md`. Then write
+   `~/.sensei/session.json` = `{"started_at":"<ISO now, UTC>","phase":"drill","kata_dir":""}`.
+   One line: today's drill kind + kata concept and why, and the wall-clock time the box closes.
+   Then begin. No menu.
 1. **Drill (0–5).** One item from `references/drills.md`, on a concept that is *due* in any track
    (sharpen tracks are mostly this), from a *different* cluster than today's kata. Hard cap 5 min — stop it mid-way if the clock says
    so. Skippable, never blocking. Records hit/miss only.
@@ -76,14 +62,19 @@ evidence says, never that they are doing great.
    a. Set `phase: setup`. Create `<dojo>/katas/<date>-<track>-<concept>-<slug>/` with `README.md`
       (Goal · Concept · Done when · Constraints), a starter where the boilerplate is written and
       exactly one `TODO(human)` region holds the *decision* (never wiring, config or CRUD), failing
-      tests, `check` copied from `assets/templates/<lang>/` (or the track's own), `meta.yaml`.
-      Difficulty from `references/rules.md`. Run `./check`; show it is RED.
-   b. Set `phase: kata` and `kata_dir`. Say the "Done when" line and the check command. Be silent.
+      tests, `check` copied from `assets/templates/<lang>/` (or the track's own) plus `scripts/clock`
+      copied next to it as `clock`, `meta.yaml`. Difficulty from `references/rules.md`. Run `./check`;
+      show it is RED. **Commit the scaffold yourself**: `git -C <dojo> add katas/<id> && git commit -m
+      "kata(setup): <track>/<concept> — red"`. That commit is the line: everything after it in the
+      kata dir is the learner's, and `git log` will say so.
+   b. Set `phase: kata` and `kata_dir`. Say the "Done when" line, the check command, and the closing
+      time. Be silent.
    c. While they work: Socratic answers only; run `./check` on request and quote the first failure.
       Hint ladder — first ask: a pointer (where to look, what to ask the compiler); second: a
       pattern-shaped snippet in a different domain; third, explicit "show me the solution": show
-      it and note `revealed: true`. Never write into the kata dir after setup; the hook refuses,
-      and the refusal is correct.
+      it and note `revealed: true`. Never write into the kata dir after setup — there is no hook
+      stopping you; the authorship line in tomorrow's context is the audit, and it must show only
+      the learner's commits after `kata(setup)`.
    d. Leave on `done` or when the clock reads ≥ 15.
 4. **Explain-back (15–19).** Read their file once. Run `./check`. ≤ 2 remarks (one idiom, one
    bug/edge), each ≤ 2 sentences, no rewritten code. ONE explain-it-back question, graded 0/1/2
@@ -92,13 +83,15 @@ evidence says, never that they are doing great.
 5. **Log (19–20).** Set `phase: debrief`. Apply `references/rules.md` literally: update the concept
    line (state, last, due, ev), rewrite `queue` (3 items), add/clear `flags`. Append ONE line to
    `log.jsonl` with every measured field. Tangents → `~/.study/topics.md` if the `study` skill is
-   installed, else `~/.sensei/tangents.md`. In the dojo: `git add katas/<id> && git commit -m
-   "kata(<track>): <concept> — <green|red> <m>m, <hints> hints, <transition>"`; then commit
-   `~/.sensei` if it is a repo. Print three lines: what happened · what changed in the model ·
-   tomorrow's pick and why. Delete `session.json`. Stop.
+   installed, else `~/.sensei/tangents.md`. **The learner commits their own kata** — ask for it if
+   it hasn't happened: `git commit -m "kata(<track>): <concept> — <green|red> <m>m"` under their
+   identity; that is the done signal. You commit `~/.sensei` if it is a repo. Print three lines:
+   what happened · what changed in the model · tomorrow's pick and why. Delete `session.json`.
+   A session is closed only when `session.json` is gone; if you stop before that, the next start
+   sees UNLOGGED SESSION and logs it as red.
 
 ## Hard rules
-- The kata directory is hand-written only after setup. Hints point; they never finish code.
+- The kata directory is hand-written after `kata(setup)`. Hints point; they never finish code.
 - Twenty minutes is a wall. At 20, log whatever exists as `green:false` and stop.
 - One concept per session. One *learn* track at a time; the next waits in `learner.next_track`.
   Sharpen tracks are never climbed — they only feed drills and reviews.
@@ -106,12 +99,12 @@ evidence says, never that they are doing great.
 - Track switches are proposed in one sentence; the learner decides by editing `learner.focus`.
 - Coverage is the ladder's job; adaptivity is the kata's. Never pre-generate lessons.
 
-## Harnesses without hooks (opencode, codex, …)
-The three hooks are Claude Code enforcement; elsewhere they do not fire and the rules are yours to
-keep. Run `scripts/clock.sh` at every phase change and before every reply during the kata, and
-obey its `SENSEI CLOCK` line. Never edit inside `kata_dir` after setup — the guard is you. Before
-ending a session run `scripts/debrief-gate.sh`; if it prints a `block`, you are not done. All
-scripts read `~/.sensei/session.json` and are silent when no session is open.
+## No hooks, by design
+Nothing here depends on a harness feature: no injected context, no permission hooks, no stop gate.
+The rails are structural instead — the clock rides on `./check`, the write guard is git authorship
+(agent commits the red scaffold, learner commits the green), and an unfinished session is caught
+at the next start rather than blocked at the end. The same skill behaves the same in Claude Code,
+opencode, codex, or a plain terminal with an agent in it.
 
 ## What this skill is not
 Not a course (the ladder is a checklist with an order, the lessons are made daily). Not a deep-dive
