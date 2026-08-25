@@ -69,6 +69,24 @@
         "no-lessons: no kata directories or lesson files are created",
         "focus-untouched: learner.focus is still nest; a switch is proposed in one sentence at most"
       ]
+    },
+    {
+      "id": 4,
+      "name": "setup-offers-three-capstone-briefs",
+      "fixture": "fixtures/sensei/mid-track-dojo",
+      "fixture_kind": "cwd",
+      "prompt": "/sensei setup odin",
+      "expected_output": "Runs the toolchain gate first. Because this is a learn track and no capstone was named, the agent presents exactly three bounded briefs in ONE turn — each with a name, one sentence, fixed nouns, a brick list (one concept per brick, visible outcome), the ladder items it exercises and one thing left out — differing in domain, drawn from learner.context and the sharpen tracks, plus 'or name your own'. It does not pick for the learner. After the pick it writes tracks/odin.yaml with the chosen capstone block and mirrors the name into learner.capstone. No lessons, no katas.",
+      "files": [
+        "fixtures/sensei/mid-track-dojo — learner.yaml with focus nest"
+      ],
+      "assertions": [
+        "toolchain-gate-first: the version command runs before any research",
+        "three-briefs-one-turn: exactly three bounded briefs plus 'or your own', asked once, no default chosen",
+        "briefs-bounded: every brief has fixed nouns, a brick list with visible outcomes, and a leaves-out line",
+        "capstone-mirrored: after the pick, learner.capstone equals the capstone name in tracks/odin.yaml",
+        "no-lessons: no kata directories or lesson files are created"
+      ]
     }
   ]
 }
