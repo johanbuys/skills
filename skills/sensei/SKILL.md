@@ -41,7 +41,9 @@ or the diagnostics.
 - `status` → ten plain-words lines: the ladder with each item's state, what is due, tomorrow's
   pick and why. No session.
 - `setup <track> [capstone]` / `setup <track> --sharpen` → `references/setup.md`. Writes
-  `.dojo/tracks/<track>.yaml`; sharpen mode also seeds its concepts as `practiced`. No session.
+  `.dojo/tracks/<track>.yaml` and `learner.capstone`; a learn track with no capstone named gets
+  three bounded briefs to pick from (or the learner's own); sharpen mode instead seeds its
+  concepts as `practiced`. No session.
 
 ## Voice
 Defaults, overridable by `learner.prefs`: plain words, no reference codes; recommendation first;

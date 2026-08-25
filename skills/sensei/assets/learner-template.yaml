@@ -9,7 +9,7 @@ learner:
   session_minutes: 20
   focus: diagnostics             # becomes the learn track after the diagnostics (run `setup <track>` first)
   next_track: ""                 # proposed when focus is ≥ 70% practiced
-  capstone: ""                   # optional; see tracks/<track>.yaml
+  capstone: ""                   # the learn track's real thing; written by `setup` (named or picked from 3 briefs)
   prefs: [plain-words, recommendation-first, no-praise, one-question-per-turn, hand-written-only]
 
 baseline: {}                     # written after diag-3
