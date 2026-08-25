@@ -24,6 +24,8 @@ See `assets/learner-template.yaml`. Rules that keep it maintainable by an LLM:
 - `queue` is exactly three items, top = next, rewritten at every Log.
 - `flags` are misconceptions in one line each; a line is deleted when a kata disproves it.
 - `baseline` is written once, after the diagnostics.
+- `learn` names the one track being climbed (`focus` once set up); `sharpen` lists tracks that only
+  feed drills and reviews. Their concepts share the same `concepts` map, namespaced `<track>/<slug>`.
 - Nothing countable is stored. Streak and totals come from `scripts/streak` over `log.jsonl`.
 
 ## log.jsonl — one line per session

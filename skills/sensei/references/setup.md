@@ -1,4 +1,4 @@
-# `setup <track> [capstone]` — produce a ladder, not a curriculum.
+# `setup <track> [capstone]` · `setup <track> --sharpen` — produce a ladder, not a curriculum.
 
 Output: one file, `~/.sensei/tracks/<track>.yaml`, plus a `check` template if the language has
 none. No lessons, no katas — those are generated one per session from the ladder and the learner
@@ -25,6 +25,12 @@ model. Pre-writing lessons is the planning trap; the ladder is a hypothesis revi
    example, then delete the example.
 5. **Say what you made** in three lines, and whether `learner.focus` should change (the learner edits it).
 
+## Sharpen mode
+Same research, same YAML with `mode: sharpen`, plus one extra step: seed every ladder item into
+`learner.concepts` as `{state: practiced, last: today, ev: "seeded by setup --sharpen"}` with `due`
+spread evenly over the next 30 days. Sharpen tracks are never `focus`; they are drill and review
+material. A concept that misses a drill twice is demoted to `introduced` and gets one kata.
+
 A capstone may need a concept before the ladder reaches it. The agent then *scaffolds* that code
 ("you'll meet this at ladder item N"), records it in `capstone.scaffolded`, and it becomes drill
 material later — "read this" first, then "fix this" — so the ladder catches up with the codebase.
@@ -32,6 +38,7 @@ material later — "read this" first, then "fix this" — so the ladder catches 
 ## Shape
 ```yaml
 track: nest
+mode: learn                       # learn (climbed by katas) | sharpen (seeded practiced, drills only)
 lang: ts                          # assets/templates/ts/check
 toolchain: "npx nest --version"
 sources: [https://docs.nestjs.com/, "<course 1>", "<course 2>"]

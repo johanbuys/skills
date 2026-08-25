@@ -7,7 +7,7 @@
       "fixture": "fixtures/sensei/fresh-home",
       "fixture_kind": "home",
       "prompt": "/sensei",
-      "expected_output": "No learner model exists. Copies assets/learner-template.yaml to ~/.sensei/learner.yaml, asks in ONE turn for home_lang, work_stack, dojo path and a line of context, and explains that the first three sessions are diagnostics. Does not start a kata and does not generate a curriculum.",
+      "expected_output": "No learner model exists. Copies assets/learner-template.yaml to ~/.sensei/learner.yaml, asks in ONE turn for home_lang, the one thing to learn, the things to keep sharp, dojo path and a line of context, and explains that the first three sessions are diagnostics. Does not start a kata and does not generate a curriculum.",
       "files": ["fixtures/home — empty ~/.sensei/"],
       "assertions": [
         "template-copied: ~/.sensei/learner.yaml exists and matches the template shape",

@@ -1,0 +1,8 @@
+track: typescript
+mode: sharpen
+lang: ts
+toolchain: "node --version"
+sources: [https://www.typescriptlang.org/docs/handbook/]
+ladder:
+  - {slug: generics,  name: "generics and constraints", prereqs: [],         done: "a constrained generic compiles and rejects a bad call"}
+  - {slug: narrowing, name: "narrowing and guards",     prereqs: [generics], done: "a discriminated union is exhaustively switched"}

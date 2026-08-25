@@ -1,4 +1,5 @@
 track: nest
+mode: learn
 lang: ts
 toolchain: "node --version"
 sources: [https://docs.nestjs.com/]

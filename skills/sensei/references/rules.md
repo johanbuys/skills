@@ -14,6 +14,11 @@ due after a session: introduced +3d · practiced +7d · fluent +30d.
 | green ∧ confidence ≤ 2 | keep; a second kata before promotion | +3d |
 | ≥ 3 compile/type errors on one syntax | no change; add a `flags` line; next micro-lesson = that syntax | — |
 | drill miss on a `fluent` concept | mark practiced, due today+3 | — |
+| drill miss twice on a sharpen-track concept | demote to introduced; one kata on it next | +2d |
+
+## Drill pick
+From concepts with `due ≤ today` in ANY track, prefer a sharpen track, then a cluster different
+from today's kata; if nothing is due, the concept with the nearest `due`. Never the kata's concept.
 
 ## Difficulty (1–5) from the target concept's state
 | state | difficulty | shape |

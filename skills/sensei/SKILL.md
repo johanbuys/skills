@@ -1,6 +1,6 @@
 ---
 name: sensei
-description: "A daily twenty-minute hand-coding practice session run by an agent that decides what comes next. A five-minute drill in your work stack (fix this, read this, review this, which pattern?), then a kata you write by hand with exactly one TODO(human) where the decision lives, then explain-it-back, then a learner model in ~/.sensei/ is updated by rule tables — never by vibes. One track at a time (a language or framework), a ladder made from the official docs plus real courses, katas generated the morning they're needed, optionally as bricks of a capstone codebase. Use for \"/sensei\", \"daily kata\", \"let's practice\", \"set up a track for <language or framework>\", \"how am I doing on <track>\". Manual only — never self-invoked."
+description: "A daily twenty-minute hand-coding practice session run by an agent that decides what comes next. A five-minute drill drawn from whatever is due across your tracks (fix this, read this, review this, which pattern?), then a kata you write by hand with exactly one TODO(human) where the decision lives, then explain-it-back, then a learner model in ~/.sensei/ is updated by rule tables — never by vibes. Tracks are either learn (one at a time, climbed by katas) or sharpen (already known, reviewed as it decays); a ladder per track made from the official docs plus real courses, katas generated the morning they're needed, optionally as bricks of a capstone codebase. Use for \"/sensei\", \"daily kata\", \"let's practice\", \"set up a track for <language or framework>\", \"how am I doing on <track>\". Manual only — never self-invoked."
 disable-model-invocation: true
 argument-hint: "[start|done|light|status|setup <track> [capstone]]"
 hooks:
@@ -40,8 +40,9 @@ in `references/layout.md` — read it before touching the files.
 
 ## First run
 If there is no learner model: `mkdir -p ~/.sensei && cp "${CLAUDE_SKILL_DIR}/assets/learner-template.yaml"
-~/.sensei/learner.yaml`, then ask — in ONE turn — for `home_lang`, `work_stack`, the `dojo` path (a
-git repo where katas will be committed), and one line of `context`. Fill those four fields, say that
+~/.sensei/learner.yaml`, then ask — in ONE turn — for `home_lang`, the one thing to *learn* and the things to *keep sharp*
+(each becomes a track: learn or sharpen), the `dojo` path (a git repo where katas will be
+committed), and one line of `context`. Fill `home_lang`, `learn`, `sharpen`, `dojo`, `context`, say that
 the first three sessions are diagnostics with the agent silent, and stop. No track, no kata, no
 curriculum. Every later edit to the file comes from the Log phase, `setup`, or the diagnostics.
 
@@ -52,8 +53,8 @@ curriculum. Every later edit to the file comes from the Log phase, `setup`, or t
 - `light` → low-energy day: drill only (8 min), then log. Counts as attendance.
 - `status` → ten plain-words lines: the ladder with each item's state, what is due, tomorrow's
   pick and why. No session.
-- `setup <track> [capstone]` → `references/setup.md`. Writes `~/.sensei/tracks/<track>.yaml`.
-  No session.
+- `setup <track> [capstone]` / `setup <track> --sharpen` → `references/setup.md`. Writes
+  `~/.sensei/tracks/<track>.yaml`; sharpen mode also seeds its concepts as `practiced`. No session.
 
 ## Voice
 Defaults, overridable by `learner.prefs`: plain words, no reference codes; recommendation first;
@@ -64,8 +65,8 @@ evidence says, never that they are doing great.
 ## The session — the clock arrives in every prompt as `SENSEI CLOCK`
 0. **Open.** Write `~/.sensei/session.json` = `{"started_at":"<ISO now>","phase":"drill","kata_dir":""}`.
    One line: today's drill kind + kata concept and why. Then begin. No menu.
-1. **Drill (0–5).** One item from `references/drills.md`, in `learner.home_lang` or the work stack,
-   from a *different* cluster than today's kata. Hard cap 5 min — stop it mid-way if the clock says
+1. **Drill (0–5).** One item from `references/drills.md`, on a concept that is *due* in any track
+   (sharpen tracks are mostly this), from a *different* cluster than today's kata. Hard cap 5 min — stop it mid-way if the clock says
    so. Skippable, never blocking. Records hit/miss only.
 2. **Micro-lesson (≤ 3 min, only while the kata concept is `unseen` or `introduced`).** ≤ 150 words,
    one `★ Insight`, one generic ≤ 8-line snippet in a domain that is NOT the kata's, bridged from
@@ -99,7 +100,8 @@ evidence says, never that they are doing great.
 ## Hard rules
 - The kata directory is hand-written only after setup. Hints point; they never finish code.
 - Twenty minutes is a wall. At 20, log whatever exists as `green:false` and stop.
-- One concept per session. One track at a time; the next track waits in `learner.next_track`.
+- One concept per session. One *learn* track at a time; the next waits in `learner.next_track`.
+  Sharpen tracks are never climbed — they only feed drills and reviews.
 - State changes come from `references/rules.md`. Derived things (streak, counts) are never stored.
 - Track switches are proposed in one sentence; the learner decides by editing `learner.focus`.
 - Coverage is the ladder's job; adaptivity is the kata's. Never pre-generate lessons.
