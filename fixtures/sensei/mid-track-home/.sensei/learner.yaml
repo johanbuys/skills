@@ -1,0 +1,27 @@
+learner:
+  name: Sam
+  home_lang: typescript
+  learn: nest
+  sharpen: [typescript, react]
+  context: "engineer at a Nest shop; Nest is new"
+  session_minutes: 20
+  dojo: ~/dojo
+  focus: nest
+  next_track: odin
+  capstone: gym-app
+  prefs: [plain-words, recommendation-first, no-praise, one-question-per-turn, hand-written-only]
+baseline: {debug: 2/2 in 11m, review: 3/5, design: 4/5, note: "fluency slipped; judgment holds"}
+concepts:
+  typescript/generics:     {state: practiced, last: 2026-08-10, due: 2026-08-24, ev: "seeded by setup --sharpen"}
+  typescript/narrowing:    {state: practiced, last: 2026-08-10, due: 2026-09-02, ev: "seeded by setup --sharpen"}
+  react/effects-cleanup:   {state: practiced, last: 2026-08-10, due: 2026-08-25, ev: "seeded by setup --sharpen"}
+  nest/modules:      {state: practiced,  last: 2026-08-20, due: 2026-08-27, ev: "brick 1 green 7m"}
+  nest/providers-di: {state: practiced,  last: 2026-08-21, due: 2026-08-28, ev: "brick 2 green, 1 hint on scope"}
+  nest/dto-pipes:    {state: practiced,  last: 2026-08-22, due: 2026-08-29, ev: "brick 3 green; forgot whitelist"}
+  nest/guards:       {state: introduced, last: 2026-08-23, due: 2026-08-26, ev: "brick 4 red at 20; retried"}
+queue:
+  - {concept: nest/guards, kind: review, why: "due; only introduced"}
+  - {concept: nest/interceptors, kind: new, why: "next on ladder; providers practiced"}
+  - {concept: experiment, kind: experiment, why: "every 5th session"}
+flags:
+  - "2026-08-23 believes a guard runs after pipes; it runs before"

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Green = exit 0. Node ≥ 22 strips TS types natively; no build step.
+cd "$(dirname "$0")" || exit 1
+out=$(node --test --test-reporter=dot ./*.test.ts 2>&1); rc=$?
+if [ $rc -eq 0 ]; then echo "PASS"; else echo "$out" | grep -m1 -E "not ok|Error|error" || echo "FAIL"; fi
+exit $rc

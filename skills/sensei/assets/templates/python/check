@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Green = exit 0.
+cd "$(dirname "$0")" || exit 1
+out=$(python3 -m unittest -q 2>&1); rc=$?
+if [ $rc -eq 0 ]; then echo "PASS"; else echo "$out" | grep -m1 -E "FAIL|Error|error" || echo "FAIL"; fi
+exit $rc
