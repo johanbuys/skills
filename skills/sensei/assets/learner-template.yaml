@@ -1,4 +1,4 @@
-# learner.yaml — the sensei's whole memory. Edited only in the Log phase, by the rule tables.
+# .dojo/learner.yaml — the sensei's whole memory. Edited only in the Log phase, by the rule tables.
 # state: introduced → practiced → fluent. "rusty" is derived (today > due + 14d), never written.
 learner:
   name: ""
@@ -7,7 +7,6 @@ learner:
   sharpen: []                    # tracks already known; seeded practiced, reviewed as they decay
   context: ""                    # one line: who you are, why you're doing this
   session_minutes: 20
-  dojo: ~/dojo                   # a git repo; katas are written and committed here
   focus: diagnostics             # becomes the learn track after the diagnostics (run `setup <track>` first)
   next_track: ""                 # proposed when focus is ≥ 70% practiced
   capstone: ""                   # optional; see tracks/<track>.yaml

@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 # Derived attendance — never stored. sessions total · green · distinct days in the last 7 (target 5).
-log="${SENSEI_HOME:-$HOME/.sensei}/log.jsonl"
-[ -s "$log" ] || { echo "sessions 0 · this week 0/5"; exit 0; }
-total=$(wc -l < "$log")
-green=$(jq -s 'map(select(.green==true))|length' "$log")
+root=$("$(dirname "$0")/dojo-root") || { echo "sessions 0 · this week 0/5"; exit 0; }
+log="$root/.dojo/log.jsonl"; [ -s "$log" ] || { echo "sessions 0 · this week 0/5"; exit 0; }
+total=$(wc -l < "$log"); green=$(jq -s 'map(select(.green==true))|length' "$log")
 since=$(date -d '6 days ago' +%F 2>/dev/null || date -v-6d +%F 2>/dev/null || python3 -c "import datetime;print((datetime.date.today()-datetime.timedelta(days=6)).isoformat())")
 week=$(jq -rs --arg since "$since" 'map(select(.date>=$since))|map(.date)|unique|length' "$log")
 echo "sessions $total · green $green · this week $week/5"

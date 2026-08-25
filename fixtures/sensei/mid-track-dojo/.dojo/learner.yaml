@@ -5,7 +5,6 @@ learner:
   sharpen: [typescript, react]
   context: "engineer at a Nest shop; Nest is new"
   session_minutes: 20
-  dojo: ~/dojo
   focus: nest
   next_track: odin
   capstone: gym-app
