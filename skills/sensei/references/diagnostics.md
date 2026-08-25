@@ -5,7 +5,7 @@ evidence. Each is 20 min, scored against a rubric; no hints, no Socratic help un
 15. Parametrised by `learner.home_lang`, the learn and sharpen tracks, and the capstone domain if any.
 
 ## diag-1 · debug (`home_lang`)
-Generate `<dojo>/katas/<date>-diag-debug/`: a ~60-line module in a small domain with **two** planted
+Generate `katas/<date>-diag-debug/`: a ~60-line module in a small domain with **two** planted
 bugs (one logic, one boundary) and tests that fail on both. Score: bugs found /2, time to green,
 whether they added a test. Note the approach (read first? ran tests first? printf?).
 

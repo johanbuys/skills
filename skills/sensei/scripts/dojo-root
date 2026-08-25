@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Prints the dojo root: $DOJO if set, else the nearest ancestor of cwd containing .dojo/. Exit 1 if none.
+[ -n "$DOJO" ] && { echo "$DOJO"; exit 0; }
+d="$PWD"; while [ "$d" != "/" ]; do [ -d "$d/.dojo" ] && { echo "$d"; exit 0; }; d=$(dirname "$d"); done
+exit 1

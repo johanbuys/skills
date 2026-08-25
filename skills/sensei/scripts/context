@@ -1,24 +1,21 @@
 #!/usr/bin/env bash
-# Everything the sensei needs at the top of a session. Run it first, in any harness.
-h="${SENSEI_HOME:-$HOME/.sensei}"; here="$(cd "$(dirname "$0")" && pwd)"
+# Everything the sensei needs at the top of a session. Run it first, from anywhere inside the dojo.
+here="$(cd "$(dirname "$0")" && pwd)"
 echo "## Now"; date '+%F %H:%M (%a)'
-if [ -f "$h/session.json" ]; then
-  echo "## UNLOGGED SESSION — log it first (green:false, note: unlogged), delete session.json, then begin"
-  cat "$h/session.json"; "$here/clock"
+root=$("$here/dojo-root") || { echo "## NO DOJO HERE — see First run (scripts/init)"; exit 0; }
+echo "## Dojo"; echo "$root"
+d="$root/.dojo"
+if [ -f "$d/session.json" ]; then
+  echo "## UNLOGGED SESSION — log it first (green:false, note: unlogged), delete .dojo/session.json, then begin"
+  cat "$d/session.json"; "$d/clock" 2>/dev/null || "$here/clock"
 fi
-echo "## Learner model"
-[ -f "$h/learner.yaml" ] && cat "$h/learner.yaml" || echo "NO LEARNER MODEL — see First run."
-echo "## Last 5 sessions"
-[ -s "$h/log.jsonl" ] && tail -n 5 "$h/log.jsonl" || echo "(no sessions yet)"
+echo "## Learner model"; cat "$d/learner.yaml" 2>/dev/null || echo "NO LEARNER MODEL — see First run."
+echo "## Last 5 sessions"; [ -s "$d/log.jsonl" ] && tail -n 5 "$d/log.jsonl" || echo "(no sessions yet)"
 echo "## Attendance"; "$here/streak"
-echo "## Tracks on disk"
-ls "$h/tracks/" 2>/dev/null || echo "(none — setup <track>)"
-dojo=$(sed -n 's/^ *dojo: *\([^ #]*\).*/\1/p' "$h/learner.yaml" 2>/dev/null | head -1); dojo="${dojo/#\~/$HOME}"
-if [ -n "$dojo" ] && [ -d "$dojo/.git" ]; then
-  last=$(ls -d "$dojo"/katas/*/ 2>/dev/null | sort | tail -1)
-  if [ -n "$last" ]; then
-    echo "## Last kata — commits touching it (author · subject); anything agent-authored after setup is drift"
-    git -C "$dojo" log --format='%an · %s' -- "${last#$dojo/}" 2>/dev/null | head -5
-  fi
+echo "## Tracks"; ls "$d/tracks/" 2>/dev/null | grep . || echo "(none — setup <track>)"
+last=$(ls -d "$root"/katas/*/ 2>/dev/null | sort | tail -1)
+if [ -n "$last" ] && [ -d "$root/.git" ]; then
+  echo "## Last kata — commits (author · subject); anything agent-authored after kata(setup) is drift"
+  git -C "$root" log --format='%an · %s' -- "${last#$root/}" 2>/dev/null | head -5
 fi
 exit 0

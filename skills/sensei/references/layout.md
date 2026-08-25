@@ -1,23 +1,28 @@
-# `~/.sensei/` layout & protocol
+# The dojo — layout & protocol
 
-Personal and cross-project: the learner is a person, so the model lives in the home dir (override
-with `SENSEI_HOME`). Katas live in the **dojo** — any git repo path named in `learner.dojo` — so the
-work is committed under the learner's own identity and the streak is visible in `git log`.
+One git repo holds the whole practice: learner model, log, tracks, katas. It is found from the
+current directory (nearest ancestor with `.dojo/`; `$DOJO` overrides), so nothing lives in the home
+dir and nothing needs a path in a config file. `.dojo/` is versioned — it *is* the history. Katas
+commit under the learner's own identity, so the streak is visible in `git log`.
 
 ```
-~/.sensei/
-  learner.yaml        ← the whole memory; edited only in the Log phase, by the rule tables
-  log.jsonl           ← one line per session, append-only, never rewritten
-  tracks/<track>.yaml ← a ladder per track, written by `setup`, revised every 5th session
-  session.json        ← ephemeral: {started_at, phase, kata_dir}; exists = session open
-  tangents.md         ← rabbit holes parked (only if the `study` skill is not installed)
 <dojo>/
-  katas/<date>-<track>-<concept>-<slug>/{README.md, <starter>, <tests>, check, clock, meta.yaml}
-  experiments/        ← where a drill that got interesting is allowed to grow
+  .dojo/
+    learner.yaml        ← the whole memory; edited only in the Log phase, by the rule tables
+    log.jsonl           ← one line per session, append-only, never rewritten
+    tracks/<track>.yaml ← a ladder per track, written by `setup`, revised every 5th session
+    clock               ← copied from the skill at init; `./check` calls it
+    session.json        ← ephemeral, gitignored: {started_at, phase, kata_dir}; exists = session open
+  katas/<date>-<track>-<concept>-<slug>/{README.md, <starter>, <tests>, check, meta.yaml}
+  experiments/          ← where a drill that got interesting is allowed to grow (TANGENTS.md too)
+  .vscode/settings.json ← autocomplete off
+  README.md
 ```
+
+`scripts/init` scaffolds all of it, idempotently, in the current directory.
 
 ## learner.yaml
-See `assets/learner-template.yaml`. Rules that keep it maintainable by an LLM:
+See `assets/learner-template.yaml`. No paths in it — the dojo is where the file is. Rules that keep it maintainable by an LLM:
 - **Only touched concepts appear**; absent = unseen. `state ∈ {introduced, practiced, fluent}`;
   `rusty` is derived (today > due + 14d) and never written.
 - Every concept line carries `last`, `due`, and one line of `ev` (evidence: kata id + what happened).
@@ -38,9 +43,9 @@ Attendance = `scripts/streak`: sessions · green · distinct days in the last 7 
 
 ## session.json — the open-session marker
 `{"started_at": "<ISO, UTC>", "phase": "drill|setup|kata|review|debrief", "kata_dir": "…"}`.
-Its existence means a session is open. `scripts/clock` reads it (and is copied into each kata dir so
-`./check` prints the clock); `scripts/context` shouts UNLOGGED SESSION if it survives to the next
-start. Deleting it is how a session closes. No hooks read it — nothing does unless run.
+Its existence means a session is open. `.dojo/clock` reads it so `./check` prints the clock;
+`scripts/context` shouts UNLOGGED SESSION if it survives to the next start. Deleting it closes the
+session. Nothing reads it unless run.
 
 ## Two commits per kata — the write guard
 1. `kata(setup): <track>/<concept> — red` — by the agent, right after scaffolding. The line.
@@ -49,5 +54,5 @@ start. Deleting it is how a session closes. No hooks read it — nothing does un
 `kata(setup)` is drift and gets said out loud.
 
 ## Templates
-`assets/templates/<lang>/check` — executable, runs from its own dir, exit 0 = green, prints one
-line, < 10 s. A track may ship its own under `tracks/<track>.check` when the language has none.
+`assets/templates/<lang>/check` — executable, runs from its own dir, exit 0 = green, prints one line
+plus the clock, < 10 s. A track may ship its own under `.dojo/tracks/<track>.check`.

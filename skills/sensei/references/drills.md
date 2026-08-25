@@ -14,7 +14,7 @@ so "read this" and "fix this" keep arriving for things you already know until th
 | reorder this | Parsons-style shuffled lines of a correct solution | light-day drill; also right for a concept still `introduced` |
 | recall | two questions on concepts that are due; chat answers | retrieval practice |
 
-Rules: hard cap 5 min · skippable · records hit/miss only · a tangent goes to `<dojo>/experiments/`
+Rules: hard cap 5 min · skippable · records hit/miss only · a tangent goes to `experiments/`
 or the study queue, never into today's box · every 5th session the drill *is* the session.
 Source material for fix/read/review: shapes idiomatic to the due concept's track and, once it
 exists, the capstone codebase itself — including code the agent scaffolded ahead of the ladder

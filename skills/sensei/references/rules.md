@@ -50,7 +50,7 @@ reorderings or merges, one sentence each; the learner says yes/no; edit `tracks/
 ## Unlogged session (session.json present at start)
 Append a log line for it with `green:false`, `note:"unlogged"`, and whatever fields are knowable
 from the kata dir (`./check` result, commits). Apply "not green at 20" to its concept. Delete
-`session.json`. Then open today's session normally.
+`.dojo/session.json`. Then open today's session normally.
 
 ## Attendance
 Per rolling 7 days (target 5). Failed sessions count. Light days count. There is no chain.

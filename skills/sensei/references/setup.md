@@ -1,6 +1,6 @@
 # `setup <track> [capstone]` · `setup <track> --sharpen` — produce a ladder, not a curriculum.
 
-Output: one file, `~/.sensei/tracks/<track>.yaml`, plus a `check` template if the language has
+Output: one file, `.dojo/tracks/<track>.yaml`, plus a `check` template if the language has
 none. No lessons, no katas — those are generated one per session from the ladder and the learner
 model. Pre-writing lessons is the planning trap; the ladder is a hypothesis revised every 5th session.
 

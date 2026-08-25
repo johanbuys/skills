@@ -1,6 +1,6 @@
 ---
 name: sensei
-description: "A daily twenty-minute hand-coding practice session run by an agent that decides what comes next. A five-minute drill drawn from whatever is due across your tracks (fix this, read this, review this, which pattern?), then a kata you write by hand with exactly one TODO(human) where the decision lives, then explain-it-back, then a learner model in ~/.sensei/ is updated by rule tables — never by vibes. Tracks are either learn (one at a time, climbed by katas) or sharpen (already known, reviewed as it decays); a ladder per track made from the official docs plus real courses, katas generated the morning they're needed, optionally as bricks of a capstone codebase. Use for \"/sensei\", \"daily kata\", \"let's practice\", \"set up a track for <language or framework>\", \"how am I doing on <track>\". Manual only — never self-invoked."
+description: "A daily twenty-minute hand-coding practice session run by an agent that decides what comes next. A five-minute drill drawn from whatever is due across your tracks (fix this, read this, review this, which pattern?), then a kata you write by hand with exactly one TODO(human) where the decision lives, then explain-it-back, then a learner model in the dojo's .dojo/ is updated by rule tables — never by vibes. Tracks are either learn (one at a time, climbed by katas) or sharpen (already known, reviewed as it decays); a ladder per track made from the official docs plus real courses, katas generated the morning they're needed, optionally as bricks of a capstone codebase. Use for \"/sensei\", \"daily kata\", \"let's practice\", \"set up a track for <language or framework>\", \"how am I doing on <track>\". Manual only — never self-invoked."
 disable-model-invocation: true
 argument-hint: "[start|done|light|status|setup <track> [capstone]]"
 ---
@@ -13,22 +13,25 @@ a day, hard stop, in which **the learner writes every line of kata code** and th
 sets the kata, watches, reviews, and decides what comes next. The learner never chooses at
 session start — the zero-choice open is the point.
 
-Everything lives in `~/.sensei/` (personal, cross-project — the learner is a person, not a repo);
-katas are written and committed in the **dojo**, a repo path named in `learner.yaml`. Full contract
-in `references/layout.md` — read it before touching the files.
+Everything lives in one git repo, the **dojo** — the directory you run this in (or its nearest
+ancestor with a `.dojo/`): learner model, log, tracks, katas. Full contract in
+`references/layout.md` — read it before touching the files.
 
 ## Context — first, every session
-Run `scripts/context` from this skill's directory and read it. It prints the date, an UNLOGGED
-SESSION warning if one is open, the learner model, the last five log lines, attendance, the tracks
-on disk, and the commit authorship of the last kata. No harness injects anything; you fetch it.
+Run `scripts/context` from this skill's directory and read it. It finds the dojo from the current
+directory and prints the date, an UNLOGGED SESSION warning if one is open, the learner model, the
+last five log lines, attendance, the tracks, and the commit authorship of the last kata. No harness
+injects anything; you fetch it. "NO DOJO HERE" means First run.
 
 ## First run
-If there is no learner model: `mkdir -p ~/.sensei && cp "${CLAUDE_SKILL_DIR}/assets/learner-template.yaml"
-~/.sensei/learner.yaml`, then ask — in ONE turn — for `home_lang`, the one thing to *learn* and the things to *keep sharp*
-(each becomes a track: learn or sharpen), the `dojo` path (a git repo where katas will be
-committed), and one line of `context`. Fill `home_lang`, `learn`, `sharpen`, `dojo`, `context`, say that
-the first three sessions are diagnostics with the agent silent, and stop. No track, no kata, no
-curriculum. Every later edit to the file comes from the Log phase, `setup`, or the diagnostics.
+If context says NO DOJO HERE: run `scripts/init` (scaffolds `.dojo/`, `katas/`, `experiments/`,
+`.vscode/` with autocomplete off, a README, `git init`; idempotent) in the current directory — say
+what it will create first, in one line. Then ask — in ONE turn — for `home_lang`, the one thing to
+*learn* and the things to *keep sharp* (each becomes a track: learn or sharpen), and one line of
+`context`. Fill `home_lang`, `learn`, `sharpen`, `context` in `.dojo/learner.yaml`, commit
+("dojo: init"), say that the first three sessions are diagnostics with the agent silent, and stop.
+No track, no kata, no curriculum. Every later edit to the file comes from the Log phase, `setup`,
+or the diagnostics.
 
 ## Dispatch on the argument (the first word after `/sensei`)
 - (empty) or `start` → today's session. If `queue[0].kind` is `diagnostic`, follow
@@ -38,7 +41,7 @@ curriculum. Every later edit to the file comes from the Log phase, `setup`, or t
 - `status` → ten plain-words lines: the ladder with each item's state, what is due, tomorrow's
   pick and why. No session.
 - `setup <track> [capstone]` / `setup <track> --sharpen` → `references/setup.md`. Writes
-  `~/.sensei/tracks/<track>.yaml`; sharpen mode also seeds its concepts as `practiced`. No session.
+  `.dojo/tracks/<track>.yaml`; sharpen mode also seeds its concepts as `practiced`. No session.
 
 ## Voice
 Defaults, overridable by `learner.prefs`: plain words, no reference codes; recommendation first;
@@ -48,7 +51,7 @@ evidence says, never that they are doing great.
 
 ## The session — the clock is printed by every `./check` and by `scripts/context`
 0. **Open.** If context showed an UNLOGGED SESSION, log it first per `references/rules.md`. Then write
-   `~/.sensei/session.json` = `{"started_at":"<ISO now, UTC>","phase":"drill","kata_dir":""}`.
+   `.dojo/session.json` = `{"started_at":"<ISO now, UTC>","phase":"drill","kata_dir":""}`.
    One line: today's drill kind + kata concept and why, and the wall-clock time the box closes.
    Then begin. No menu.
 1. **Drill (0–5).** One item from `references/drills.md`, on a concept that is *due* in any track
@@ -59,12 +62,12 @@ evidence says, never that they are doing great.
    `home_lang`. Cite the language's/framework's own docs — run the doc tool; never trust memory for
    APIs. End with a predict-first question. Skip once the concept is past introduced.
 3. **Kata (to min 15).**
-   a. Set `phase: setup`. Create `<dojo>/katas/<date>-<track>-<concept>-<slug>/` with `README.md`
+   a. Set `phase: setup`. Create `katas/<date>-<track>-<concept>-<slug>/` with `README.md`
       (Goal · Concept · Done when · Constraints), a starter where the boilerplate is written and
       exactly one `TODO(human)` region holds the *decision* (never wiring, config or CRUD), failing
-      tests, `check` copied from `assets/templates/<lang>/` (or the track's own) plus `scripts/clock`
-      copied next to it as `clock`, `meta.yaml`. Difficulty from `references/rules.md`. Run `./check`;
-      show it is RED. **Commit the scaffold yourself**: `git -C <dojo> add katas/<id> && git commit -m
+      tests, `check` copied from `assets/templates/<lang>/` (or the track's own; it prints the clock via
+      `.dojo/clock`), `meta.yaml`. Difficulty from `references/rules.md`. Run `./check`;
+      show it is RED. **Commit the scaffold yourself**: `git add katas/<id> && git commit -m
       "kata(setup): <track>/<concept> — red"`. That commit is the line: everything after it in the
       kata dir is the learner's, and `git log` will say so.
    b. Set `phase: kata` and `kata_dir`. Say the "Done when" line, the check command, and the closing
@@ -83,11 +86,11 @@ evidence says, never that they are doing great.
 5. **Log (19–20).** Set `phase: debrief`. Apply `references/rules.md` literally: update the concept
    line (state, last, due, ev), rewrite `queue` (3 items), add/clear `flags`. Append ONE line to
    `log.jsonl` with every measured field. Tangents → `~/.study/topics.md` if the `study` skill is
-   installed, else `~/.sensei/tangents.md`. **The learner commits their own kata** — ask for it if
+   installed, else `experiments/TANGENTS.md`. **The learner commits their own kata** — ask for it if
    it hasn't happened: `git commit -m "kata(<track>): <concept> — <green|red> <m>m"` under their
-   identity; that is the done signal. You commit `~/.sensei` if it is a repo. Print three lines:
-   what happened · what changed in the model · tomorrow's pick and why. Delete `session.json`.
-   A session is closed only when `session.json` is gone; if you stop before that, the next start
+   identity; that is the done signal. You commit `.dojo/` ("log: <date> <concept>"). Print three lines:
+   what happened · what changed in the model · tomorrow's pick and why. Delete `.dojo/session.json`.
+   A session is closed only when it is gone; if you stop before that, the next start
    sees UNLOGGED SESSION and logs it as red.
 
 ## Hard rules
