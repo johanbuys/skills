@@ -7,6 +7,7 @@ due after a session: introduced +3d · practiced +7d · fluent +30d.
 ## Transition after a kata
 | outcome | state | next due |
 |---|---|---|
+| green ∧ narrowed (cold start) | keep | +1d, same concept tomorrow at full width |
 | green ∧ hints 0 ∧ explain-back 2 ∧ ≤ 10 min | promote one step | interval of new state |
 | green ∧ (hints 1–2 ∨ explain-back 1) | keep | half interval |
 | green ∧ revealed | keep | +2d, same concept next, new brick |
@@ -16,9 +17,19 @@ due after a session: introduced +3d · practiced +7d · fluent +30d.
 | drill miss on a `fluent` concept | mark practiced, due today+3 | — |
 | drill miss twice on a sharpen-track concept | demote to introduced; one kata on it next | +2d |
 
+The narrowed row is first because it wins over every green row below it. A cold-start kata is
+smaller on purpose; letting it promote would inflate the model, which is the one thing this file
+exists not to do. It still counts as attendance and is still committed by the learner.
+
 ## Drill pick
 From concepts with `due ≤ today` in ANY track, prefer a sharpen track, then a cluster different
 from today's kata; if nothing is due, the concept with the nearest `due`. Never the kata's concept.
+
+**Kind, from the baseline.** Where `learner.baseline` says generation lags recognition — the learner
+names the failure once it is pointed at but does not produce the list unprompted — weight the deck
+towards the kinds that make them *produce*: `fix this`, `solve this`, `review this`, `read this`.
+Use `which pattern?` and `reorder this` sparingly; they test the half that already works. Where the
+baseline says the opposite, invert it. Re-read the baseline at each ladder revision.
 
 ## Difficulty (1–5) from the target concept's state
 | state | difficulty | shape |
