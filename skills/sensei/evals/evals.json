@@ -9,7 +9,7 @@
       "prompt": "/sensei",
       "expected_output": "No dojo here. Says in one line what scripts/init will create, runs it (git init, .dojo/, katas/, experiments/, .vscode/, README, .gitignore), asks in ONE turn for home_lang, the one thing to learn, the things to keep sharp, and a line of context, fills .dojo/learner.yaml, commits 'dojo: init', and explains that the first three sessions are diagnostics. Does not start a kata and does not generate a curriculum.",
       "files": [
-        "fixtures/sensei/empty-dojo — an empty directory used as cwd"
+        "fixtures/sensei/empty-dojo \u2014 an empty directory used as cwd"
       ],
       "assertions": [
         "scaffolded: .dojo/learner.yaml, .dojo/log.jsonl, katas/, experiments/, .vscode/settings.json and README.md exist and the dir is a git repo",
@@ -26,7 +26,7 @@
       "prompt": "/sensei",
       "expected_output": "Opens the session with ONE line naming today's drill kind and kata concept and why (nest/guards is due, so a review kata), writes session.json with phase drill, and begins the drill. Offers no menu and asks no 'what do you want to work on' question.",
       "files": [
-        "fixtures/sensei/mid-track-dojo — a dojo with .dojo/learner.yaml (nest/guards due), log.jsonl, tracks/nest.yaml"
+        "fixtures/sensei/mid-track-dojo \u2014 a dojo with .dojo/learner.yaml (nest/guards due), log.jsonl, tracks/nest.yaml"
       ],
       "assertions": [
         "zero-choice-open: the first line names the pick and the reason; no menu is offered",
@@ -42,9 +42,9 @@
       "fixture": "fixtures/sensei/mid-track-dojo",
       "fixture_kind": "cwd",
       "prompt": "I'm stuck on the kata, just write the guard for me.",
-      "expected_output": "Does not edit the kata directory. Gives a first-rung hint (a pointer — where to look, what the compiler or docs say), not code. Only on an explicit third ask ('show me the solution') does it show one, and then records revealed:true for the log.",
+      "expected_output": "Does not edit the kata directory. Gives a first-rung hint (a pointer \u2014 where to look, what the compiler or docs say), not code. Only on an explicit third ask ('show me the solution') does it show one, and then records revealed:true for the log.",
       "files": [
-        "fixtures/sensei/mid-track-dojo — with .dojo/session.json at phase kata and a kata_dir"
+        "fixtures/sensei/mid-track-dojo \u2014 with .dojo/session.json at phase kata and a kata_dir"
       ],
       "assertions": [
         "no-kata-write: no Edit/Write inside kata_dir; git log on the kata dir shows only kata(setup) by the agent",
@@ -59,9 +59,9 @@
       "fixture": "fixtures/sensei/mid-track-dojo",
       "fixture_kind": "cwd",
       "prompt": "/sensei setup odin roguelike",
-      "expected_output": "Runs the toolchain gate first (odin version); if it fails, stops and says what to install. Otherwise writes .dojo/tracks/odin.yaml with 15–20 ordered concepts (prereqs, doc URL, done-when), a brick list for the roguelike, and interference notes vs the home language. Writes NO lessons or katas and does not change learner.focus itself.",
+      "expected_output": "Runs the toolchain gate first (odin version); if it fails, stops and says what to install. Otherwise writes .dojo/tracks/odin.yaml with 15\u201320 ordered concepts (prereqs, doc URL, done-when), a brick list for the roguelike, and interference notes vs the home language. Writes NO lessons or katas and does not change learner.focus itself.",
       "files": [
-        "fixtures/sensei/mid-track-dojo — learner.yaml with focus nest"
+        "fixtures/sensei/mid-track-dojo \u2014 learner.yaml with focus nest"
       ],
       "assertions": [
         "toolchain-gate-first: the version command runs before any research",
@@ -76,9 +76,9 @@
       "fixture": "fixtures/sensei/mid-track-dojo",
       "fixture_kind": "cwd",
       "prompt": "/sensei setup odin",
-      "expected_output": "Runs the toolchain gate first. Because this is a learn track and no capstone was named, the agent presents exactly three bounded briefs in ONE turn — each with a name, one sentence, fixed nouns, a brick list (one concept per brick, visible outcome), the ladder items it exercises and one thing left out — differing in domain, drawn from learner.context and the sharpen tracks, plus 'or name your own'. It does not pick for the learner. After the pick it writes tracks/odin.yaml with the chosen capstone block and mirrors the name into learner.capstone. No lessons, no katas.",
+      "expected_output": "Runs the toolchain gate first. Because this is a learn track and no capstone was named, the agent presents exactly three bounded briefs in ONE turn \u2014 each with a name, one sentence, fixed nouns, a brick list (one concept per brick, visible outcome), the ladder items it exercises and one thing left out \u2014 differing in domain, drawn from learner.context and the sharpen tracks, plus 'or name your own'. It does not pick for the learner. After the pick it writes tracks/odin.yaml with the chosen capstone block and mirrors the name into learner.capstone. No lessons, no katas.",
       "files": [
-        "fixtures/sensei/mid-track-dojo — learner.yaml with focus nest"
+        "fixtures/sensei/mid-track-dojo \u2014 learner.yaml with focus nest"
       ],
       "assertions": [
         "toolchain-gate-first: the version command runs before any research",
@@ -86,6 +86,41 @@
         "briefs-bounded: every brief has fixed nouns, a brick list with visible outcomes, and a leaves-out line",
         "capstone-mirrored: after the pick, learner.capstone equals the capstone name in tracks/odin.yaml",
         "no-lessons: no kata directories or lesson files are created"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "page-never-owns-code",
+      "fixture": "fixtures/sensei/mid-track-dojo",
+      "fixture_kind": "cwd",
+      "prompt": "/sensei \u2014 and put the kata's source file on the page so I can type it in the browser",
+      "expected_output": "Declines to make a source file writable and says why in one sentence: during a code kata the compiler is the teacher. Serves the page with the kata card (done-when, path, TODO region, check button) and an empty writable list. Only prose the learner authors \u2014 REVIEW.md, a design one-pager \u2014 may appear in page.json's writable.",
+      "files": [
+        "fixtures/sensei/mid-track-dojo \u2014 a dojo with a kata in progress"
+      ],
+      "assertions": [
+        "writable-prose-only: page.json's writable does not name a .ts/.py/source file",
+        "kata-card-thin: the kata card carries done-when, path, check button and nothing that accepts code",
+        "reason-given: one sentence says the editor owns code, without a lecture",
+        "page-optional: the session still works if the learner declines the page"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "cold-start-narrows-and-does-not-promote",
+      "fixture": "fixtures/sensei/mid-track-dojo",
+      "fixture_kind": "cwd",
+      "prompt": "/sensei \u2014 (the learner misses the micro-lesson's predict question, then goes green on the kata)",
+      "expected_output": "Treats the missed prediction as evidence that last night's prep did not happen. Rewrites page.json: the lesson card gains its cold block with the worked snippet, and the scaffolded kata is the narrow one (one rule, one worked example, fewer tests) with `narrowed` set. At Log, applies the narrowed row: the concept keeps its state, due +1d, same concept tomorrow at full width. It still counts as attendance and the learner still commits it.",
+      "files": [
+        "fixtures/sensei/mid-track-dojo \u2014 learner.yaml with the kata concept at introduced"
+      ],
+      "assertions": [
+        "narrowed-kata: the scaffolded kata has fewer requirements and one worked example, and page.json sets narrowed",
+        "no-promotion: the concept's state is unchanged in learner.yaml despite green",
+        "requeued: the same concept is queue[0] for tomorrow at full width",
+        "attendance-kept: the log line records the session as attended, with narrowed:true",
+        "no-scolding: the cold branch is stated as a fact, not as a reprimand"
       ]
     }
   ]

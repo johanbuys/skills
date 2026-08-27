@@ -13,6 +13,9 @@ commit under the learner's own identity, so the streak is visible in `git log`.
     tracks/<track>.yaml ← a ladder per track, written by `setup`, revised every 5th session
     clock               ← copied from the skill at init; `./check` calls it
     session.json        ← ephemeral, gitignored: {started_at, phase, kata_dir}; exists = session open
+    page.json           ← ephemeral, gitignored: what the served page renders (references/serve.md)
+    page-events.jsonl   ← ephemeral, gitignored: what the learner clicked; read it in the Log phase
+    keys/<kata-id>.yaml ← the answer key: planted issues, rubric, hidden lists. NEVER in the kata dir.
   katas/<date>-<track>-<concept>-<slug>/{README.md, <starter>, <tests>, check, meta.yaml}
   experiments/          ← where a drill that got interesting is allowed to grow (TANGENTS.md too)
   .vscode/settings.json ← autocomplete off
@@ -35,8 +38,13 @@ See `assets/learner-template.yaml`. No paths in it — the dojo is where the fil
 
 ## log.jsonl — one line per session
 ```json
-{"date":"2026-08-25","track":"nest","concept":"dto-pipes","kata":"katas/2026-08-25-nest-dto-pipes-reject-bad-set","kind":"new","difficulty":2,"drill":{"kind":"fix-this","hit":true},"green":true,"time_to_green_min":9,"check_runs":3,"errors":2,"hints":1,"revealed":false,"confidence":4,"explain_back":2,"transition":"introduced->practiced","next":"nest/guards","note":"forgot whitelist:true; flag cleared"}
+{"date":"2026-08-25","track":"nest","concept":"dto-pipes","kata":"katas/2026-08-25-nest-dto-pipes-reject-bad-set","kind":"new","difficulty":2,"drill":{"kind":"fix-this","hit":true},"green":true,"time_to_green_min":9,"check_runs":3,"errors":2,"hints":1,"revealed":false,"confidence":4,"explain_back":2,"predict_hit":true,"narrowed":false,"prep":"nest/guards — docs + one course section","transition":"introduced->practiced","next":"nest/guards","note":"forgot whitelist:true; flag cleared"}
 ```
+`predict_hit` (bool|null — did last night's prep hold up), `narrowed` (bool — was this the cold-start
+kata), `prep` (what was assigned for tomorrow). When the page is in use, `drill.hit`, `check_runs`,
+`confidence` and `predict_hit` are **read from `page-events.jsonl`**, not recalled — see
+`references/serve.md`. Without the page they are asked, and `null` is honest when they were not.
+
 Attendance = `scripts/streak`: sessions · green · distinct days in the last 7 (target 5).
 
 ## tracks/<track>.yaml — see references/setup.md for the shape.
@@ -46,6 +54,13 @@ Attendance = `scripts/streak`: sessions · green · distinct days in the last 7 
 Its existence means a session is open. `.dojo/clock` reads it so `./check` prints the clock;
 `scripts/context` shouts UNLOGGED SESSION if it survives to the next start. Deleting it closes the
 session. Nothing reads it unless run.
+
+## keys/ — the answer key never ships with the kata
+Planted-bug lists, rubrics and hidden issue counts live in `.dojo/keys/<kata-id>.yaml`, versioned,
+and never in the kata directory. `meta.yaml` says what the kata *is* (id, kind, track, concept,
+lang, difficulty, `scored`); it does not say how many issues were planted. A learner who can read
+"5 planted" mid-review is playing hunt-until-five, and the false-positive score stops meaning
+anything.
 
 ## Two commits per kata — the write guard
 1. `kata(setup): <track>/<concept> — red` — by the agent, right after scaffolding. The line.
