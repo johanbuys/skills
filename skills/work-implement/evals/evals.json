@@ -29,15 +29,52 @@
       "id": 2,
       "name": "ship-and-promotion-do-not-reopen-loop",
       "prompt": "Every task is checked. The branch has two parked findings, cumulative test additions exceed production additions, AGENTS.md is 147 lines, and the purge found two durable gotchas with long incident narratives and measured evidence. Someone proposes an AGENTS.md rule making every agent read all of docs/traps.md at startup. Run the ship gate and purge.",
-      "expected_output": "Runs one whole-branch review pass without a fixer or re-review. Opens one plain-words GitHub issue for each non-blocking finding that still stands and sends any load-bearing blocker to the human. Surfaces the test-growth counts as a non-blocking signal. Promotes each durable gotcha as one to three lines naming the trap and rule, always moves that gotcha's measurements and incident history to matching docs/traps.md entries without telling agents to preload that file, and keeps AGENTS.md at or below 150 lines. If both compact rules cannot fit after deduplication and stale-guidance pruning, it does not exceed the cap and surfaces compaction to the human.",
+      "expected_output": "Runs one whole-branch review pass without a fixer or re-review. Opens one plain-words GitHub issue for each non-blocking finding that still stands, each carrying the parked label and a body with its written ruling and concise evidence, and sends any load-bearing blocker to the human. Surfaces the test-growth counts as a non-blocking signal. Promotes each durable gotcha as one to three lines naming the trap and rule, always moves that gotcha's measurements and incident history to matching docs/traps.md entries without telling agents to preload that file, and keeps AGENTS.md at or below 150 lines. If both compact rules cannot fit after deduplication and stale-guidance pruning, it does not exceed the cap and surfaces compaction to the human.",
       "assertions": [
         "ship-gate-is-one-pass: no ship-gate fixer wave or scoped re-review is dispatched",
         "standing-findings-become-separate-issues: each non-blocking finding gets one plain-words GitHub issue",
         "load-bearing-findings-reach-human: a residual blocker is not parked silently",
+        "parked-issues-are-labelled-and-ruled: each issue carries the parked label and its body has the written ruling plus concise evidence",
         "test-growth-is-signaled-not-fixed: cumulative counts are surfaced without creating another round",
         "gotcha-summary-is-bounded: each promoted gotcha receives no more than three AGENTS.md lines",
         "narrative-is-progressively-disclosed: each gotcha's measurements and incident history live in docs/traps.md without a preload instruction",
         "agents-file-has-hard-cap: AGENTS.md remains at or below 150 lines"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "dispatch-carries-deadline-and-blocked-on-expiry",
+      "prompt": "Draft the dispatch for task 3 and state the implementer's obligations at the two-hour deadline.",
+      "expected_output": "The brief contains the absolute task deadline, the reply contract, the TDD seam instruction, and everything the implementer needs to work without session history. The implementer must stop at the deadline, append its current edits, commits, checks, and open work to Breadcrumbs, return blocked, and must not start a command that can outlive the remaining budget.",
+      "assertions": [
+        "dispatch-carries-absolute-deadline: the implementer gets the wall-clock deadline for this task",
+        "blocked-at-deadline-with-state: the implementer stops, appends its state and checks to Breadcrumbs, and returns blocked on expiry",
+        "no-late-long-command: the implementer may not start a command that outlives the remaining budget",
+        "tdd-seam-instruction-restored: the dispatch tells implementers to invoke /tdd at the plan's agreed seams, or carries its essence if the tool is absent"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "reviewer-brief-carries-the-bounds-verbatim",
+      "prompt": "The first task's diff looks done. Draft the reviewer's brief.",
+      "expected_output": "The brief carries verbatim the three-part blocking definition (done-when failure, constitution MUST violation, or later-task dependency), the maximum of three blocking findings ranked by consequence, and the cheapest-sufficient-proof rule including that proof need not become a permanent check. It also keeps the two required verdicts: does the diff meet done-when, and is the work honest.",
+      "assertions": [
+        "brief-carries-blocking-definition: the three narrow blocking conditions appear in the reviewer's brief",
+        "brief-carries-three-finding-cap: the at-most-three-ranked-blockers rule is in the brief, not just controller-side enforcement",
+        "brief-carries-proof-rule: the cheapest-sufficient-proof rule and its non-permanent nature are in the brief",
+        "verdicts-still-two: the done-when and honesty verdicts are both required"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "test-growth-fires-only-at-three-to-one",
+      "prompt": "When the last task completes, the cumulative LOOP_BASE..HEAD diff shows 45 added test lines and 15 added production lines; the contract records distinct Production paths and Test paths for counting added lines. A second branch's cumulative diff shows 10 test and 40 production lines. Where does the controller get the path boundaries for that count, and what does Complete record in each case?",
+      "expected_output": "Uses the contract's recorded Production paths and Test paths, not a guessed convention. With 45 test lines against 15 production lines the ratio is exactly three to one, so the signal fires: append the counts and surface it as a non-blocking signal in the next human update, without creating a fix round. The 10:40 branch is below three to one, so its counts are recorded with no signal.",
+      "assertions": [
+        "fires-at-three-to-one: 45 added test lines against 15 production lines triggers the signal",
+        "silent-below-three-to-one: a 10:40 task records no growth signal",
+        "uses-recorded-path-boundaries: the count uses the contract's Production paths and Test paths",
+        "signal-stays-non-blocking: it never creates a fix round by itself"
       ]
     }
   ]
