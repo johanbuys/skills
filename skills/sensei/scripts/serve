@@ -9,14 +9,15 @@ The page is static (assets/page.html) and never regenerated: the agent writes
 Endpoints
   GET  /            the page shell
   GET  /state       .dojo/page.json verbatim
+  GET  /lesson      the markdown named by state["lesson"] — must live under <dojo>/lessons/
   GET  /events      what the learner has committed this session (refresh-safe)
   POST /commit      append one learner action to .dojo/page-events.jsonl
   POST /file        write ONE path named in state["writable"] — nothing else
   POST /check       run exactly <kata_dir>/check, no arguments
 
-/check takes no parameters and /file takes no path of its own choosing; both
-targets come from page.json, which only the agent writes. That is the whole
-surface of the 0.0.0.0 bind.
+/check takes no parameters, /lesson and /file take no path of their own
+choosing; all targets come from page.json, which only the agent writes. That
+is the whole surface of the 0.0.0.0 bind.
 """
 import argparse, json, os, pathlib, subprocess, sys, threading, time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -93,6 +94,22 @@ class State:
             return None
         return target
 
+    def lesson(self):
+        """The lesson file is whatever page.json names, and only if it sits
+        under <dojo>/lessons/. The browser never picks a path."""
+        rel = self.page().get("lesson")
+        if not isinstance(rel, str) or not rel:
+            return {"path": None, "md": ""}
+        target = (self.root / rel).resolve()
+        try:
+            target.relative_to((self.root / "lessons").resolve())
+        except ValueError:
+            return {"path": rel, "md": "", "error": "lesson path is not under lessons/"}
+        try:
+            return {"path": rel, "md": target.read_text()}
+        except FileNotFoundError:
+            return {"path": rel, "md": "", "error": "lesson file not found"}
+
     def kata_check(self):
         kd = self.page().get("kata_dir")
         if not kd:
@@ -149,6 +166,8 @@ def handler(st):
                     return self._send(500, "page shell missing", "text/plain")
             if p == "/state":
                 return self._send(200, st.page())
+            if p == "/lesson":
+                return self._send(200, st.lesson())
             if p == "/events":
                 return self._send(200, st.events())
             return self._send(404, {"error": "no such path"})

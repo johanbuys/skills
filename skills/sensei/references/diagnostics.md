@@ -10,7 +10,8 @@ a baseline must not measure. `meta.yaml` carries no `planted_issues` count.
 
 **Serve the page for these** (`references/serve.md`) — the clock and the check are the two things
 every diagnostic needs, and the review one needs the diff commenter. Agent silent still holds:
-writing `page.json` is not talking.
+writing `page.json` is not talking. No lesson, no quiz, no drill: a diagnostic is the whole box, and
+`lesson` is null on the page.
 
 **Re-running them later** (a new surface, a year of practice) is allowed: set `queue` to the three
 diagnostics and go. `learner.baseline` is overwritten, and that is safe — `.dojo/` is versioned, so
@@ -53,5 +54,9 @@ judgment (review, design) holds; say which it is here, with the evidence. Then:
   still `diagnostics`, propose `focus: <learn>` in one sentence (the learner edits it).
 - If it does not: leave the queue empty and end with the exact commands to run before the next
   session — `/sensei setup <learn> [capstone]` and `/sensei setup <each sharpen track> --sharpen` —
-  filled in from `learner.learn` and `learner.sharpen`. Setup is a separate command, not a session.
+  filled in from `learner.learn` and `learner.sharpen`. Setup is a separate command, not a session:
+  it researches the ladder, builds the capstone shell at `capstone/<name>/`, and proves it runs.
   The next `/sensei start` with an empty queue and no track repeats this instruction and stops.
+- Either way, the first learn-track session has no lesson behind it (nothing was assigned), so its
+  quiz runs with `no_gate` and cannot narrow the kata. Write the first lesson at that session's Log
+  like any other.

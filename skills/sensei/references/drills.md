@@ -17,5 +17,7 @@ so "read this" and "fix this" keep arriving for things you already know until th
 Rules: hard cap 5 min · skippable · records hit/miss only · a tangent goes to `experiments/`
 or the study queue, never into today's box · every 5th session the drill *is* the session.
 Source material for fix/read/review: shapes idiomatic to the due concept's track and, once it
-exists, the capstone codebase itself — including code the agent scaffolded ahead of the ladder
-(`capstone.scaffolded`): "read this" first, "fix this" a week later.
+exists, the capstone codebase at `capstone/<name>/` itself — the learner's own bricks a week on, and
+code the agent scaffolded ahead of the ladder (`capstone.scaffolded`): "read this" first, "fix this"
+a week later. A "read this" on a sharpen track may point at one row of the rung's `resources` in the
+track yaml; that is the only input a sharpen track ever gets, and it stays inside the five minutes.

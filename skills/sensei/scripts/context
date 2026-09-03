@@ -13,9 +13,51 @@ echo "## Learner model"; cat "$d/learner.yaml" 2>/dev/null || echo "NO LEARNER M
 echo "## Last 5 sessions"; [ -s "$d/log.jsonl" ] && tail -n 5 "$d/log.jsonl" || echo "(no sessions yet)"
 echo "## Attendance"; "$here/streak"
 echo "## Tracks"; ls "$d/tracks/" 2>/dev/null | grep . || echo "(none — setup <track>)"
+
+# Capstone shells: one line per learn track. MISSING means `/sensei setup <track>` before any session.
+echo "## Capstone"
+found=0
+for t in "$d"/tracks/*.yaml; do
+  [ -f "$t" ] || continue
+  grep -q '^mode: *learn' "$t" || continue
+  name=$(sed -n '/^capstone:/,/^[a-z]/{s/^ *name: *"\{0,1\}\([^"]*\)"\{0,1\}.*/\1/p}' "$t" | head -1)
+  repo=$(sed -n '/^capstone:/,/^[a-z]/{s/^ *repo: *"\{0,1\}\([^" ]*\)"\{0,1\}.*/\1/p}' "$t" | head -1)
+  probe=$(sed -n '/^capstone:/,/^[a-z]/{s/^ *probe: *"\{0,1\}\([^"]*\)"\{0,1\}.*/\1/p}' "$t" | head -1)
+  [ -n "$name" ] || continue
+  found=1
+  case "$repo" in /*|~*) loc="$repo — OUTSIDE the dojo; setup moves it to capstone/$name" ;; "") loc="capstone/$name (no repo: in yaml)" ;; *) loc="$repo" ;; esac
+  dir="$root/${repo:-capstone/$name}"
+  if [ -d "$dir" ] && [ -n "$(ls -A "$dir" 2>/dev/null)" ]; then
+    n=$(git -C "$root" log --oneline -- "${dir#$root/}" 2>/dev/null | wc -l | tr -d ' ')
+    up="down"; [ -n "$probe" ] && (cd "$dir" && eval "$probe" >/dev/null 2>&1) && up="running"
+    echo "$(basename "$t" .yaml): $name at $loc · $n commits · $up"
+  else
+    echo "$(basename "$t" .yaml): $name at $loc · MISSING — run /sensei setup $(basename "$t" .yaml) first"
+  fi
+done
+[ "$found" = 1 ] || echo "(no learn track with a capstone)"
+
+# Tomorrow's lesson: does queue[0] have one?
+echo "## Lesson for queue[0]"
+q=$(sed -n '/^queue:/,/^[a-z]/{s/^ *- *{ *concept: *\([^,} ]*\).*/\1/p}' "$d/learner.yaml" | head -1)
+if [ -n "$q" ] && [ "${q#diag-}" = "$q" ]; then
+  f="$root/lessons/${q%%/*}/${q#*/}.md"
+  [ -f "$f" ] && echo "$q → lessons/${q%%/*}/${q#*/}.md ($(wc -w < "$f" | tr -d ' ') words)" \
+              || echo "$q → NO LESSON — quiz runs with no_gate today; write it at Log if the concept comes round again"
+else
+  echo "(${q:-empty queue} — diagnostics or nothing queued; no lesson applies)"
+fi
+echo "## Lessons on disk"; ls "$root"/lessons/*/*.md 2>/dev/null | sed "s|$root/||" | grep . || echo "(none yet)"
+
+# Authorship since the last kata(setup): anything agent-authored that is not log:/capstone(scaffold): is drift.
 last=$(ls -d "$root"/katas/*/ 2>/dev/null | sort | tail -1)
 if [ -n "$last" ] && [ -d "$root/.git" ]; then
-  echo "## Last kata — commits (author · subject); anything agent-authored after kata(setup) is drift"
-  git -C "$root" log --format='%an · %s' -- "${last#$root/}" 2>/dev/null | head -5
+  echo "## Commits since the last kata(setup) touching the kata dir or capstone/ (author · subject)"
+  base=$(git -C "$root" log --format='%H' --grep='^kata(setup)' -n 1 2>/dev/null)
+  if [ -n "$base" ]; then
+    git -C "$root" log --format='%an · %s' "$base~1..HEAD" -- "${last#$root/}" capstone 2>/dev/null | head -8
+  else
+    git -C "$root" log --format='%an · %s' -- "${last#$root/}" 2>/dev/null | head -5
+  fi
 fi
 exit 0
