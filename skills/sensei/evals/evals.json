@@ -9,7 +9,7 @@
       "prompt": "/sensei",
       "expected_output": "No dojo here. Says in one line what scripts/init will create, runs it (git init, .dojo/, katas/, experiments/, .vscode/, README, .gitignore), asks in ONE turn for home_lang, the one thing to learn, the things to keep sharp, and a line of context, fills .dojo/learner.yaml, commits 'dojo: init', and explains that the first three sessions are diagnostics. Does not start a kata and does not generate a curriculum.",
       "files": [
-        "fixtures/sensei/empty-dojo \u2014 an empty directory used as cwd"
+        "fixtures/sensei/empty-dojo — an empty directory used as cwd"
       ],
       "assertions": [
         "scaffolded: .dojo/learner.yaml, .dojo/log.jsonl, katas/, experiments/, .vscode/settings.json and README.md exist and the dir is a git repo",
@@ -26,7 +26,7 @@
       "prompt": "/sensei",
       "expected_output": "Opens the session with ONE line naming today's drill kind and kata concept and why (nest/guards is due, so a review kata), writes session.json with phase drill, and begins the drill. Offers no menu and asks no 'what do you want to work on' question.",
       "files": [
-        "fixtures/sensei/mid-track-dojo \u2014 a dojo with .dojo/learner.yaml (nest/guards due), log.jsonl, tracks/nest.yaml"
+        "fixtures/sensei/mid-track-dojo — a dojo with .dojo/learner.yaml (nest/guards due), log.jsonl, tracks/nest.yaml"
       ],
       "assertions": [
         "zero-choice-open: the first line names the pick and the reason; no menu is offered",
@@ -42,9 +42,9 @@
       "fixture": "fixtures/sensei/mid-track-dojo",
       "fixture_kind": "cwd",
       "prompt": "I'm stuck on the kata, just write the guard for me.",
-      "expected_output": "Does not edit the kata directory. Gives a first-rung hint (a pointer \u2014 where to look, what the compiler or docs say), not code. Only on an explicit third ask ('show me the solution') does it show one, and then records revealed:true for the log.",
+      "expected_output": "Does not edit the kata directory. Gives a first-rung hint (a pointer — where to look, what the compiler or docs say), not code. Only on an explicit third ask ('show me the solution') does it show one, and then records revealed:true for the log.",
       "files": [
-        "fixtures/sensei/mid-track-dojo \u2014 with .dojo/session.json at phase kata and a kata_dir"
+        "fixtures/sensei/mid-track-dojo — with .dojo/session.json at phase kata and a kata_dir"
       ],
       "assertions": [
         "no-kata-write: no Edit/Write inside kata_dir; git log on the kata dir shows only kata(setup) by the agent",
@@ -55,17 +55,18 @@
     },
     {
       "id": 3,
-      "name": "setup-produces-ladder-only",
+      "name": "setup-produces-ladder-resources-and-capstone-shell",
       "fixture": "fixtures/sensei/mid-track-dojo",
       "fixture_kind": "cwd",
       "prompt": "/sensei setup odin roguelike",
-      "expected_output": "Runs the toolchain gate first (odin version); if it fails, stops and says what to install. Otherwise writes .dojo/tracks/odin.yaml with 15\u201320 ordered concepts (prereqs, doc URL, done-when), a brick list for the roguelike, and interference notes vs the home language. Writes NO lessons or katas and does not change learner.focus itself.",
+      "expected_output": "Runs the toolchain gate first (odin version, plus the generator if the framework has one); if it fails, stops and says what to install. Otherwise writes .dojo/tracks/odin.yaml with 15–20 ordered concepts (prereqs, doc URL, done-when, three to five verified resources per rung with kind, where and minutes), a brick list for the roguelike, and interference notes vs the home language. Builds the capstone shell at capstone/<name>/ with a health route, proves it starts and answers the probe, records run/probe/port/test_one in the yaml, and commits 'capstone(<name>): shell'. Writes NO lessons or katas and does not change learner.focus itself.",
       "files": [
-        "fixtures/sensei/mid-track-dojo \u2014 learner.yaml with focus nest"
+        "fixtures/sensei/mid-track-dojo — learner.yaml with focus nest"
       ],
       "assertions": [
         "toolchain-gate-first: the version command runs before any research",
-        "ladder-written: tracks/odin.yaml exists with ordered items carrying prereqs and done-when",
+        "ladder-written: tracks/odin.yaml exists with ordered items carrying prereqs, done-when and a resources list of 3–5 rows each",
+        "capstone-shell: capstone/<name>/ exists inside the dojo, was started and answered its probe, and the yaml records run, probe, port and test_one",
         "no-lessons: no kata directories or lesson files are created",
         "focus-untouched: learner.focus is still nest; a switch is proposed in one sentence at most"
       ]
@@ -76,15 +77,16 @@
       "fixture": "fixtures/sensei/mid-track-dojo",
       "fixture_kind": "cwd",
       "prompt": "/sensei setup odin",
-      "expected_output": "Runs the toolchain gate first. Because this is a learn track and no capstone was named, the agent presents exactly three bounded briefs in ONE turn \u2014 each with a name, one sentence, fixed nouns, a brick list (one concept per brick, visible outcome), the ladder items it exercises and one thing left out \u2014 differing in domain, drawn from learner.context and the sharpen tracks, plus 'or name your own'. It does not pick for the learner. After the pick it writes tracks/odin.yaml with the chosen capstone block and mirrors the name into learner.capstone. No lessons, no katas.",
+      "expected_output": "Runs the toolchain gate first. Because this is a learn track and no capstone was named, the agent presents exactly three bounded briefs in ONE turn — each with a name, one sentence, fixed nouns, a brick list (one concept per brick, visible outcome), the ladder items it exercises and one thing left out — differing in domain, drawn from learner.context and the sharpen tracks, plus 'or name your own'. It does not pick for the learner. After the pick it writes tracks/odin.yaml with the chosen capstone block and mirrors the name into learner.capstone. Then builds the capstone shell at capstone/<name>/ and proves it runs. No lessons, no katas.",
       "files": [
-        "fixtures/sensei/mid-track-dojo \u2014 learner.yaml with focus nest"
+        "fixtures/sensei/mid-track-dojo — learner.yaml with focus nest"
       ],
       "assertions": [
         "toolchain-gate-first: the version command runs before any research",
         "three-briefs-one-turn: exactly three bounded briefs plus 'or your own', asked once, no default chosen",
         "briefs-bounded: every brief has fixed nouns, a brick list with visible outcomes, and a leaves-out line",
         "capstone-mirrored: after the pick, learner.capstone equals the capstone name in tracks/odin.yaml",
+        "capstone-inside-dojo: the capstone repo path in the yaml is capstone/<name>, relative to the dojo, and the directory exists",
         "no-lessons: no kata directories or lesson files are created"
       ]
     },
@@ -93,10 +95,10 @@
       "name": "page-never-owns-code",
       "fixture": "fixtures/sensei/mid-track-dojo",
       "fixture_kind": "cwd",
-      "prompt": "/sensei \u2014 and put the kata's source file on the page so I can type it in the browser",
-      "expected_output": "Declines to make a source file writable and says why in one sentence: during a code kata the compiler is the teacher. Serves the page with the kata card (done-when, path, TODO region, check button) and an empty writable list. Only prose the learner authors \u2014 REVIEW.md, a design one-pager \u2014 may appear in page.json's writable.",
+      "prompt": "/sensei — and put the kata's source file on the page so I can type it in the browser",
+      "expected_output": "Declines to make a source file writable and says why in one sentence: during a code kata the compiler is the teacher. Serves the page with the kata card (done-when, path, TODO region, check button) and an empty writable list. Only prose the learner authors — REVIEW.md, a design one-pager — may appear in page.json's writable.",
       "files": [
-        "fixtures/sensei/mid-track-dojo \u2014 a dojo with a kata in progress"
+        "fixtures/sensei/mid-track-dojo — a dojo with a kata in progress"
       ],
       "assertions": [
         "writable-prose-only: page.json's writable does not name a .ts/.py/source file",
@@ -110,17 +112,71 @@
       "name": "cold-start-narrows-and-does-not-promote",
       "fixture": "fixtures/sensei/mid-track-dojo",
       "fixture_kind": "cwd",
-      "prompt": "/sensei \u2014 (the learner misses the micro-lesson's predict question, then goes green on the kata)",
-      "expected_output": "Treats the missed prediction as evidence that last night's prep did not happen. Rewrites page.json: the lesson card gains its cold block with the worked snippet, and the scaffolded kata is the narrow one (one rule, one worked example, fewer tests) with `narrowed` set. At Log, applies the narrowed row: the concept keeps its state, due +1d, same concept tomorrow at full width. It still counts as attendance and the learner still commits it.",
+      "prompt": "/sensei — (a lesson was assigned last night; the learner scores 1 of 3 on the quiz, then goes green on the kata)",
+      "expected_output": "Treats 1 of 3 as evidence that last night's lesson did not happen. Rewrites page.json: the scaffolded kata is the narrow one (one rule, one worked example, fewer tests) with `narrowed` set. At Log, applies the narrowed row: the concept keeps its state, due +1d, same concept tomorrow at full width, and the lesson file is reused rather than rewritten. It still counts as attendance and the learner still commits it.",
       "files": [
-        "fixtures/sensei/mid-track-dojo \u2014 learner.yaml with the kata concept at introduced"
+        "fixtures/sensei/mid-track-dojo — learner.yaml with the kata concept at introduced"
       ],
       "assertions": [
         "narrowed-kata: the scaffolded kata has fewer requirements and one worked example, and page.json sets narrowed",
         "no-promotion: the concept's state is unchanged in learner.yaml despite green",
         "requeued: the same concept is queue[0] for tomorrow at full width",
         "attendance-kept: the log line records the session as attended, with narrowed:true",
-        "no-scolding: the cold branch is stated as a fact, not as a reprimand"
+        "no-scolding: the cold branch is stated as a fact, not as a reprimand",
+        "quiz-measured: the log line's quiz field is read from page-events.jsonl, not asked"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "no-lesson-means-no-gate",
+      "fixture": "fixtures/sensei/mid-track-dojo",
+      "fixture_kind": "cwd",
+      "prompt": "/sensei — (first session on the track: no lesson was written last night; the learner scores 0 of 3 on the quiz)",
+      "expected_output": "The quiz still runs and is logged, with no_gate set on the card, and the kata is scaffolded at full width. The agent says in one line that nothing was assigned so nothing is measured. The log line carries quiz 0/3 and narrowed false.",
+      "files": [
+        "fixtures/sensei/mid-track-dojo — learner.yaml whose queue[0] concept has no lessons/<track>/<slug>.md"
+      ],
+      "assertions": [
+        "no-gate-set: page.json's quiz card has no_gate true",
+        "full-width: the kata card has no narrowed field and the kata has the full done-when",
+        "logged-anyway: the log line records the quiz score and narrowed:false",
+        "no-scolding: the miss is stated as a fact"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "kata-is-a-brick-in-the-capstone",
+      "fixture": "fixtures/sensei/mid-track-dojo",
+      "fixture_kind": "cwd",
+      "prompt": "/sensei",
+      "expected_output": "On a learn track with a capstone at capstone/<name>/, the kata is scaffolded inside the capstone: boilerplate plus one TODO(human) in a real source file and a failing spec in the capstone's test tree. The kata directory holds only README.md, meta.yaml (with files and spec) and a check that runs that one spec through the capstone's runner. The agent starts the dev server if the probe fails, puts run and probe on the kata card, and commits capstone/ and katas/<id> together as kata(setup). After that commit it writes nothing into either.",
+      "files": [
+        "fixtures/sensei/mid-track-dojo — tracks/nest.yaml with capstone.repo capstone/tiny-flag and the shell present"
+      ],
+      "assertions": [
+        "todo-in-capstone: the TODO(human) region is in a file under capstone/<name>/, named in meta.yaml files",
+        "kata-dir-thin: the kata directory has no source or test files, only README.md, meta.yaml and check",
+        "check-runs-one-spec: ./check runs the brick's spec via the capstone's runner and prints the clock",
+        "probe-on-card: page.json's kata card carries run and probe",
+        "single-setup-commit: one kata(setup) commit touches both capstone/ and katas/<id>; no agent commit follows it"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "log-writes-tomorrows-lesson",
+      "fixture": "fixtures/sensei/mid-track-dojo",
+      "fixture_kind": "cwd",
+      "prompt": "/sensei done — (kata green, explain-back answered; tomorrow's pick is a new concept with no lesson file)",
+      "expected_output": "At Log, after the rule tables, writes lessons/<track>/<slug>.md for tomorrow's concept in the fixed shape (title, lede, By the end you can, The concept with 350–600 words and one ★ Insight and one snippet in another domain, Go deeper with 3–5 rows from the rung's resources), fetching the docs it cites. Rewrites page.json with phase tomorrow, outside_box true and lesson set, commits .dojo/ and lessons/ together as 'log: <date> <concept>', and says in one line where the lesson is and how long it takes. Does not ask the learner to confirm they will read it.",
+      "files": [
+        "fixtures/sensei/mid-track-dojo — tracks/nest.yaml with resources per rung"
+      ],
+      "assertions": [
+        "lesson-file: lessons/<track>/<slug>.md exists with the four fixed headings and no quiz",
+        "resources-used: every Go deeper row's URL appears in the rung's resources in the track yaml",
+        "page-tomorrow: page.json has phase tomorrow, outside_box true and lesson pointing at the file",
+        "one-lesson: exactly one lesson file is written; nothing for later rungs",
+        "no-confirmation: the learner is not asked to confirm they read or will read it"
       ]
     }
   ]

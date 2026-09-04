@@ -4,14 +4,14 @@ set -e
 here="$(cd "$(dirname "$0")" && pwd)"; skill="$(dirname "$here")"
 d="${1:-$PWD}"; mkdir -p "$d"; cd "$d"
 [ -d .git ] || git init -q
-mkdir -p .dojo/tracks .dojo/keys katas experiments .vscode
+mkdir -p .dojo/tracks .dojo/keys katas lessons capstone experiments .vscode
 [ -f .dojo/learner.yaml ] || cp "$skill/assets/learner-template.yaml" .dojo/learner.yaml
 [ -f .dojo/log.jsonl ] || : > .dojo/log.jsonl
 cp "$here/clock" .dojo/clock && chmod +x .dojo/clock
 [ -f .vscode/settings.json ] || cp "$skill/assets/vscode-settings.json" .vscode/settings.json
 [ -f README.md ] || cp "$skill/assets/dojo-README.md" README.md
-for f in .dojo/session.json .dojo/page.json .dojo/page-events.jsonl; do
+for f in .dojo/session.json .dojo/page.json .dojo/page-events.jsonl .dojo/capstone.log; do
   grep -qx "$f" .gitignore 2>/dev/null || echo "$f" >> .gitignore
 done
-touch katas/.gitkeep experiments/.gitkeep .dojo/keys/.gitkeep
+touch katas/.gitkeep lessons/.gitkeep capstone/.gitkeep experiments/.gitkeep .dojo/keys/.gitkeep
 echo "dojo ready at $d"
